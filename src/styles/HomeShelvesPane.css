@@ -68,7 +68,7 @@
   font-size: large;
   z-index: 1001;
   padding: 5px 20px;
-  width: 250px;
+  width: 350px;
   position: absolute;
   left: 30px;
   top: 30px; /*1080/2 */
@@ -98,7 +98,7 @@
 
 .homeShelvesContainer{
   position: relative;
-  /**/border: 1px #000 solid;
+  /*border: 1px #000 solid;*/
   /*clip: rect(0px,1920px,1080px,0px);*/
 }
 

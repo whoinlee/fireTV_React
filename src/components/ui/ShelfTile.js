@@ -19,8 +19,8 @@ const tileSizeArr = [
   [1056, 594]
 ];
 
-const initX       = 200;
-const maxTileIndex= 6;
+// const initX       = 200;
+// const maxTileIndex= 6;
 
 class ShelfTile extends Component {
 	constructor(props) {
@@ -47,7 +47,7 @@ class ShelfTile extends Component {
 		return (
 			<div className="ShelfTile" style={this.style}>
 				<div className="baseShowImageContainer">
-					<img src={this.props.imageURL} width={this.state.tileWidth} height={this.state.tileHeight}></img>
+					<img src={this.props.imageURL} width={this.state.tileWidth} height={this.state.tileHeight} alt='tileImage'></img>
 				</div>
 				<div className="baseShowTitleContainer">
 					{this.props.showTitle} 

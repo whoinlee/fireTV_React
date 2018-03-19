@@ -12,9 +12,9 @@ const shelfKindObj	= {
 
 const initX         = 200;
 const tileBaseWidth	= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
-const tileBaseOffset= [0, 24, 58];                   	//offset between tiles adjacent
-const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
-const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
+// const tileBaseOffset= [0, 24, 58];                   	//offset between tiles adjacent
+// const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
+// const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
 const maxTileIndex	= Math.floor(1920/320);				//stageWidth/tileBaseWidth
 
 class HomeShelf extends Component {
@@ -31,6 +31,7 @@ class HomeShelf extends Component {
 			isSelected: false,
 			index: props.index,
 			totalTiles: props.shows.length,
+			id: props.id,
 			tileQueue: []
 		}
 		this.eachShelfTile = this.eachShelfTile.bind(this)
@@ -57,7 +58,7 @@ class HomeShelf extends Component {
 		const totalTiles = this.props.shows.length
 		const leftX = ( (i < maxTileIndex) || (i < (totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		// const leftX = (i == 0 )? initX : 0;
-		console.log("tile"+i+" leftX: ", leftX)
+		// console.log("tile"+i+" leftX: ", leftX)
 
 		//const isPrevTile = ( (i < maxTileIndex) || (i < (this.state.totalTiles - 1)) )? false : true;
 		// const isPrevTile = ( i == (this.state.totalTiles - 1) )? true : false;
@@ -78,7 +79,7 @@ class HomeShelf extends Component {
 
 	render() {
 		return (
-			<div className="HomeShelf" style={this.topContainerStyle}>
+			<div className="HomeShelf" id={"homeShelfContainer" + this.props.index} style={this.topContainerStyle}>
 				<div className="homeShelfTitleContainer" style={this.titleContainerStyle}>{this.props.title}</div>
 				<div className="homeShelfTilesContainer" style={this.tileContainerStyle}>{this.props.shows.map(this.eachShelfTile)}</div>
 			</div>

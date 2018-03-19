@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../styles/logo.svg';
+// import logo from '../styles/logo.svg';
 import '../styles/HomeShelvesPane.css';
 import HomeShelf from './ui/HomeShelf';
 
@@ -87,20 +87,24 @@ const shelfBaseOffset       = 106;      //offset between shelves: from the botto
     
 //-- distance between unselected shelves: 10(yOffset between shelfTitle & shelfTitles)
 const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight + shelfBaseOffset;  
-const focusedShelfOffsetY   = baseShelfOffsetY + 75;              //distance between the selected shelf and the next unselected shelf
-const waitToDetailDuration  =10;
-// const initY = 455;
+// const focusedShelfOffsetY   = baseShelfOffsetY + 75;              //distance between the selected shelf and the next unselected shelf
+// const waitToDetailDuration  =10;
+
+const focusLocation = ['globalNav', 'homeHero', 'homeShelvesPane'];
+
 
 class HomeShelvesPane extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      keyPressed: '',
-      isFocused: false,
-      selectedIndex: -1,
-      selectedShelfY: null,
-      guideVisibility: false
+      keyPressed: "none",
+      isGuideVisible: false,
+      selectedShelfIndex: -1,
+      focusOnLocationIndex: 0,
+      topY: initContainerY
     }
+
+    this.toggleGuides = this.toggleGuides.bind(this)
 
     this.doLeft = this.doLeft.bind(this)
     this.doRight = this.doRight.bind(this)
@@ -111,9 +115,10 @@ class HomeShelvesPane extends Component {
     this.doPausePlay = this.doPausePlay.bind(this)
     this.goToPlayer = this.goToPlayer.bind(this)
     this.goToDetail = this.goToDetail.bind(this)
+
     this.eachHomeShelf = this.eachHomeShelf.bind(this)
     this.update = this.update.bind(this)
-    this.toggleGuides = this.toggleGuides.bind(this)
+    this.updateSelectedShelf = this.updateSelectedShelf.bind(this)
   }
 
   componentWillMount() {
@@ -129,7 +134,7 @@ class HomeShelvesPane extends Component {
   }      
 
   onKeyPressed(e) {
-    console.log("e.keyCode == e.which:", e.keyCode);
+    // console.log("e.keyCode == e.which:", e.keyCode);
     switch (e.keyCode) {
       case 37: 
         this.doLeft()
@@ -154,11 +159,11 @@ class HomeShelvesPane extends Component {
         break 
       case 71:
         this.toggleGuides()
+        break
       default:
         this.setState({
           keyPressed: String.fromCharCode(e.keyCodep)
         })
-        break;
     }
   }
 
@@ -181,19 +186,101 @@ class HomeShelvesPane extends Component {
   doDown() {
     //console.log('doDown')
     //coletnsole.log('----------')
-    let selectedIndex = this.state.selectedIndex;
-    if (selectedIndex != maxIndex) selectedIndex++
+    let focusOnIndex = this.state.focusOnLocationIndex
+    let selectedIndex = this.state.selectedShelfIndex;
+    let topY = initContainerY;
+    let opacity = 1;
+    switch (focusOnIndex) {
+      case 2:
+        //-- from homeShelves to homeShelves (selectedShelf changes)
+        if (selectedIndex !== maxIndex) selectedIndex++
+        //TODO: topY change
+        break;
+      case 1:
+        //-- from homeHero to homeShelves
+        focusOnIndex++
+        //-- CHECK?? 120??
+        topY = initContainerY - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 115)
+        selectedIndex++
+        this.style = {
+          top: topY + 'px',
+          opacity: opacity
+        }
+        break;
+      case 0:
+        //-- from globalNav to homeHero
+        focusOnIndex++
+        opacity = .6;
+        this.style = {
+          top: initContainerY + 'px',
+          opacity: opacity
+        }
+        break;
+      default:
+        console.log("ERROR: errorIndex, " + focusOnIndex)
+    }
+    
+    console.log("\npadDown, focusOnIndex:", focusOnIndex)
+    console.log("padDown, selectedIndex:", selectedIndex)
+    // console.log("padDown, maxIndex:", maxIndex)
     this.setState({
       keyPressed: 'padDown',
-      selectedIndex: selectedIndex
+      selectedShelfIndex: selectedIndex,
+      focusOnLocationIndex: focusOnIndex,
+      topY: topY
     })
+
+    // console.log('opacity:', opacity) 
   }
 
   doUp() {
-    //console.log('doUp')
-    //console.log('----------')
+    let focusOnIndex = this.state.focusOnLocationIndex
+    let selectedIndex = this.state.selectedShelfIndex;
+    let topY = initContainerY;
+    let opacity = 1;
+    switch (focusOnIndex) {
+      case 2:
+        if (selectedIndex === 0) {
+          //-- from homeShelves to homeHero
+          selectedIndex--
+          focusOnIndex--
+          opacity = .6
+          this.style = {
+            top: topY + 'px',
+            opacity: opacity
+          }
+        } else {
+          //-- from homeShelves to homeShelves (selectedShelf changes)
+          selectedIndex--
+        }
+        
+        //TODO: topY change
+        break;
+      case 1:
+        //-- from homeHero to globalNav
+        focusOnIndex--
+        opacity = 1
+        //-- CHECK?? 120??
+        this.style = {
+          top: topY + 'px',
+          opacity: opacity
+        }
+        break;
+      case 0:
+        //-- from globalNav, no change
+        break;
+      default:
+        console.log("ERROR: errorIndex, " + focusOnIndex)
+    }
+    
+    console.log("\npadUp, focusOnIndex:", focusOnIndex)
+    console.log("padUp, selectedIndex:", selectedIndex)
+
     this.setState({
-      keyPressed: 'padUp'
+      keyPressed: 'padUp',
+      selectedShelfIndex: selectedIndex,
+      focusOnLocationIndex: focusOnIndex,
+      topY: topY
     })
   }
 
@@ -218,9 +305,9 @@ class HomeShelvesPane extends Component {
   }
 
   toggleGuides() {
-    let visibility = (this.state.guideVisibility)? false:true
+    let isVisible = (this.state.isGuideVisible)? false:true
     this.setState({
-      guideVisibility: visibility
+      isGuideVisible: isVisible
     })
   }
 
@@ -230,14 +317,6 @@ class HomeShelvesPane extends Component {
 
   goToDetail() {
     console.log('goToDetail')
-  }
-
-  addToWatchlist() {
-    console.log('addToWatchlist')
-  }
-
-  removeFromWatchlist() {
-    console.log('removeFromWatchlist')
   }
 
   addToWatchlist() {
@@ -276,12 +355,18 @@ class HomeShelvesPane extends Component {
 
   }
 
+  updateSelectedShelf()
+  {
+
+  }
+
   eachHomeShelf(shelfObj, i) {
     // const baseShelfOffsetY = this.baseShelfOffsetY;
     // console.log('baseShelfOffsetY::', baseShelfOffsetY);
     return (
       <HomeShelf  key={(i + 1).toString()}
                   index={i}
+                  id={"HomeShelf" + i} 
                   title={shelfObj.title}
                   shows={shelfObj.shows}
                   y={initShelfY + i*baseShelfOffsetY}>
@@ -296,9 +381,9 @@ class HomeShelvesPane extends Component {
             {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
           <div className="keyPressed">
-              keyPressed: <b>{this.state.keyPressed}</b>
+              keyPressed: <b>{this.state.keyPressed}</b>, focusOn: <b>{focusLocation[this.state.focusOnLocationIndex]}</b>
           </div>
-          <div className={this.state.guideVisibility ? "hLineVisible" : "hLineHidden"} ></div>
+          <div className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} ></div>
         </div>
     );
   }
