@@ -6,7 +6,7 @@ import '../styles/HomeShelvesPane.css';
 import HomeShelf from './ui/HomeShelf';
 import animation from './animation';
 
-const initContainerY  = 838;   //650                          
+const initContainerY  = 836;   //650                          
 const shelvesDataArr  = [
   {
     title:'up next (7) ',
@@ -80,7 +80,7 @@ const shelvesDataArr  = [
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
 //
-const initShelfY            = 106;      // (== shelfBaseOffset)
+const initShelfY            = 62;        // (== shelfBaseOffset)
 const shelfBaseTitleHeight  = 28;       //title height for Helvetica Light 28px
 const shelfTitleTileOffset  = 10;       //offset between title & tiles
 const shelfBaseTileHeight   = 180;      //baseShelfTile: 320x180
