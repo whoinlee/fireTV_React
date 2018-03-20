@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 // import logo from '../styles/logo.svg';
 import '../styles/HomeShelvesPane.css';
 import HomeShelf from './ui/HomeShelf';
+import animation from './animation';
 
-const initContainerY  = 650;
-                                 
+const initContainerY  = 838;   //650                          
 const shelvesDataArr  = [
   {
     title:'up next (7) ',
@@ -59,7 +61,6 @@ const shelvesDataArr  = [
       ]
   }
 ];
-
 /*
 const shelvesDataArr  = [
   {
@@ -78,19 +79,19 @@ const shelvesDataArr  = [
 
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
-
+//
 const initShelfY            = 106;      // (== shelfBaseOffset)
 const shelfBaseTitleHeight  = 28;       //title height for Helvetica Light 28px
 const shelfTitleTileOffset  = 10;       //offset between title & tiles
 const shelfBaseTileHeight   = 180;      //baseShelfTile: 320x180
 const shelfBaseOffset       = 106;      //offset between shelves: from the bottom of previous shelf image to the top of next shelf title
-    
+//
 //-- distance between unselected shelves: 10(yOffset between shelfTitle & shelfTitles)
 const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight + shelfBaseOffset;  
 // const focusedShelfOffsetY   = baseShelfOffsetY + 75;              //distance between the selected shelf and the next unselected shelf
 // const waitToDetailDuration  =10;
-
-const focusLocation = ['globalNav', 'homeHero', 'homeShelvesPane'];
+//
+const focusLocation = ['globalNav', 'homeHero', 'homeShelves'];
 
 
 class HomeShelvesPane extends Component {
@@ -105,7 +106,7 @@ class HomeShelvesPane extends Component {
     }
 
     this.toggleGuides = this.toggleGuides.bind(this)
-
+    //
     this.doLeft = this.doLeft.bind(this)
     this.doRight = this.doRight.bind(this)
     this.doDown = this.doDown.bind(this)
@@ -115,7 +116,7 @@ class HomeShelvesPane extends Component {
     this.doPausePlay = this.doPausePlay.bind(this)
     this.goToPlayer = this.goToPlayer.bind(this)
     this.goToDetail = this.goToDetail.bind(this)
-
+    //
     this.eachHomeShelf = this.eachHomeShelf.bind(this)
     this.update = this.update.bind(this)
     this.updateSelectedShelf = this.updateSelectedShelf.bind(this)
@@ -124,9 +125,24 @@ class HomeShelvesPane extends Component {
   componentWillMount() {
       document.addEventListener("keydown", this.onKeyPressed.bind(this));
       // console.log('shelvesDataArr.length:', shelvesDataArr.length)
-      this.style = {
+      this.shelvesStyle = {
         top: initContainerY + 'px'
       }
+
+      const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
+      this.style = {
+        zoom: rate
+      }
+      //const rateH = window.innderHeight/this.props.height
+      //let rate = (rateW > rateH)
+
+      // this.setState({
+      //   width: window.innerWidth + 'px',
+      //   height: window.innerHeight + 'px',
+      //   rate: (window.innderWidth/1920)});
+      console.log('window.innerWidth:', window.innerWidth);
+      console.log('window.innerHeight:', window.innerHeight);
+      console.log('rate:', rate);
   }
 
   componentWillUnmount() {
@@ -202,7 +218,7 @@ class HomeShelvesPane extends Component {
         //-- CHECK?? 120??
         topY = initContainerY - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 115)
         selectedIndex++
-        this.style = {
+        this.shelvesStyle = {
           top: topY + 'px',
           opacity: opacity
         }
@@ -211,7 +227,7 @@ class HomeShelvesPane extends Component {
         //-- from globalNav to homeHero
         focusOnIndex++
         opacity = .6;
-        this.style = {
+        this.shelvesStyle = {
           top: initContainerY + 'px',
           opacity: opacity
         }
@@ -245,7 +261,7 @@ class HomeShelvesPane extends Component {
           selectedIndex--
           focusOnIndex--
           opacity = .6
-          this.style = {
+          this.shelvesStyle = {
             top: topY + 'px',
             opacity: opacity
           }
@@ -261,7 +277,7 @@ class HomeShelvesPane extends Component {
         focusOnIndex--
         opacity = 1
         //-- CHECK?? 120??
-        this.style = {
+        this.shelvesStyle = {
           top: topY + 'px',
           opacity: opacity
         }
@@ -376,8 +392,10 @@ class HomeShelvesPane extends Component {
 
   render() {
     return (
-        <div className="HomeShelvesPane">
-          <div className="homeShelvesContainer" style={this.style}>
+        <div className="HomeShelvesPane" style={this.style}>
+          <div className={(this.state.focusOnLocationIndex === 0) ? "globalNavFocused" : "globalNav"} ref={focusLocation[0]}></div>
+          <div className={(this.state.focusOnLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} ref={focusLocation[1]}></div>
+          <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} style={this.shelvesStyle} ref={focusLocation[2]}>
             {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
           <div className="keyPressed">
@@ -388,5 +406,15 @@ class HomeShelvesPane extends Component {
     );
   }
 }
+
+HomeShelvesPane.propTypes = {
+ width:PropTypes.number,
+ height:PropTypes.number
+};
+
+HomeShelvesPane.defaultProps = {
+  width: 1920,
+  height:1080
+};
 
 export default HomeShelvesPane;
