@@ -82,7 +82,7 @@
     z-index: 1001;
     position: fixed;
     top: 540px; /*1080/2 */
-    border: 1px #f00 solid;
+    border: 1px #900 solid;
     visibility: visible;
   }
 

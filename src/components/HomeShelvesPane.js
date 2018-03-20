@@ -6,7 +6,7 @@ import '../styles/HomeShelvesPane.css';
 import HomeShelf from './ui/HomeShelf';
 import animation from './animation';
 
-const initContainerY  = 836;   //650                          
+const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr  = [
   {
     title:'up next (7) ',
@@ -80,9 +80,11 @@ const shelvesDataArr  = [
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
 //
-const initShelfY            = 62;        // (== shelfBaseOffset)
+//-- (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset = 100) == the height of 'globalNav'
+const initShelfY            = 62;       //(== shelfBaseOffset) (from container top to the shelf title)
 const shelfBaseTitleHeight  = 28;       //title height for Helvetica Light 28px
 const shelfTitleTileOffset  = 10;       //offset between title & tiles
+//
 const shelfBaseTileHeight   = 180;      //baseShelfTile: 320x180
 const shelfBaseOffset       = 106;      //offset between shelves: from the bottom of previous shelf image to the top of next shelf title
 //
@@ -216,7 +218,7 @@ class HomeShelvesPane extends Component {
         //-- from homeHero to homeShelves
         focusOnIndex++
         //-- CHECK?? 120??
-        topY = initContainerY - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 115)
+        topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 12)
         selectedIndex++
         this.shelvesStyle = {
           top: topY + 'px',
