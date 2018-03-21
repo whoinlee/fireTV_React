@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux-immutable';
 import keyboard from './keyboard';
-import pause from './pause';
+//import pause from './pause';
 
 
 const rootReducer = combineReducers({
-  pause,
+  //pause,
   keyboard,
 });
 
