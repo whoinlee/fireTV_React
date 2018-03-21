@@ -377,14 +377,14 @@ class HomeShelvesPane extends Component {
 
   render() {
     return (
-        <div className="HomeShelvesPane" style={this.style}>
+        <div id="HomeShelvesPane" style={this.style}>
           <div className={(this.state.focusOnLocationIndex === 0) ? "globalNavFocused" : "globalNav"} ref={focusLocation[0]}></div>
           <div className={(this.state.focusOnLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} ref={focusLocation[1]}></div>
           <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} ref={focusLocation[2]}
                style={this.shelvesStyle}>
             {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
-          <div className="keyPressed">
+          <div id="keyPressed">
               keyPressed: <b>{this.state.keyPressed}</b>, focusOn: <b>{focusLocation[this.state.focusOnLocationIndex]}</b>
           </div>
           <div className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} ></div>
