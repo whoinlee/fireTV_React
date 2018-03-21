@@ -1,12 +1,21 @@
-//import TweenLite from '../gsap/TweenLite' 
-
+const TL = TweenLite; // eslint-disable-line
 const moveDuration = .5
 
 export default {
-	show(target, callBack) {
+	moveLeftRight(target, option, callBack) {
+		return TL.to(target, moveDuration, option)
+	},
+	moveUpDown(target, option, callBack) {
+		return TL.to(target, moveDuration, option)
+	},
+	bloomToFocused() {
 
 	},
-	hide(target, callBack) {
+	bloomToLarge() {
+
+	},
+	bloomBackToBase() {
 
 	}
+
 }

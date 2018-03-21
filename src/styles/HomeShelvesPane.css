@@ -27,7 +27,7 @@
   /*  visibility: hidden;*/
   }
 
-  div.hLineVisible {
+  .hLineVisible {
     width: 1920px;
     z-index: 1001;
     position: fixed;
@@ -36,11 +36,11 @@
     visibility: visible;
   }
 
-  div.hLineHidden {
+  .hLineHidden {
     visibility: hidden;
   }
 
-  div.globalNav {
+  .globalNav {
     width: 1920px;
     height: 100px;
     position: absolute;
@@ -51,7 +51,7 @@
     /**/ border: 1px #000 dotted;
   }
 
-  div.globalNavFocused {
+  .globalNavFocused {
     width: 1920px;
     height: 100px;
     position: absolute;
@@ -62,7 +62,7 @@
     border: 4px #f00 solid;
   }
 
-  div.homeHero {
+  .homeHero {
     width: 1920px;
     height: 606px;
     position: absolute;
@@ -73,7 +73,7 @@
     /*clip: rect(0px,1920px,1080px,0px);*/
   }
 
-   div.homeHeroFocused {
+   .homeHeroFocused {
     width: 1920px;
     height: 606px;
     position: absolute;
@@ -83,7 +83,7 @@
     background-color: rgba(0, 0, 0, 0);
   }
 
-  div.homeShelves {
+  .homeShelves {
     width: 1920px;
     height: 100%;
     position: absolute;
@@ -91,7 +91,7 @@
     border: 1px #000 solid;
   }
 
-  div.homeShelvesFocused {
+  .homeShelvesFocused {
     width: 1920px;
     height: 100%;
     position: absolute;
@@ -110,7 +110,7 @@
   /*border: 1px red solid;*/
 }
 
-div.homeShelfTitleContainer {
+.homeShelfTitleContainer {
   font-family: Helvetica;
   font-weight: 100; /*HelveticaLight*/
   font-size: 28px;  /*CHECK- variable?*/
@@ -121,14 +121,14 @@ div.homeShelfTitleContainer {
   /*border: 1px #000 solid;*/
 }
 
-div.homeShelfTilesContainer {
+.homeShelfTilesContainer {
   height: 230px;  
   position: relative;
   top: 10px;      /*CHECK- variable?*/
   /*border: 4px #fc0 solid;*/
 }
 
-div.shelfTileContainer {
+.shelfTileContainer {
     /*width: 320px;*/
     position: absolute;
 }
