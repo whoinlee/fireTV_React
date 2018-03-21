@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-// import logo from '../styles/logo.svg';
-import '../styles/HomeShelvesPane.css';
 import HomeShelf from './ui/HomeShelf';
-import animation from './animation';
+import '../styles/HomeShelvesPane.css';
+// import animation from './animation';
 
 const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr  = [
@@ -135,16 +133,9 @@ class HomeShelvesPane extends Component {
       this.style = {
         zoom: rate
       }
-      //const rateH = window.innderHeight/this.props.height
-      //let rate = (rateW > rateH)
-
-      // this.setState({
-      //   width: window.innerWidth + 'px',
-      //   height: window.innerHeight + 'px',
-      //   rate: (window.innderWidth/1920)});
-      console.log('window.innerWidth:', window.innerWidth);
-      console.log('window.innerHeight:', window.innerHeight);
-      console.log('rate:', rate);
+      // console.log('window.innerWidth:', window.innerWidth);
+      // console.log('window.innerHeight:', window.innerHeight);
+      // console.log('rate:', rate);
   }
 
   componentWillUnmount() {
@@ -187,7 +178,6 @@ class HomeShelvesPane extends Component {
 
   doLeft() {
     //console.log('doLeft')
-    //console.log('----------')
     this.setState({
       keyPressed: 'padLeft'
     })
@@ -195,7 +185,6 @@ class HomeShelvesPane extends Component {
 
   doRight() {
     //console.log('doRight')
-    //console.log('----------')
     this.setState({
       keyPressed: 'padRight'
     })
@@ -203,7 +192,6 @@ class HomeShelvesPane extends Component {
 
   doDown() {
     //console.log('doDown')
-    //coletnsole.log('----------')
     let focusOnIndex = this.state.focusOnLocationIndex
     let selectedIndex = this.state.selectedShelfIndex;
     let topY = initContainerY;
@@ -217,7 +205,7 @@ class HomeShelvesPane extends Component {
       case 1:
         //-- from homeHero to homeShelves
         focusOnIndex++
-        //-- CHECK?? 120??
+        //-- CHECK, 12
         topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 12)
         selectedIndex++
         this.shelvesStyle = {
@@ -238,8 +226,8 @@ class HomeShelvesPane extends Component {
         console.log("ERROR: errorIndex, " + focusOnIndex)
     }
     
-    console.log("\npadDown, focusOnIndex:", focusOnIndex)
-    console.log("padDown, selectedIndex:", selectedIndex)
+    // console.log("\npadDown, focusOnIndex:", focusOnIndex)
+    // console.log("padDown, selectedIndex:", selectedIndex)
     // console.log("padDown, maxIndex:", maxIndex)
     this.setState({
       keyPressed: 'padDown',
@@ -247,8 +235,6 @@ class HomeShelvesPane extends Component {
       focusOnLocationIndex: focusOnIndex,
       topY: topY
     })
-
-    // console.log('opacity:', opacity) 
   }
 
   doUp() {
@@ -291,8 +277,8 @@ class HomeShelvesPane extends Component {
         console.log("ERROR: errorIndex, " + focusOnIndex)
     }
     
-    console.log("\npadUp, focusOnIndex:", focusOnIndex)
-    console.log("padUp, selectedIndex:", selectedIndex)
+    // console.log("\npadUp, focusOnIndex:", focusOnIndex)
+    // console.log("padUp, selectedIndex:", selectedIndex)
 
     this.setState({
       keyPressed: 'padUp',
@@ -304,7 +290,6 @@ class HomeShelvesPane extends Component {
 
   doSelect() {
     //console.log('doSelect')
-    //console.log('----------')
     this.setState({
       keyPressed: 'selectAction'
     })
@@ -379,8 +364,6 @@ class HomeShelvesPane extends Component {
   }
 
   eachHomeShelf(shelfObj, i) {
-    // const baseShelfOffsetY = this.baseShelfOffsetY;
-    // console.log('baseShelfOffsetY::', baseShelfOffsetY);
     return (
       <HomeShelf  key={(i + 1).toString()}
                   index={i}
@@ -397,7 +380,8 @@ class HomeShelvesPane extends Component {
         <div className="HomeShelvesPane" style={this.style}>
           <div className={(this.state.focusOnLocationIndex === 0) ? "globalNavFocused" : "globalNav"} ref={focusLocation[0]}></div>
           <div className={(this.state.focusOnLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} ref={focusLocation[1]}></div>
-          <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} style={this.shelvesStyle} ref={focusLocation[2]}>
+          <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} ref={focusLocation[2]}
+               style={this.shelvesStyle}>
             {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
           <div className="keyPressed">

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
+import PropTypes from 'prop-types';
 
 
 const shelfKindObj	= {
@@ -18,20 +19,13 @@ const maxTileIndex	= Math.floor(1920/320);				//stageWidth/tileBaseWidth
 class HomeShelf extends Component {
 	constructor(props) {
 		super(props)
-		/*
-			title: props.title,
-			index: props.index,
-			tiles: props.shows,
-			yLoc: props.y,
-		*/
 		this.state = {
 			shelfKind: shelfKindObj.BASE,
 			isSelected: false,
-			index: props.index,
-			totalTiles: props.shows.length,
-			id: props.id,
+			//totalTiles: props.shows.length,
 			tileQueue: []
 		}
+		this.totalTiles = props.shows.length
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 	}
 
@@ -53,14 +47,8 @@ class HomeShelf extends Component {
 
     /* x again */
 	eachShelfTile(tileObj, i) {
-		const totalTiles = this.props.shows.length
-		const leftX = ( (i < maxTileIndex) || (i < (totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
-		// const leftX = (i == 0 )? initX : 0;
-		// console.log("tile"+i+" leftX: ", leftX)
-
-		//const isPrevTile = ( (i < maxTileIndex) || (i < (this.state.totalTiles - 1)) )? false : true;
-		// const isPrevTile = ( i == (this.state.totalTiles - 1) )? true : false;
-		//console.log("isPrevTile? " + i, isPrevTile)
+		//const totalTiles = this.props.shows.length
+		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
 				  		index={i}
@@ -68,9 +56,7 @@ class HomeShelf extends Component {
 				  		episodeTitle={tileObj.episodeTitle}
 				  		episodeID={tileObj.episode}
 				  		imageURL={tileObj.imageURL}
-				  		// isPrevTile={isPrevTile}
-				  		leftX={leftX}
-				  		>
+				  		leftX={leftX} >
 		    </ShelfTile>
 		)
 	}
@@ -83,7 +69,24 @@ class HomeShelf extends Component {
 			</div>
 		)
 	}
-
 }
+
+HomeShelf.propTypes = {
+	title: PropTypes.string,
+	index: PropTypes.number,
+	id: PropTypes.string,
+	title: PropTypes.string,
+	shows: PropTypes.array,
+	y: PropTypes.number
+};
+
+HomeShelf.defaultProps = {
+  	title: "",
+	index: 0,
+	id: "HomeShelf0",
+	title: "",
+	shows: [],
+	y: 62
+};
 
 export default HomeShelf
