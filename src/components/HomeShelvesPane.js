@@ -4,6 +4,7 @@ import HomeShelf from './ui/HomeShelf';
 import '../styles/HomeShelvesPane.css';
 // import animation from './animation';
 
+
 const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr  = [
   {
@@ -57,8 +58,7 @@ const shelvesDataArr  = [
         {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
-  }
-];
+  }];
 /*
 const shelvesDataArr  = [
   {
@@ -71,26 +71,23 @@ const shelvesDataArr  = [
         {showTitle: "Imposters", episodeTitle: "Always Forward, Never Back", episode: 'S1 E10', imageURL: './assets/images/shows/imposters-s01e10-1056x594.jpg'},
         {showTitle: "Real Housewives", episodeTitle: "Another Spin Around the Block", episode: 'S9 E4', imageURL: './assets/images/shows/rhofAT-s09e04-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: './assets/images/shows/topChef-s14e10-1056x594.jpg'}
-      ]
-  }
+      ]}
 ];*/
-
-const totalShelves = shelvesDataArr.length;
-const maxIndex = totalShelves - 1;
 //
+
 //-- (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset = 100) == the height of 'globalNav'
 const initShelfY            = 62;       //(== shelfBaseOffset) (from container top to the shelf title)
 const shelfBaseTitleHeight  = 28;       //title height for Helvetica Light 28px
 const shelfTitleTileOffset  = 10;       //offset between title & tiles
-//
 const shelfBaseTileHeight   = 180;      //baseShelfTile: 320x180
 const shelfBaseOffset       = 106;      //offset between shelves: from the bottom of previous shelf image to the top of next shelf title
-//
 //-- distance between unselected shelves: 10(yOffset between shelfTitle & shelfTitles)
 const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight + shelfBaseOffset;  
 // const focusedShelfOffsetY   = baseShelfOffsetY + 75;              //distance between the selected shelf and the next unselected shelf
 // const waitToDetailDuration  =10;
-//
+
+const totalShelves = shelvesDataArr.length;
+const maxIndex = totalShelves - 1;
 const focusLocation = ['globalNav', 'homeHero', 'homeShelves'];
 
 
@@ -119,8 +116,7 @@ class HomeShelvesPane extends Component {
     //
     this.eachHomeShelf = this.eachHomeShelf.bind(this)
     this.update = this.update.bind(this)
-    this.updateSelectedShelf = this.updateSelectedShelf.bind(this)
-  }
+    this.updateSelectedShelf = this.updateSelectedShelf.bind(this)}
 
   componentWillMount() {
       document.addEventListener("keydown", this.onKeyPressed.bind(this));
@@ -132,15 +128,9 @@ class HomeShelvesPane extends Component {
       const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
       this.style = {
         zoom: rate
-      }
-      // console.log('window.innerWidth:', window.innerWidth);
-      // console.log('window.innerHeight:', window.innerHeight);
-      // console.log('rate:', rate);
-  }
+      }}
 
-  componentWillUnmount() {
-      document.removeEventListener("keydown", this.onKeyPressed.bind(this));
-  }      
+  componentWillUnmount() {document.removeEventListener("keydown", this.onKeyPressed.bind(this))}      
 
   onKeyPressed(e) {
     // console.log("e.keyCode == e.which:", e.keyCode);
@@ -170,28 +160,16 @@ class HomeShelvesPane extends Component {
         this.toggleGuides()
         break
       default:
-        this.setState({
-          keyPressed: String.fromCharCode(e.keyCodep)
-        })
-    }
-  }
+        this.setState({keyPressed: String.fromCharCode(e.keyCodep)})
+    }}
 
-  doLeft() {
-    //console.log('doLeft')
+  toggleGuides() {
+    let isVisible = (this.state.isGuideVisible)? false:true
     this.setState({
-      keyPressed: 'padLeft'
-    })
-  }
+      isGuideVisible: isVisible
+    })}
 
-  doRight() {
-    //console.log('doRight')
-    this.setState({
-      keyPressed: 'padRight'
-    })
-  }
-
-  doDown() {
-    //console.log('doDown')
+  doDown = () => {
     let focusOnIndex = this.state.focusOnLocationIndex
     let selectedIndex = this.state.selectedShelfIndex;
     let topY = initContainerY;
@@ -223,21 +201,14 @@ class HomeShelvesPane extends Component {
         }
         break;
       default:
-        console.log("ERROR: errorIndex, " + focusOnIndex)
-    }
-    
-    // console.log("\npadDown, focusOnIndex:", focusOnIndex)
-    // console.log("padDown, selectedIndex:", selectedIndex)
-    // console.log("padDown, maxIndex:", maxIndex)
+        console.log("ERROR: errorIndex, " + focusOnIndex)}//switch
     this.setState({
       keyPressed: 'padDown',
       selectedShelfIndex: selectedIndex,
       focusOnLocationIndex: focusOnIndex,
-      topY: topY
-    })
-  }
+      topY: topY})}
 
-  doUp() {
+  doUp = () => {
     let focusOnIndex = this.state.focusOnLocationIndex
     let selectedIndex = this.state.selectedShelfIndex;
     let topY = initContainerY;
@@ -285,85 +256,27 @@ class HomeShelvesPane extends Component {
       selectedShelfIndex: selectedIndex,
       focusOnLocationIndex: focusOnIndex,
       topY: topY
-    })
-  }
+    })}
 
-  doSelect() {
-    //console.log('doSelect')
-    this.setState({
-      keyPressed: 'selectAction'
-    })
-  }
+  doLeft = () => this.setState({keyPressed: 'padLeft'})
+  doRight = () => this.setState({keyPressed: 'padRight'})
+  doSelect = () => this.setState({keyPressed: 'selectAction'})
+  doBack = () => this.setState({keyPressed: 'goBack'})
+  doPausePlay = () => this.setState({keyPressed: 'pausePlay'})
+  goToPlayer = () => console.log('goToPlayer')
+  goToDetail = () => console.log('goToDetail')
+  addToWatchlist = () => console.log('addToWatchlist')
+  removeFromWatchlist = () => console.log('removeFromWatchlist')
+  onFocusComplete = () => console.log('onFocusComplete')
+  onBloomComplete = () => console.log('onBloomComplete')
+  startBloomTimer = () => console.log('startBloomTimer')
+  clearBloomTimer = () => console.log('clearBloomTimer')
+  startDetailTimer = () => console.log('startDetailTimer')
+  clearDetailTimer = () => console.log('clearDetailTimer')
+  update = () => console.log('update')
+  updateSelectedShelf = () => {}
 
-  doBack() {
-    this.setState({
-      keyPressed: 'goBack'
-    })
-  }
-
-  doPausePlay() {
-    this.setState({
-      keyPressed: 'pausePlay'
-    })
-  }
-
-  toggleGuides() {
-    let isVisible = (this.state.isGuideVisible)? false:true
-    this.setState({
-      isGuideVisible: isVisible
-    })
-  }
-
-  goToPlayer() {
-    console.log('goToPlayer')
-  }
-
-  goToDetail() {
-    console.log('goToDetail')
-  }
-
-  addToWatchlist() {
-    console.log('addToWatchlist')
-  }
-
-  removeFromWatchlist() {
-    console.log('removeFromWatchlist')
-  }
-
-  onFocusComplete() {
-    console.log('onFocusComplete')
-  }
-
-  onBloomComplete() {
-    console.log('onBloomComplete')
-  }
-
-  startBloomTimer() {
-    console.log('startBloomTimer')
-  }
-
-  clearBloomTimer() {
-    console.log('clearBloomTimer')
-  }
-
-  startDetailTimer() {
-    console.log('startDetailTimer')
-  }
-
-  clearDetailTimer() {
-    console.log('clearDetailTimer')
-  }
-
-  update() {
-
-  }
-
-  updateSelectedShelf()
-  {
-
-  }
-
-  eachHomeShelf(shelfObj, i) {
+  eachHomeShelf = (shelfObj, i) => {
     return (
       <HomeShelf  key={(i + 1).toString()}
                   index={i}
@@ -372,15 +285,17 @@ class HomeShelvesPane extends Component {
                   shows={shelfObj.shows}
                   y={initShelfY + i*baseShelfOffsetY}>
       </HomeShelf>
-    )
-  }
+    )}
 
   render() {
     return (
         <div id="HomeShelvesPane" style={this.style}>
-          <div className={(this.state.focusOnLocationIndex === 0) ? "globalNavFocused" : "globalNav"} ref={focusLocation[0]}></div>
-          <div className={(this.state.focusOnLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} ref={focusLocation[1]}></div>
-          <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} ref={focusLocation[2]}
+          <div className={(this.state.focusOnLocationIndex === 0) ? "globalNavFocused" : "globalNav"} 
+                ref={c => this.globalNav = c}></div>
+          <div className={(this.state.focusOnLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} 
+                ref={c => this.homeHero = c}></div>
+          <div className={(this.state.focusOnLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} 
+                ref={c => this.homeShelves = c}
                style={this.shelvesStyle}>
             {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
@@ -389,18 +304,15 @@ class HomeShelvesPane extends Component {
           </div>
           <div className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} ></div>
         </div>
-    );
-  }
+    );}
 }
 
 HomeShelvesPane.propTypes = {
  width:PropTypes.number,
- height:PropTypes.number
-};
+ height:PropTypes.number}
 
 HomeShelvesPane.defaultProps = {
   width: 1920,
-  height:1080
-};
+  height:1080}
 
 export default HomeShelvesPane;

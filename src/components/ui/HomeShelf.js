@@ -75,7 +75,6 @@ HomeShelf.propTypes = {
 	title: PropTypes.string,
 	index: PropTypes.number,
 	id: PropTypes.string,
-	title: PropTypes.string,
 	shows: PropTypes.array,
 	y: PropTypes.number
 };
@@ -84,7 +83,6 @@ HomeShelf.defaultProps = {
   	title: "",
 	index: 0,
 	id: "HomeShelf0",
-	title: "",
 	shows: [],
 	y: 62
 };
