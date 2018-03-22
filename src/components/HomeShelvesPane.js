@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import HomeShelf from './ui/HomeShelf';
 import '../styles/HomeShelvesPane.css';
-// import {TweenLite} from '../tween/TweenLite';
+import {TweenLite, Power2} from 'gsap';
 // import {Power2} from '../tween/easing/EasePack';
 // import animation from './animation';
 
@@ -194,9 +194,9 @@ class HomeShelvesPane extends Component {
         //console.log("this.containerShiftOffsetY::", this.containerShiftOffsetY)
         selectedShelfIndex = 0  //the first shelf selected
         this.shelves[0].select()
-        TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px'})
-        TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6})
-        TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1})
+        TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power2.easeOut})
+        TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power2.easeOut})
+        TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1, ease:Power2.easeOut})
         break;
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
