@@ -6,6 +6,7 @@ import {TweenLite, Power2, Power3} from 'gsap';
 
 
 const TL = TweenLite; // eslint-disable-line
+const stdDuration = .5;
 const initGlobalNavY  = 0;
 const initHomeHeroY   = 165;
 const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
@@ -195,9 +196,9 @@ class HomeShelvesPane extends Component {
         selectedShelfIndex = 0  //the first shelf selected
         //this.shelves[0].select()
         this.selectTheFirstShelf() 
-        TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
-        TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
-        TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
+        TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
+        TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
+        TL.to(this.elts[2], stdDuration, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
         break;
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
@@ -240,9 +241,9 @@ class HomeShelvesPane extends Component {
           focusLocationIndex--
           this.shelves[0].unselect()
           this.firstShelfOpacityUpdate(.6)
-          TL.to(this.elts[0], .5, {top: (initGlobalNavY)+'px', ease:Power3.easeOut})
-          TL.to(this.elts[1], .5, {top: (initHomeHeroY)+'px', opacity: 1, ease:Power3.easeOut})
-          TL.to(this.elts[2], .5, {top: (initContainerY)+'px', ease:Power3.easeOut})
+          TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY)+'px', ease:Power3.easeOut})
+          TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY)+'px', opacity: 1, ease:Power3.easeOut})
+          TL.to(this.elts[2], stdDuration, {top: (initContainerY)+'px', ease:Power3.easeOut})
         } else {
           //-- from homeShelves to homeShelves (selectedShelf changes)
           let prevShelfIndex = selectedShelfIndex

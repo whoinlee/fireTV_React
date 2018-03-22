@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
 import PropTypes from 'prop-types';
+import {TweenLite, Power2, Power3} from 'gsap';
 
+
+const TL = TweenLite; // eslint-disable-line
+const stdDuration = .5;
 
 const shelfKindObj	= {
   BASE: 0,
@@ -9,12 +13,12 @@ const shelfKindObj	= {
   BLOOMED: 2
 };
 
-const initX         = 200;
-const tileBaseWidth	= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
+const initX         =	200;
+const tileBaseWidth	= 	[320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
 // const tileBaseOffset= [0, 24, 58];                   	//offset between tiles adjacent
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
-const maxTileIndex	= Math.floor(1920/320);				//stageWidth/tileBaseWidth
+const maxTileIndex	= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth
 // const waitToDetailDuration  =10;
 
 
@@ -54,7 +58,7 @@ class HomeShelf extends Component {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.opacityChange(1)
 		//update title size and location
-
+		//TL.to(this.titleNode, stdDuration, {})
 
 		//-- show the titles of unselected tiles
 		const totalTiles = this.totalTiles
@@ -107,7 +111,8 @@ class HomeShelf extends Component {
 				 id={"homeShelfContainer" + this.props.index} 
 				 style={this.topContainerStyle}>
 				<div className="homeShelfTitleContainer" 
-					 style={this.titleContainerStyle}>
+					 style={this.titleContainerStyle}
+					 ref={node => {this.titleNode = node}}>
 					{this.props.title}
 				</div>
 				<div className="homeShelfTilesContainer" 
