@@ -88,7 +88,7 @@
     height: 100%;
     position: absolute;
     z-index: 950;
-    border: 1px #000 solid;
+    /*border: 1px #000 solid;*/
   }
 
   .homeShelvesFocused {
@@ -96,10 +96,7 @@
     height: 100%;
     position: absolute;
     z-index: 950;
-/*    background-color: rgba(0, 0, 0, .5);*/
-    border: 4px #f00 solid;
-    /*border: 1px #000 solid;*/
-    /*clip: rect(0px,1920px,1080px,0px);*/
+    /*border: 4px #f00 solid;*/
   }
 
 /* --------------------- */

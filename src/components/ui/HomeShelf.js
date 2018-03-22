@@ -23,6 +23,7 @@ class HomeShelf extends Component {
 			shelfKind: shelfKindObj.BASE,
 			isSelected: false,
 			//totalTiles: props.shows.length,
+			topContainerTop: this.props.y,
 			tileQueue: []
 		}
 		this.totalTiles = props.shows.length
@@ -33,7 +34,8 @@ class HomeShelf extends Component {
 
 	componentWillMount() {
 		this.topContainerStyle = {
-			top: this.props.y + 'px'
+			top: this.props.y + 'px',
+			opacity: 1
 		}
 		//TODO: variable height
 
@@ -41,19 +43,29 @@ class HomeShelf extends Component {
 		this.titleContainerStyle = {
 			left: initX + 'px'
 		}
-
-		this.tileContainerStyle = {
-
-		}
 	}
 
 	select() {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
+		this.topContainerStyle = {
+			top: this.state.topContainerTop + 'px',
+			opacity: 1
+		}
 	}
 
 	unselect() {
 		console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
 	}
+
+	opacityChange(val) {
+		console.log("INFO HomeShelf :: opacityChange, opacity is ", val)
+		this.topContainerStyle = {
+			top: this.state.topContainerTop + 'px',
+			opacity: val
+		}
+		console.log("INFO HomeShelf :: opacityChange, this.topContainerStyle.opacity is ", this.topContainerStyle.opacity)
+	}
+
 
     /* x again */
 	eachShelfTile(tileObj, i) {
@@ -72,6 +84,7 @@ class HomeShelf extends Component {
 	}
 
 	render() {
+		console.log("INFO HomeShelf :: render, shelf", this.props.index)
 		return (
 			<div className="HomeShelf" id={"homeShelfContainer" + this.props.index} style={this.topContainerStyle}>
 				<div className="homeShelfTitleContainer" style={this.titleContainerStyle}>{this.props.title}</div>

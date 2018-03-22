@@ -124,6 +124,7 @@ class HomeShelvesPane extends Component {
     this.eachHomeShelf = this.eachHomeShelf.bind(this)
     this.update = this.update.bind(this)
     this.updateSelectedShelf = this.updateSelectedShelf.bind(this)
+    this.selectTheFirstShelf = this.selectTheFirstShelf.bind(this)
   }
 
   componentWillMount() {
@@ -193,7 +194,8 @@ class HomeShelvesPane extends Component {
         this.containerShiftOffsetY = initContainerY - topY
         //console.log("this.containerShiftOffsetY::", this.containerShiftOffsetY)
         selectedShelfIndex = 0  //the first shelf selected
-        this.shelves[0].select()
+        //this.shelves[0].select()
+        this.selectTheFirstShelf() 
         TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power2.easeOut})
         TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power2.easeOut})
         TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1, ease:Power2.easeOut})
@@ -287,6 +289,15 @@ class HomeShelvesPane extends Component {
   startDetailTimer = () => console.log('startDetailTimer')
   clearDetailTimer = () => console.log('clearDetailTimer')
 
+  selectTheFirstShelf() 
+  {
+    this.shelves[0].select()
+    //-- dimm out the rest
+    for (var i = 1; i < totalShelves; i++) {
+      this.shelves[i].opacityChange(.6)
+    }
+  }
+
   update = () => console.log('update')
   updateSelectedShelf = () => {}
 
@@ -307,19 +318,20 @@ class HomeShelvesPane extends Component {
         <div id="HomeShelvesPane" style={this.style}>
           <div className={(this.state.focusLocationIndex === 0) ? "globalNavFocused" : "globalNav"} 
                ref={node => this.elts.push(node)}
-               style={{top:initGlobalNavY + 'px'}}></div>
+               style={{top:initGlobalNavY + 'px'}}/>
           <div className={(this.state.focusLocationIndex === 1) ? "homeHeroFocused" : "homeHero"} 
                ref={node => this.elts.push(node)}
-               style={{top:initHomeHeroY + 'px'}}></div>
+               style={{top:initHomeHeroY + 'px'}}/>
           <div className={(this.state.focusLocationIndex === 2) ? "homeShelvesFocused" : "homeShelves"} 
                ref={node => this.elts.push(node)}
                style={{top:initContainerY + 'px'}}>
-            {shelvesDataArr.map(this.eachHomeShelf)}
+              {shelvesDataArr.map(this.eachHomeShelf)}
           </div>
           <div id="keyPressed">
-            keyPressed: <b>{this.state.keyPressed}</b>, focusOn: <b>{focusLocation[this.state.focusLocationIndex]}</b>
+              keyPressed: <b>{this.state.keyPressed}</b>, focusOn: <b>{focusLocation[this.state.focusLocationIndex]}</b>
           </div>
-          <div className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} style={{top:this.props.height/2 + 'px'}}></div>
+          <div  className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} 
+                style={{top:this.props.height/2 + 'px'}}/>
         </div>
     )}
 }
