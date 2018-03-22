@@ -30,6 +30,7 @@ class HomeShelf extends Component {
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 		this.select = this.select.bind(this)
 		this.unselect = this.unselect.bind(this)
+		this.opacityChange = this.opacityChange.bind(this)
 	}
 
 	componentWillMount() {
@@ -47,14 +48,12 @@ class HomeShelf extends Component {
 
 	select() {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
-		this.topContainerStyle = {
-			top: this.state.topContainerTop + 'px',
-			opacity: 1
-		}
+		this.opacityChange(1)
 	}
 
 	unselect() {
 		console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
+		this.opacityChange(.6)
 	}
 
 	opacityChange(val) {

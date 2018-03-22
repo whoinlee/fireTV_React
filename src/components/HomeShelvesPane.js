@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import HomeShelf from './ui/HomeShelf';
 import '../styles/HomeShelvesPane.css';
-import {TweenLite, Power2} from 'gsap';
+import {TweenLite, Power2, Power3} from 'gsap';
 // import {Power2} from '../tween/easing/EasePack';
 // import animation from './animation';
 
@@ -125,6 +125,7 @@ class HomeShelvesPane extends Component {
     this.update = this.update.bind(this)
     this.updateSelectedShelf = this.updateSelectedShelf.bind(this)
     this.selectTheFirstShelf = this.selectTheFirstShelf.bind(this)
+    this.firstShelfOpacityUpdate = this.firstShelfOpacityUpdate.bind(this)
   }
 
   componentWillMount() {
@@ -184,7 +185,8 @@ class HomeShelvesPane extends Component {
       case 0:
         //-- from globalNav to homeHero
         focusLocationIndex = 1
-        TL.to(this.elts[2], .5, {top: topY+'px', opacity: .6})
+        TL.to(this.elts[2], .5, {top: topY+'px'})
+        this.firstShelfOpacityUpdate(.6)
         break;
       case 1:
         //-- from homeHero to homeShelves
@@ -196,9 +198,9 @@ class HomeShelvesPane extends Component {
         selectedShelfIndex = 0  //the first shelf selected
         //this.shelves[0].select()
         this.selectTheFirstShelf() 
-        TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power2.easeOut})
-        TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power2.easeOut})
-        TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1, ease:Power2.easeOut})
+        TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
+        TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
+        TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
         break;
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
@@ -230,7 +232,8 @@ class HomeShelvesPane extends Component {
       case 1:
         //-- from homeHero to globalNav
         focusLocationIndex--
-        TL.to(this.elts[2], .5, {opacity: 1})
+        this.firstShelfOpacityUpdate(1)
+        // TL.to(this.elts[2], .5, {opacity: 1})
         break;
       case 2:
         if (selectedShelfIndex === 0) {
@@ -238,9 +241,10 @@ class HomeShelvesPane extends Component {
           selectedShelfIndex--
           focusLocationIndex--
           this.shelves[0].unselect()
-          TL.to(this.elts[0], .5, {top: (initGlobalNavY)+'px'})
-          TL.to(this.elts[1], .5, {top: (initHomeHeroY)+'px', opacity: 1})
-          TL.to(this.elts[2], .5, {top: (initContainerY)+'px', opacity: .6})
+          this.firstShelfOpacityUpdate(.6)
+          TL.to(this.elts[0], .5, {top: (initGlobalNavY)+'px', ease:Power3.easeOut})
+          TL.to(this.elts[1], .5, {top: (initHomeHeroY)+'px', opacity: 1, ease:Power3.easeOut})
+          TL.to(this.elts[2], .5, {top: (initContainerY)+'px', ease:Power3.easeOut})
         } else {
           //-- from homeShelves to homeShelves (selectedShelf changes)
           let prevShelfIndex = selectedShelfIndex
@@ -292,11 +296,14 @@ class HomeShelvesPane extends Component {
   selectTheFirstShelf() 
   {
     this.shelves[0].select()
+
     //-- dimm out the rest
     for (var i = 1; i < totalShelves; i++) {
       this.shelves[i].opacityChange(.6)
     }
   }
+
+  firstShelfOpacityUpdate = (val) => this.shelves[0].opacityChange(val)
 
   update = () => console.log('update')
   updateSelectedShelf = () => {}
