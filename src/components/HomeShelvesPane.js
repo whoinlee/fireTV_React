@@ -193,7 +193,7 @@ class HomeShelvesPane extends Component {
         this.containerShiftOffsetY = initContainerY - topY
         //console.log("this.containerShiftOffsetY::", this.containerShiftOffsetY)
         selectedShelfIndex = 0  //the first shelf selected
-        this.shelves[selectedShelfIndex].select()
+        this.shelves[0].select()
         TL.to(this.elts[0], .5, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px'})
         TL.to(this.elts[1], .5, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6})
         TL.to(this.elts[2], .5, {top: topY+'px', opacity: 1})
@@ -222,28 +222,31 @@ class HomeShelvesPane extends Component {
     let topY = initContainerY
     // let opacity = 1
     switch (focusLocationIndex) {
-      case 2:
-        if (selectedShelfIndex === 0) {
-          //-- from homeShelves to homeHero
-          selectedShelfIndex--
-          focusLocationIndex--
-          TL.to(this.elts[0], .5, {top: (initGlobalNavY)+'px'})
-          TL.to(this.elts[1], .5, {top: (initHomeHeroY)+'px', opacity: 1})
-          TL.to(this.elts[2], .5, {top: (initContainerY)+'px', opacity: .6})
-        } else {
-          //-- from homeShelves to homeShelves (selectedShelf changes)
-          selectedShelfIndex--
-        }
-        
-        //TODO: topY change
+      case 0:
+        //-- from globalNav, no change
         break;
       case 1:
         //-- from homeHero to globalNav
         focusLocationIndex--
         TL.to(this.elts[2], .5, {opacity: 1})
         break;
-      case 0:
-        //-- from globalNav, no change
+      case 2:
+        if (selectedShelfIndex === 0) {
+          //-- from homeShelves to homeHero
+          selectedShelfIndex--
+          focusLocationIndex--
+          this.shelves[0].unselect()
+          TL.to(this.elts[0], .5, {top: (initGlobalNavY)+'px'})
+          TL.to(this.elts[1], .5, {top: (initHomeHeroY)+'px', opacity: 1})
+          TL.to(this.elts[2], .5, {top: (initContainerY)+'px', opacity: .6})
+        } else {
+          //-- from homeShelves to homeShelves (selectedShelf changes)
+          let prevShelfIndex = selectedShelfIndex
+          selectedShelfIndex--
+          this.shelves[prevShelfIndex].unselect()
+          this.shelves[selectedShelfIndex].select()
+        }
+        //TODO: topY change
         break;
       default:
         console.log("ERROR: errorIndex, " + focusLocationIndex)
