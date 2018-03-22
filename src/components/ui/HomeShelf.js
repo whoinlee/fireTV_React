@@ -27,6 +27,8 @@ class HomeShelf extends Component {
 		}
 		this.totalTiles = props.shows.length
 		this.eachShelfTile = this.eachShelfTile.bind(this)
+		this.select = this.select.bind(this)
+		this.unselect = this.unselect.bind(this)
 	}
 
 	componentWillMount() {
@@ -43,6 +45,14 @@ class HomeShelf extends Component {
 		this.tileContainerStyle = {
 
 		}
+	}
+
+	select() {
+		console.log("INFO HomeShelf :: select, shelf", this.props.index)
+	}
+
+	unselect() {
+		console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
 	}
 
     /* x again */

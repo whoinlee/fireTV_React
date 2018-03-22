@@ -31,7 +31,7 @@
     width: 1920px;
     z-index: 1001;
     position: fixed;
-    top: 540px; /*1080/2 */
+    /*top: 540px; /*1080/2 */
     border: 1px #900 solid;
     visibility: visible;
   }
@@ -44,7 +44,7 @@
     width: 1920px;
     height: 100px;
     position: absolute;
-    top: 0px;
+    /*top: 0px;*/
     left: 0px;
     z-index: 800;
     background-color: rgba(0, 0, 0, .1);
@@ -55,7 +55,7 @@
     width: 1920px;
     height: 100px;
     position: absolute;
-    top: 0px;
+    /*top: 0px;*/
     left: 0px;
     z-index: 800;
     background-color: rgba(0, 0, 0, 0);
@@ -66,7 +66,7 @@
     width: 1920px;
     height: 606px;
     position: absolute;
-    top: 165px;
+    /*top: 165px;*/
     z-index: 900;
     /**/background-color: rgba(0, 0, 0, .1);
     /**/border: 1px #000 dotted;
