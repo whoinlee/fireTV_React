@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import HomeShelf from './ui/HomeShelf';
 import '../styles/HomeShelvesPane.css';
 import {TweenLite, Power2, Power3} from 'gsap';
-// import {Power2} from '../tween/easing/EasePack';
-// import animation from './animation';
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -87,8 +85,7 @@ const shelfBaseOffset       = 106;      //offset between shelves: from the botto
 //-- distance between unselected shelves: 10(yOffset between shelfTitle & shelfTitles)
 const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight + shelfBaseOffset;
 //-- distance between the selected shelf and the next unselected shelf
-// const focusedShelfOffsetY   = baseShelfOffsetY + 75;              
-// const waitToDetailDuration  =10;
+// const focusedShelfOffsetY   = baseShelfOffsetY + 75;
 
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
@@ -102,8 +99,8 @@ class HomeShelvesPane extends Component {
     this.state = {
       keyPressed: "none",
       isGuideVisible: false,
-      selectedShelfIndex: -1,
       focusLocationIndex: 0,
+      selectedShelfIndex: -1,
       shelvesTopY: initContainerY + 'px'
     }
     this.elts = [];
@@ -129,7 +126,7 @@ class HomeShelvesPane extends Component {
   }
 
   componentWillMount() {
-      document.addEventListener("keydown", this.onKeyPressed.bind(this));
+      document.addEventListener("keydown", this.onKeyPressed.bind(this))
 
       this.shelvesStyle = {
         top: initContainerY + 'px'
@@ -138,7 +135,8 @@ class HomeShelvesPane extends Component {
       const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
       this.style = {
         zoom: rate
-      }}
+      }
+  }//componentWillMount
 
   componentWillUnmount() {document.removeEventListener("keydown", this.onKeyPressed.bind(this))}      
 
@@ -171,8 +169,8 @@ class HomeShelvesPane extends Component {
         break
       default:
         this.setState({keyPressed: String.fromCharCode(e.keyCodep)})
-    }
-  }
+    }//switch
+  }//onKeyPressed
 
   toggleGuides = () => this.setState({isGuideVisible: !this.state.isGuideVisible})
 
@@ -180,7 +178,6 @@ class HomeShelvesPane extends Component {
     let focusLocationIndex = this.state.focusLocationIndex
     let selectedShelfIndex = this.state.selectedShelfIndex
     let topY = initContainerY
-    //let opacity = 1
     switch (focusLocationIndex) {
       case 0:
         //-- from globalNav to homeHero
@@ -214,11 +211,13 @@ class HomeShelvesPane extends Component {
       default:
         console.log("ERROR: errorIndex, " + focusLocationIndex)
     }//switch
-    this.setState({ keyPressed: 'padDown',
-                    selectedShelfIndex: selectedShelfIndex,
-                    focusLocationIndex: focusLocationIndex,
-                    shelvesTopY: topY + 'px'})
-  }
+    this.setState({ 
+      keyPressed: 'padDown',
+      focusLocationIndex: focusLocationIndex,
+      selectedShelfIndex: selectedShelfIndex,
+      shelvesTopY: topY + 'px'
+    })
+  }//doDown
 
   doUp = () => {
     let focusLocationIndex = this.state.focusLocationIndex
@@ -233,7 +232,6 @@ class HomeShelvesPane extends Component {
         //-- from homeHero to globalNav
         focusLocationIndex--
         this.firstShelfOpacityUpdate(1)
-        // TL.to(this.elts[2], .5, {opacity: 1})
         break;
       case 2:
         if (selectedShelfIndex === 0) {
@@ -252,21 +250,16 @@ class HomeShelvesPane extends Component {
           this.shelves[prevShelfIndex].unselect()
           this.shelves[selectedShelfIndex].select()
         }
-        //TODO: topY change
         break;
       default:
         console.log("ERROR: errorIndex, " + focusLocationIndex)
-    }
-    
-    // console.log("\npadUp, focusLocationIndex:", focusLocationIndex)
-    // console.log("padUp, selectedShelfIndex:", selectedShelfIndex)
-
+    }//switch
     this.setState({
       keyPressed: 'padUp',
       selectedShelfIndex: selectedShelfIndex,
       focusLocationIndex: focusLocationIndex,
-      shelvesTopY: topY + 'px'
-    })}
+      shelvesTopY: topY + 'px'})
+  }//doUp
 
   doLeft = () => this.setState({keyPressed: 'padLeft'})
   doRight = () => this.setState({keyPressed: 'padRight'})

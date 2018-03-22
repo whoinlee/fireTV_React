@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-// import FaPencil from 'react-icons/lib/fa/pencil'
-// import FaTrash from 'react-icons/lib/fa/trash'
-// import FaFloppyO from 'react-icons/lib/fa/floppy-o'
+import PropTypes from 'prop-types';
+
 
 const tileKindObj = {
   ORIGINAL: 0,
@@ -10,17 +9,18 @@ const tileKindObj = {
   MED_BLOOMED: 3,
   LG_BLOOMED: 4
 };
-
 const tileSizeArr = [
-  [320, 180],
-  [375, 210],
-  [590, 332],
-  [782, 440],
+  [320, 180],	//0.303 of the largest
+  [375, 211],	//0.355 (375x211) of the largest
+  [590, 332],	//.559 of the largest
+  [782, 440],	//.741 of the largest
   [1056, 594]
 ];
+const waitToLargeBloomDuration	= 4;
 
 // const initX       = 200;
 // const maxTileIndex= 6;
+
 
 class ShelfTile extends Component {
 	constructor(props) {
@@ -28,9 +28,13 @@ class ShelfTile extends Component {
 		this.state = {
 			tileKind: tileKindObj.ORIGINAL,
 			tileWidth: tileSizeArr[tileKindObj.ORIGINAL][0],
-			tileHeight: tileSizeArr[tileKindObj.ORIGINAL][1]
+			tileHeight: tileSizeArr[tileKindObj.ORIGINAL][1],
+			titleVisibility: 'hidden'
 		}
-		//console.log("leftX:", props.leftX)
+		this.showTitle = this.showTitle.bind(this)
+		this.hideTitle = this.hideTitle.bind(this)
+		this.backToOrg = this.backToOrg.bind(this)
+		this.toExpanded = this.toExpanded.bind(this)
 	}
 
 	componentWillMount() {
@@ -38,18 +42,41 @@ class ShelfTile extends Component {
 		this.style = {
 			left: this.props.leftX + 'px'
 		}
+	}
 
-		// this.className = (this.props.isPrevTile)? "shelfTilePrev" : "shelfTile";
-		// console.log(this.props.index, this.className)
+	showTitle = () => {this.setState({titleVisibility: 'visible'})}
+
+	hideTitle = () => {this.setState({titleVisibility: 'hidden'})}
+
+	backToOrg = () => {
+		this.hideTitle()
+	}
+
+	toExpanded = () => {
+		this.showTitle()
+	}
+
+	toFocused = () => {}
+
+	toMedBloomed = () => {}
+
+	toLargeBloomed = () => {}
+
+	update = (tileKind) => {
+		this.setState({
+			tileKind: tileKind,
+			tileWidth: tileSizeArr[tileKind][0],
+			tileHeight: tileSizeArr[tileKind][1]
+		})
 	}
 
 	render() {
 		return (
 			<div className="ShelfTile" style={this.style}>
-				<div className="baseShowImageContainer">
+				<div className="tileImageContainer">
 					<img src={this.props.imageURL} width={this.state.tileWidth} height={this.state.tileHeight} alt='tileImage'></img>
 				</div>
-				<div className="baseShowTitleContainer">
+				<div className="tileTitleContainer" style={{visibility: this.state.titleVisibility}}>
 					{this.props.showTitle} 
 					<span className="baseEpisodeID">{this.props.episodeID}</span>
 				</div>
@@ -58,5 +85,13 @@ class ShelfTile extends Component {
 	}
 
 }
+
+ShelfTile.propTypes = {
+	leftX: PropTypes.number
+};
+
+ShelfTile.defaultProps = {
+	leftX: 0
+};
 
 export default ShelfTile

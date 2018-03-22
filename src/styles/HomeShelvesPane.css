@@ -137,13 +137,13 @@
     position: absolute;
     /*border: 1px #fc0 solid;*/
 }
-  div.baseShowImageContainer {
+  .tileImageContainer {
     transform-origin: 0% 50%;
     -ms-transform-origin: 0% 50%; /* IE 9 */
     -webkit-transform-origin: 0% 50%; /* Safari 3-8 */
   }
 
-  div.baseShowTitleContainer {
+  .tileTitleContainer {
     text-align: left;
     font-family: Helvetica;
     font-weight: 600;  /*HelveticaBold*/
@@ -151,7 +151,7 @@
     color: #fff;
     position: relative;
     top: 8px;
-    /*visibility: hidden;*/
+    visibility: hidden;
   }
 
   span.baseEpisodeID {

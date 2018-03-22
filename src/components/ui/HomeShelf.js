@@ -15,6 +15,9 @@ const tileBaseWidth	= [320, 375, 782];                	//shelfTile: 320x180, 375
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
 const maxTileIndex	= Math.floor(1920/320);				//stageWidth/tileBaseWidth
+// const waitToDetailDuration  =10;
+
+
 
 class HomeShelf extends Component {
 	constructor(props) {
@@ -22,11 +25,12 @@ class HomeShelf extends Component {
 		this.state = {
 			shelfKind: shelfKindObj.BASE,
 			isSelected: false,
-			//totalTiles: props.shows.length,
-			topContainerTop: this.props.y,
-			tileQueue: []
+			topContainerTop: this.props.y
 		}
+		this.tiles = [];	//original tiles
+		this.tileQueue = [];//based on current lcoation
 		this.totalTiles = props.shows.length
+
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 		this.select = this.select.bind(this)
 		this.unselect = this.unselect.bind(this)
@@ -46,27 +50,41 @@ class HomeShelf extends Component {
 		}
 	}
 
-	select() {
+	select = () => {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.opacityChange(1)
+		//update title size and location
+
+
+		//-- show the titles of unselected tiles
+		const totalTiles = this.totalTiles
+	    for (var i = 1; i < totalTiles; i++) {
+	      this.tiles[i].toExpanded()
+	    }
 	}
 
-	unselect() {
+	unselect = () => {
 		console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
 		this.opacityChange(.6)
+		//update title size and location
+		//update each tiles
+
+		const totalTiles = this.totalTiles
+		this.tiles[0].backToOrg()
+	    for (var i = 1; i < totalTiles; i++) {
+	      this.tiles[i].backToOrg()
+	    }
 	}
 
-	opacityChange(val) {
-		console.log("INFO HomeShelf :: opacityChange, opacity is ", val)
+	opacityChange = (val) => {
+		// console.log("INFO HomeShelf :: opacityChange, opacity is ", val)
 		this.topContainerStyle = {
 			top: this.state.topContainerTop + 'px',
 			opacity: val
 		}
-		console.log("INFO HomeShelf :: opacityChange, this.topContainerStyle.opacity is ", this.topContainerStyle.opacity)
+		// console.log("INFO HomeShelf :: opacityChange, this.topContainerStyle.opacity is ", this.topContainerStyle.opacity)
 	}
 
-
-    /* x again */
 	eachShelfTile(tileObj, i) {
 		//const totalTiles = this.props.shows.length
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
@@ -77,17 +95,25 @@ class HomeShelf extends Component {
 				  		episodeTitle={tileObj.episodeTitle}
 				  		episodeID={tileObj.episode}
 				  		imageURL={tileObj.imageURL}
-				  		leftX={leftX} >
+				  		leftX={leftX} 
+				  		ref={node => this.tiles.push(node)}>
 		    </ShelfTile>
 		)
 	}
 
 	render() {
-		console.log("INFO HomeShelf :: render, shelf", this.props.index)
 		return (
-			<div className="HomeShelf" id={"homeShelfContainer" + this.props.index} style={this.topContainerStyle}>
-				<div className="homeShelfTitleContainer" style={this.titleContainerStyle}>{this.props.title}</div>
-				<div className="homeShelfTilesContainer" style={this.tileContainerStyle}>{this.props.shows.map(this.eachShelfTile)}</div>
+			<div className="HomeShelf" 
+				 id={"homeShelfContainer" + this.props.index} 
+				 style={this.topContainerStyle}>
+				<div className="homeShelfTitleContainer" 
+					 style={this.titleContainerStyle}>
+					{this.props.title}
+				</div>
+				<div className="homeShelfTilesContainer" 
+					 style={this.tileContainerStyle}>
+					{this.props.shows.map(this.eachShelfTile)}
+				</div>
 			</div>
 		)
 	}
