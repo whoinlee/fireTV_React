@@ -39,6 +39,7 @@ class ShelfTile extends Component {
 		this.backToOrg = this.backToOrg.bind(this)
 		this.toExpanded = this.toExpanded.bind(this)
 		this.toFocused = this.toFocused.bind(this)
+		this.updateTileKind = this.updateTileKind.bind(this)
 		//this.updateToFocused = this.updateToFocused.bind(this)
 	}
 
@@ -60,7 +61,7 @@ class ShelfTile extends Component {
 
 	toLargeBloomed = () => {}
 
-	update = (tileKind) => {
+	updateTileKind = (tileKind) => {
 		this.setState({
 			tileKind: tileKind,
 			tileWidth: tileSizeArr[tileKind][0],
@@ -70,23 +71,15 @@ class ShelfTile extends Component {
 
 	toFocused = () => {
 		console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
-		this.setState ({
-			tileKind: tileKindObj.FOCUSED,
-			tileWidth: tileSizeArr[tileKindObj.FOCUSED][0],
-			tileHeight: tileSizeArr[tileKindObj.FOCUSED][1]
-		})
-
+		this.updateTileKind(tileKindObj.FOCUSED)
+		console.log("INFO ShelfTile :: toFocused,this.state.tileWidth: " + this.state.tileWidth)
 		//CHECK!!!! registration point, title location & alpha change
 		TL.to(this.imageContainer, stdDuration, {width: this.state.tileWidth + 'px', height: this.state.tileHeight + 'px'})
 	}
 
 	toExpanded = (targetX) => {
 		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + " targetX", targetX)
-		this.setState ({
-			tileKind: tileKindObj.EXPANDED,
-			tileWidth: tileSizeArr[tileKindObj.EXPANDED][0],
-			tileHeight: tileSizeArr[tileKindObj.EXPANDED][1]
-		})
+		this.updateTileKind(tileKindObj.EXPANDED)
 		this.showTitle()
 		//CHECK!!!! registration point, title location & alpha change
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
