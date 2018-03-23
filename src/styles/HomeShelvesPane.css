@@ -135,6 +135,9 @@
     width: 320px;
     height: 220px;  /*???*/
     position: absolute;
+    /*transform-origin: 0% 50%;*/
+    /*-ms-transform-origin: 0% 50%;*/ /* IE 9 */
+    /*-webkit-transform-origin: 0% 50%;*/ /* Safari 3-8 */
     /*border: 1px #fc0 solid;*/
 }
   .tileImageContainer {

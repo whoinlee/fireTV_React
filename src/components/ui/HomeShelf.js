@@ -15,10 +15,15 @@ const shelfKindObj	= {
 
 const initX         =	200;
 const tileBaseWidth	= 	[320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
-// const tileBaseOffset= [0, 24, 58];                   	//offset between tiles adjacent
+const tileBaseHeight= 	[180, 210, 440];                	//shelfTile: 320x180, 375x210, 782x440
+const tileBaseOffset= 	[0, 24, 58];                   		//offset between tiles adjacent
+const focusedTileWidth	= 590;
+const focusedTileHeight	= 332;
+const bloomedTileWidth	= 1056;
+const bloomedTileHeight	= 594;
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
-const maxTileIndex	= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth
+const maxTileIndex	= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
 // const waitToDetailDuration  =10;
 
 
@@ -31,9 +36,13 @@ class HomeShelf extends Component {
 			isSelected: false,
 			topContainerTop: this.props.y
 		}
-		this.tiles = [];	//original tiles
-		this.tileQueue = [];//based on current lcoation
-		this.totalTiles = props.shows.length
+		this.tiles = []					//original tiles
+		//-- prevTileIndex: tileIndexQueue[0], currentTileIndex: tileIndexQueue[1], nextTileIndex: tileIndexQueue[2], and so on
+		this.tileIndexQueue = [-1]		//tile index array based on current location, from prev, current, to next etc (staring from entering no index for the prev tile)
+		this.prevTile = null
+		this.currTile = null
+		this.nextTile = null
+		this.totalTiles = props.shows.length	//-- CHECK???? totalTiles=0 case?????
 
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 		this.select = this.select.bind(this)
@@ -56,15 +65,53 @@ class HomeShelf extends Component {
 
 	select = () => {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
+		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
 		//update title size and location
 		//TL.to(this.titleNode, stdDuration, {})
 
 		//-- show the titles of unselected tiles
 		const totalTiles = this.totalTiles
-	    for (var i = 1; i < totalTiles; i++) {
-	      this.tiles[i].toExpanded()
+	    //for (var i = 1; i < totalTiles; i++) {
+	      //this.tiles[i].toExpanded()
+	    //}
+
+	    //-- prev tile
+	    const prevTileIndex = this.tileIndexQueue[0]
+	    if (prevTileIndex != -1) {
+	    	this.prevTile = this.tiles[prevTileIndex]
+	    	//console.log("INFO HomeShelf :: select, prevTileIndex != -1 ever??? prevTileIndex is ", prevTileIndex)
+	    	//let target = this.tiles[prevTileIndex]
+	    	const prevX = initX - tileBaseWidth[shelfKindObj.FOCUSED] - tileBaseOffset[shelfKindObj.FOCUSED]
+	    	//console.log("INFO HomeShelf :: select, prevX is ", prevX)
+	    	console.log("INFO HomeShelf :: select, this.prevTile is ", this.prevTile)
+	    	// TL.to(this.prevTile, stdDuration, {left: prevX+'px', width: tileBaseWidth[shelfKindObj.FOCUSED] + 'px', height: tileBaseHeight[shelfKindObj.FOCUSED] + 'px'})
+	    	//TL.to(target, stdDuration, {left: prevX+'px'})
+	    	this.prevTile.toExpanded(prevX)
 	    }
+
+	    const currTileIndex = this.tileIndexQueue[1]
+	    this.currTile = this.tiles[currTileIndex]
+	    this.currTile.toFocused()
+	    //-- bloom here
+
+	    let nextTileIndex
+	    let nextX 
+	    if (this.tileIndexQueue.length > 2) {
+		    nextTileIndex = this.tileIndexQueue[2]
+		    this.nextTile  = this.tiles[nextTileIndex]
+		    nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
+		    this.nextTile.toExpanded(nextX)
+
+		    //-- the rest (CHECK the last one, when inited)
+		    for (var j = 3; j <= totalTiles; j++) {
+		    	nextTileIndex = this.tileIndexQueue[j]
+		    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
+		    	let targetTile = this.tiles[nextTileIndex]
+		    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
+		    	targetTile.toExpanded(nextX)
+		    }
+		}
 	}
 
 	unselect = () => {
@@ -92,6 +139,12 @@ class HomeShelf extends Component {
 	eachShelfTile(tileObj, i) {
 		//const totalTiles = this.props.shows.length
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
+		if (leftX < initX) {
+			//-- if prev tile exists
+			this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
+		} else {
+			this.tileIndexQueue.push(i)
+		}
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
 				  		index={i}
@@ -100,6 +153,7 @@ class HomeShelf extends Component {
 				  		episodeID={tileObj.episode}
 				  		imageURL={tileObj.imageURL}
 				  		leftX={leftX} 
+				  		homeShelfIndex={this.props.index}
 				  		ref={node => this.tiles.push(node)}>
 		    </ShelfTile>
 		)

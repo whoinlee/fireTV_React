@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
+import {TweenLite, Power2, Power3} from 'gsap';
 
 
+const TL = TweenLite; // eslint-disable-line
+const stdDuration = .5;
 const tileKindObj = {
   ORIGINAL: 0,
   EXPANDED: 1,
@@ -35,10 +38,11 @@ class ShelfTile extends Component {
 		this.hideTitle = this.hideTitle.bind(this)
 		this.backToOrg = this.backToOrg.bind(this)
 		this.toExpanded = this.toExpanded.bind(this)
+		this.toFocused = this.toFocused.bind(this)
+		//this.updateToFocused = this.updateToFocused.bind(this)
 	}
 
 	componentWillMount() {
-		//const startX = (props.index < 6)? initX : (initX - )
 		this.style = {
 			left: this.props.leftX + 'px'
 		}
@@ -52,12 +56,6 @@ class ShelfTile extends Component {
 		this.hideTitle()
 	}
 
-	toExpanded = () => {
-		this.showTitle()
-	}
-
-	toFocused = () => {}
-
 	toMedBloomed = () => {}
 
 	toLargeBloomed = () => {}
@@ -70,15 +68,43 @@ class ShelfTile extends Component {
 		})
 	}
 
+	toFocused = () => {
+		console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
+		this.setState ({
+			tileKind: tileKindObj.FOCUSED,
+			tileWidth: tileSizeArr[tileKindObj.FOCUSED][0],
+			tileHeight: tileSizeArr[tileKindObj.FOCUSED][1]
+		})
+
+		//CHECK!!!! registration point, title location & alpha change
+		TL.to(this.imageContainer, stdDuration, {width: this.state.tileWidth + 'px', height: this.state.tileHeight + 'px'})
+	}
+
+	toExpanded = (targetX) => {
+		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + " targetX", targetX)
+		this.setState ({
+			tileKind: tileKindObj.EXPANDED,
+			tileWidth: tileSizeArr[tileKindObj.EXPANDED][0],
+			tileHeight: tileSizeArr[tileKindObj.EXPANDED][1]
+		})
+		this.showTitle()
+		//CHECK!!!! registration point, title location & alpha change
+		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
+		TL.to(this.imageContainer, stdDuration, {width: this.state.tileWidth + 'px', height: this.state.tileHeight + 'px'})
+	}
+
 	render() {
+		if (this.props.homeShelfIndex == 0)
+		console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
 		return (
-			<div className="ShelfTile" style={this.style}>
-				<div className="tileImageContainer">
+			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
+										ref={node => this.containerDiv = node}>
+				<div className="tileImageContainer" ref={node => this.imageContainer = node}>
 					<img src={this.props.imageURL} width={this.state.tileWidth} height={this.state.tileHeight} alt='tileImage'></img>
 				</div>
-				<div className="tileTitleContainer" style={{visibility: this.state.titleVisibility}}>
-					{this.props.showTitle} 
-					<span className="baseEpisodeID">{this.props.episodeID}</span>
+				<div className="tileTitleContainer"	ref={node => this.titleContainer = node} 
+													style={{visibility: this.state.titleVisibility}}>
+					{this.props.showTitle} <span className="baseEpisodeID">{this.props.episodeID}</span>
 				</div>
 			</div>
 		)
@@ -86,7 +112,19 @@ class ShelfTile extends Component {
 
 }
 
+
+// <ShelfTile 	key={(i + 1).toString()}
+// 				  		index={i}
+// 				  		showTitle={tileObj.showTitle}
+// 				  		episodeTitle={tileObj.episodeTitle}
+// 				  		episodeID={tileObj.episode}
+// 				  		imageURL={tileObj.imageURL}
+// 				  		leftX={leftX} 
+// 				  		ref={node => this.tiles.push(node)}>
+
 ShelfTile.propTypes = {
+	index:  PropTypes.number,
+	homeShelfIndex: PropTypes.number,
 	leftX: PropTypes.number
 };
 

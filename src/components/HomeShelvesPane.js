@@ -183,7 +183,7 @@ class HomeShelvesPane extends Component {
       case 0:
         //-- from globalNav to homeHero
         focusLocationIndex = 1
-        TL.to(this.elts[2], .5, {top: topY+'px'})
+        TL.to(this.elts[2], stdDuration, {top: topY+'px'})
         this.firstShelfOpacityUpdate(.6)
         break;
       case 1:
@@ -199,6 +199,7 @@ class HomeShelvesPane extends Component {
         TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
         TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
         TL.to(this.elts[2], stdDuration, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
+        console.log("INFO HomeShelvesPzne :: doDown case 1")
         break;
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
@@ -244,6 +245,7 @@ class HomeShelvesPane extends Component {
           TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY)+'px', ease:Power3.easeOut})
           TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY)+'px', opacity: 1, ease:Power3.easeOut})
           TL.to(this.elts[2], stdDuration, {top: (initContainerY)+'px', ease:Power3.easeOut})
+
         } else {
           //-- from homeShelves to homeShelves (selectedShelf changes)
           let prevShelfIndex = selectedShelfIndex
@@ -315,6 +317,7 @@ class HomeShelvesPane extends Component {
     )}
 
   render() {
+    console.log("INFO HomeShelvesPzne :: render")
     return (
         <div id="HomeShelvesPane" style={this.style}>
           <div className={(this.state.focusLocationIndex === 0) ? "globalNavFocused" : "globalNav"} 
