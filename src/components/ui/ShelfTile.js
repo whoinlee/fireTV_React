@@ -40,7 +40,6 @@ class ShelfTile extends Component {
 		this.toFocused = this.toFocused.bind(this)
 		this.toExpanded = this.toExpanded.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
-		this.whereRu = this.whereRu.bind(this)
 		//this.updateToFocused = this.updateToFocused.bind(this)
 	}
 
@@ -58,7 +57,7 @@ class ShelfTile extends Component {
 		console.log("INFO ShelfTile :: backToOrg, index: " + this.props.index)
 		this.hideTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
-		TL.to(this.imageContainer, stdDuration, {scale:1})
+		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: 1 }})
 	}
 
 	toMedBloomed = () => {}
@@ -77,11 +76,7 @@ class ShelfTile extends Component {
 		//-- TODO: render overlay on top of the image
 		//TL.to(this.containerDiv, 0, {left: this.props.leftX+'px'})
 		//TL.to(this.imageContainer, stdDuration, {width: 320 + 'px', height: 180 + 'px'})
-		TL.to(this.imageContainer, stdDuration, {scale: 1.84, onComplete: this.whereRu()})
-	}
-
-	whereRu = () => {
-		console.log("INFO ShelfTile :: whereRu, this.imageContainer.style.left: " + this.imageContainer.style.left)
+		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(.7)', scale: 1.84 }})
 	}
 
 	toExpanded = (targetX) => {
