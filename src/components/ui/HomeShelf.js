@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
 import PropTypes from 'prop-types';
-import {TweenLite, Power2, Power3, CSSPlugin} from 'gsap';
+import {TweenLite, Power3} from 'gsap';
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -70,6 +70,7 @@ class HomeShelf extends Component {
 
 	    //-- prev tile
 	    const prevTileIndex = this.tileIndexQueue[0]
+	    console.log("INFO HomeShelf :: select, prevTileIndex is ", prevTileIndex)
 	    if (prevTileIndex != -1) {
 	    	this.prevTile = this.tiles[prevTileIndex]
 	    	const prevX = initX - tileBaseWidth[shelfKindObj.FOCUSED] - tileBaseOffset[shelfKindObj.FOCUSED]
@@ -79,7 +80,7 @@ class HomeShelf extends Component {
 	    //-- current tile
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
-	    // console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
+	    console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
 	    // console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
 	    this.currTile.toFocused()
 
@@ -88,12 +89,14 @@ class HomeShelf extends Component {
 	    let nextX 
 	    if (this.tileIndexQueue.length > 2) {
 		    nextTileIndex = this.tileIndexQueue[2]
+		    console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 		    this.nextTile  = this.tiles[nextTileIndex]
 		    nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
 		    this.nextTile.toExpanded(nextX)
 
 		    //-- the rest (CHECK the last one, when inited)
-		    for (var j = 3; j <= totalTiles; j++) {
+		    const lastTileIndex = (prevTileIndex == -1)? totalTiles : totalTiles - 1	//CHECK!!!!!!
+		    for (var j = 3; j <= lastTileIndex; j++) {
 		    	nextTileIndex = this.tileIndexQueue[j]
 		    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 		    	let targetTile = this.tiles[nextTileIndex]
@@ -139,7 +142,8 @@ class HomeShelf extends Component {
 		    this.nextTile.backToOrg(nextX)
 
 		    //-- the rest (CHECK the last one, when inited)
-		    for (var j = 3; j <= totalTiles; j++) {
+		    const lastTileIndex = (prevTileIndex == -1)? totalTiles : totalTiles - 1	//CHECK!!!!!!
+		    for (var j = 3; j <= lastTileIndex; j++) {
 		    	nextTileIndex = this.tileIndexQueue[j]
 		    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 		    	let targetTile = this.tiles[nextTileIndex]

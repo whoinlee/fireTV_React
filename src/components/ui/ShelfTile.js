@@ -40,6 +40,7 @@ class ShelfTile extends Component {
 		this.toFocused = this.toFocused.bind(this)
 		this.toExpanded = this.toExpanded.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
+		this.whereRu = this.whereRu.bind(this)
 		//this.updateToFocused = this.updateToFocused.bind(this)
 	}
 
@@ -76,11 +77,15 @@ class ShelfTile extends Component {
 		//-- TODO: render overlay on top of the image
 		//TL.to(this.containerDiv, 0, {left: this.props.leftX+'px'})
 		//TL.to(this.imageContainer, stdDuration, {width: 320 + 'px', height: 180 + 'px'})
-		TL.to(this.imageContainer, stdDuration, {scale: 1.84})
+		TL.to(this.imageContainer, stdDuration, {scale: 1.84, onComplete: this.whereRu()})
+	}
+
+	whereRu = () => {
+		console.log("INFO ShelfTile :: whereRu, this.imageContainer.style.left: " + this.imageContainer.style.left)
 	}
 
 	toExpanded = (targetX) => {
-		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
+		//console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
 		this.updateTileKind(tileKindObj.EXPANDED)
 		this.showTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
@@ -88,8 +93,8 @@ class ShelfTile extends Component {
 	}
 
 	render() {
-		if (this.props.homeShelfIndex == 0)
-		console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
+		//if (this.props.homeShelfIndex == 0)
+		//console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
 		return (
 			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
 										ref={node => this.containerDiv = node}>
