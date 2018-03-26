@@ -37,8 +37,8 @@ class ShelfTile extends Component {
 		this.showTitle = this.showTitle.bind(this)
 		this.hideTitle = this.hideTitle.bind(this)
 		this.backToOrg = this.backToOrg.bind(this)
-		this.toExpanded = this.toExpanded.bind(this)
 		this.toFocused = this.toFocused.bind(this)
+		this.toExpanded = this.toExpanded.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
 		//this.updateToFocused = this.updateToFocused.bind(this)
 	}
@@ -71,10 +71,13 @@ class ShelfTile extends Component {
 
 	toFocused = () => {
 		console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
+		console.log("INFO ShelfTile :: toFocused, this.props.leftX: " + this.props.leftX)
 		this.updateTileKind(tileKindObj.FOCUSED)
 		console.log("INFO ShelfTile :: toFocused,this.state.tileWidth: " + this.state.tileWidth)
+		console.log("INFO ShelfTile :: toFocused,this.state.tileHeight: " + this.state.tileHeight)
 		//CHECK!!!! registration point, title location & alpha change
-		TL.to(this.imageContainer, stdDuration, {width: this.state.tileWidth + 'px', height: this.state.tileHeight + 'px'})
+		//TL.to(this.containerDiv, 0, {left: this.props.leftX+'px'})
+		TL.to(this.imageContainer, stdDuration, {width: 320 + 'px', height: 180 + 'px'})
 	}
 
 	toExpanded = (targetX) => {

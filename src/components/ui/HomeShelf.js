@@ -92,6 +92,8 @@ class HomeShelf extends Component {
 
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
+	    console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
+	    console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
 	    this.currTile.toFocused()
 	    //-- bloom here
 
