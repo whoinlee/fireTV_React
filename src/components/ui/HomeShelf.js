@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
 import PropTypes from 'prop-types';
-import {TweenLite, Power2, Power3} from 'gsap';
+import {TweenLite, Power2, Power3, CSSPlugin} from 'gsap';
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -13,18 +13,19 @@ const shelfKindObj	= {
   BLOOMED: 2
 };
 
-const initX         =	200;
-const tileBaseWidth	= 	[320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
-const tileBaseHeight= 	[180, 210, 440];                	//shelfTile: 320x180, 375x210, 782x440
-const tileBaseOffset= 	[0, 24, 58];                   		//offset between tiles adjacent
+const initX         	= 200;
+const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
+const tileBaseHeight	= [180, 210, 440];                	//shelfTile: 320x180, 375x210, 782x440
+const tileBaseOffset	= [0, 24, 58];                   		//offset between tiles adjacent
 const focusedTileWidth	= 590;
 const focusedTileHeight	= 332;
 const bloomedTileWidth	= 1056;
 const bloomedTileHeight	= 594;
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
-const maxTileIndex	= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
-// const waitToDetailDuration  =10;
+const maxTileIndex		= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
+const titleSelectedY	= -90;
+const titleUnselectedY	= 0;
 
 
 
@@ -51,15 +52,10 @@ class HomeShelf extends Component {
 	}
 
 	componentWillMount() {
+		//-- CHECK: need???
 		this.topContainerStyle = {
 			top: this.props.y + 'px',
 			opacity: 1
-		}
-		//TODO: variable height
-
-		//TODO: title style
-		this.titleContainerStyle = {
-			left: initX + 'px'
 		}
 	}
 
@@ -67,36 +63,27 @@ class HomeShelf extends Component {
 		console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
-		//update title size and location
-		//TL.to(this.titleNode, stdDuration, {})
+		//-- shelf title animation: location & font size change
+		TL.to(this.titleNode, stdDuration, {top: titleSelectedY + 'px', scale: 1.5})	//-90
 
-		//-- show the titles of unselected tiles
 		const totalTiles = this.totalTiles
-	    //for (var i = 1; i < totalTiles; i++) {
-	      //this.tiles[i].toExpanded()
-	    //}
 
 	    //-- prev tile
 	    const prevTileIndex = this.tileIndexQueue[0]
 	    if (prevTileIndex != -1) {
 	    	this.prevTile = this.tiles[prevTileIndex]
-	    	//console.log("INFO HomeShelf :: select, prevTileIndex != -1 ever??? prevTileIndex is ", prevTileIndex)
-	    	//let target = this.tiles[prevTileIndex]
 	    	const prevX = initX - tileBaseWidth[shelfKindObj.FOCUSED] - tileBaseOffset[shelfKindObj.FOCUSED]
-	    	//console.log("INFO HomeShelf :: select, prevX is ", prevX)
-	    	console.log("INFO HomeShelf :: select, this.prevTile is ", this.prevTile)
-	    	// TL.to(this.prevTile, stdDuration, {left: prevX+'px', width: tileBaseWidth[shelfKindObj.FOCUSED] + 'px', height: tileBaseHeight[shelfKindObj.FOCUSED] + 'px'})
-	    	//TL.to(target, stdDuration, {left: prevX+'px'})
 	    	this.prevTile.toExpanded(prevX)
 	    }
 
+	    //-- current tile
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
-	    console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
-	    console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
+	    // console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
+	    // console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
 	    this.currTile.toFocused()
-	    //-- bloom here
 
+	    //-- next tile and the rest of tiles
 	    let nextTileIndex
 	    let nextX 
 	    if (this.tileIndexQueue.length > 2) {
@@ -118,15 +105,48 @@ class HomeShelf extends Component {
 
 	unselect = () => {
 		console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
+		this.setState({shelfKind: shelfKindObj.BASE, isSelected:false})	//TO CHECK:: topContainerTop
 		this.opacityChange(.6)
-		//update title size and location
+
+		//-- shelf title animation: location & font size change
+		TL.to(this.titleNode, stdDuration, {top: titleUnselectedY + 'px', scale: 1})	//-90
+
 		//update each tiles
 
 		const totalTiles = this.totalTiles
-		this.tiles[0].backToOrg()
-	    for (var i = 1; i < totalTiles; i++) {
-	      this.tiles[i].backToOrg()
+
+		const prevTileIndex = this.tileIndexQueue[0]
+	    if (prevTileIndex != -1) {
+	    	this.prevTile = this.tiles[prevTileIndex]
+	    	const prevX = initX - tileBaseWidth[shelfKindObj.BASE] - tileBaseOffset[shelfKindObj.BASE]
+	    	this.prevTile.backToOrg(prevX)
 	    }
+
+		//-- current tile
+	    const currTileIndex = this.tileIndexQueue[1]
+	    this.currTile = this.tiles[currTileIndex]
+	    // console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
+	    // console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
+	    this.currTile.backToOrg(initX)
+
+	    //-- next tile and the rest of tiles
+	    let nextTileIndex
+	    let nextX 
+	    if (this.tileIndexQueue.length > 2) {
+		    nextTileIndex = this.tileIndexQueue[2]
+		    this.nextTile  = this.tiles[nextTileIndex]
+		    nextX = initX + tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE]
+		    this.nextTile.backToOrg(nextX)
+
+		    //-- the rest (CHECK the last one, when inited)
+		    for (var j = 3; j <= totalTiles; j++) {
+		    	nextTileIndex = this.tileIndexQueue[j]
+		    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
+		    	let targetTile = this.tiles[nextTileIndex]
+		    	nextX += tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE]
+		    	targetTile.backToOrg(nextX)
+		    }
+		}
 	}
 
 	opacityChange = (val) => {
@@ -167,7 +187,6 @@ class HomeShelf extends Component {
 				 id={"homeShelfContainer" + this.props.index} 
 				 style={this.topContainerStyle}>
 				<div className="homeShelfTitleContainer" 
-					 style={this.titleContainerStyle}
 					 ref={node => {this.titleNode = node}}>
 					{this.props.title}
 				</div>

@@ -53,8 +53,11 @@ class ShelfTile extends Component {
 
 	hideTitle = () => {this.setState({titleVisibility: 'hidden'})}
 
-	backToOrg = () => {
+	backToOrg = (targetX) => {
+		console.log("INFO ShelfTile :: backToOrg, index: " + this.props.index)
 		this.hideTitle()
+		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
+		TL.to(this.imageContainer, stdDuration, {scale:1})
 	}
 
 	toMedBloomed = () => {}
@@ -63,30 +66,25 @@ class ShelfTile extends Component {
 
 	updateTileKind = (tileKind) => {
 		this.setState({
-			tileKind: tileKind,
-			tileWidth: tileSizeArr[tileKind][0],
-			tileHeight: tileSizeArr[tileKind][1]
+			tileKind: tileKind
 		})
 	}
 
 	toFocused = () => {
 		console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
-		console.log("INFO ShelfTile :: toFocused, this.props.leftX: " + this.props.leftX)
 		this.updateTileKind(tileKindObj.FOCUSED)
-		console.log("INFO ShelfTile :: toFocused,this.state.tileWidth: " + this.state.tileWidth)
-		console.log("INFO ShelfTile :: toFocused,this.state.tileHeight: " + this.state.tileHeight)
-		//CHECK!!!! registration point, title location & alpha change
+		//-- TODO: render overlay on top of the image
 		//TL.to(this.containerDiv, 0, {left: this.props.leftX+'px'})
-		TL.to(this.imageContainer, stdDuration, {width: 320 + 'px', height: 180 + 'px'})
+		//TL.to(this.imageContainer, stdDuration, {width: 320 + 'px', height: 180 + 'px'})
+		TL.to(this.imageContainer, stdDuration, {scale: 1.84})
 	}
 
 	toExpanded = (targetX) => {
-		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + " targetX", targetX)
+		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
 		this.updateTileKind(tileKindObj.EXPANDED)
 		this.showTitle()
-		//CHECK!!!! registration point, title location & alpha change
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
-		TL.to(this.imageContainer, stdDuration, {width: this.state.tileWidth + 'px', height: this.state.tileHeight + 'px'})
+		TL.to(this.imageContainer, stdDuration, {scale:1.17})
 	}
 
 	render() {
