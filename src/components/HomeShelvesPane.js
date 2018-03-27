@@ -7,10 +7,11 @@ import {TweenLite, Power3} from 'gsap';
 
 const TL = TweenLite; // eslint-disable-line
 const stdDuration = .5;
-const initGlobalNavY  = 0;
-const initHomeHeroY   = 165;
-const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
-const shelvesDataArr  = [
+const initGlobalNavY    = 0;
+const initHomeHeroY     = 165;
+const initContainerY    = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
+const initHomeShelvesY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
+const shelvesDataArr = [
   {
     title:'up next',
     shows:[
@@ -109,9 +110,19 @@ class HomeShelvesPane extends Component {
       selectedShelfIndex: -1,
       shelvesTopY: initContainerY + 'px'
     }
-    this.elts = [];
-    this.shelves = [];
-    this.containerShiftOffsetY = 0;
+    this.elts = []
+    this.shelves = []
+    this.containerShiftOffsetY = 0
+
+    this.initGlobalNavY = initGlobalNavY
+    this.upGlobalNavY = this.initGlobalNavY     //-
+    //
+    this.initHomeHeroY = initHomeHeroY
+    this.upHomeHeroY = this.initHomeHeroY       //-
+    this.upOffHomeHeroY = this.initHomeHeroY
+    //
+    this.initHomeShelvesY = initHomeShelvesY
+    this.upHomeShelvesY =this.initHomeShelvesY  //-
 
     this.doLeft = this.doLeft.bind(this)
     this.doRight = this.doRight.bind(this)
@@ -196,12 +207,18 @@ class HomeShelvesPane extends Component {
         focusLocationIndex = 2
         //-- 10 extra (from title size change?)
         topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 10)
-        this.containerShiftOffsetY = initContainerY - topY + 61   //61 = (332-180)/2
-        console.log("INFO HomeShelvesPane :: doDown, this.containerShiftOffsetY::", this.containerShiftOffsetY)
+        if (this.upGlobalNavY === this.initGlobalNavY) {
+          this.containerShiftOffsetY = initContainerY - topY + 61   //61 = (332-180)/2
+          //console.log("INFO HomeShelvesPane :: doDown, this.containerShiftOffsetY::", this.containerShiftOffsetY)
+          this.upGlobalNavY = this.initGlobalNavY - this.containerShiftOffsetY
+          this.upHomeHeroY = this.initHomeHeroY - this.containerShiftOffsetY
+        }
+        
+        
         selectedShelfIndex = 0  //the first shelf selected
         this.selectTheFirstShelf() 
-        TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
-        TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
+        TL.to(this.elts[0], stdDuration, {top: this.upGlobalNavY+'px', ease:Power3.easeOut})
+        TL.to(this.elts[1], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut})
         TL.to(this.elts[2], stdDuration, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
         console.log("INFO HomeShelvesPzne :: doDown case 1")
         break;
@@ -304,15 +321,7 @@ class HomeShelvesPane extends Component {
     for (var i = 1; i < totalShelves; i++) {
       let target = this.shelves[i]
       target.opacityChange(.6)
-
-      //-- move y locations of the rest of shelves
-
     }
-
-    console.log("this.shelves[1].top?? " + this.shelves[1].top)
-    //let targetY = initShelfY + baseShelfOffsetY + 75
-    //this.shelves[1].moveDown(focusedShelfShiftY)
-    //this.shelves[2].moveDown(focusedShelfShiftY)
   }
 
   firstShelfOpacityUpdate = (val) => this.shelves[0].opacityChange(val)
