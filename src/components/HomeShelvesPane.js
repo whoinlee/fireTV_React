@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import HomeShelf from './ui/HomeShelf';
 import '../styles/HomeShelvesPane.css';
-import {TweenLite, Power2, Power3} from 'gsap';
+import {TweenLite, Power3} from 'gsap';
 
 
 const TL = TweenLite; // eslint-disable-line

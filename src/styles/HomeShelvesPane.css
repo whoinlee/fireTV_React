@@ -157,18 +157,52 @@
     font-size: 24px;
     color: #fff;
     position: relative;
-    /*top: 8px;*/
     top: 20px;
-    visibility: hidden;
+    /*visibility: hidden;*/
   }
 
   span.baseEpisodeID {
     text-align: left;
     font-family: Helvetica;
-    font-weight: 400;  /*HelveticaRegular*/
+    font-weight: 300;  /*HelveticaRegular 400?*/
     font-size: 24px;
     margin-left: 10px;
     color: #fff;
+  }
+
+  .focusedTileContent {
+    width: 550px;
+    position: absolute;
+    left: 20px;
+    top: 150px; 
+    /*border: 1px red solid;*/
+  }
+
+  .focusedShowTitle {
+    text-align: left;
+    font-family: Helvetica;
+    font-weight: 300;  /*HelveticaBold*/
+    font-size: 24px;
+    color: #fff;
+    position: relative;
+  }
+
+  .focusedEpisodeTitle {
+    text-align: left;
+    font-family: Helvetica;
+    font-weight: 600;  /*HelveticaBold*/
+    font-size: 24px;
+    color: #fff;
+    position: relative;
+  }
+
+  .focusedEpisodeID {
+    text-align: left;
+    font-family: Helvetica;
+    font-weight: 300;  /*HelveticaBold*/
+    font-size: 24px;
+    color: #fff;
+    position: relative;
   }
 
 /* --------------------- */

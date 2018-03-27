@@ -37,9 +37,11 @@ class HomeShelf extends Component {
 			isSelected: false,
 			topContainerTop: this.props.y
 		}
-		this.tiles = []					//original tiles
+
+		this.tiles = []							//original tiles
 		//-- prevTileIndex: tileIndexQueue[0], currentTileIndex: tileIndexQueue[1], nextTileIndex: tileIndexQueue[2], and so on
-		this.tileIndexQueue = [-1]		//tile index array based on current location, from prev, current, to next etc (staring from entering no index for the prev tile)
+		this.tileIndexQueue = [-1]				//tile index array based on current location, from prev, current, to next etc (staring from entering no index for the prev tile)
+		
 		this.prevTile = null
 		this.currTile = null
 		this.nextTile = null
@@ -67,11 +69,11 @@ class HomeShelf extends Component {
 		TL.to(this.titleNode, stdDuration, {top: titleSelectedY + 'px', scale: 1.5})	//-90
 
 		const totalTiles = this.totalTiles
-
 	    //-- prev tile
 	    const prevTileIndex = this.tileIndexQueue[0]
 	    console.log("INFO HomeShelf :: select, prevTileIndex is ", prevTileIndex)
-	    if (prevTileIndex != -1) {
+
+	    if (prevTileIndex !== -1) {
 	    	this.prevTile = this.tiles[prevTileIndex]
 	    	const prevX = initX - tileBaseWidth[shelfKindObj.FOCUSED] - tileBaseOffset[shelfKindObj.FOCUSED]
 	    	this.prevTile.toExpanded(prevX)
@@ -80,8 +82,6 @@ class HomeShelf extends Component {
 	    //-- current tile
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
-	    console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
-	    // console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
 	    this.currTile.toFocused()
 
 	    //-- next tile and the rest of tiles
@@ -94,8 +94,7 @@ class HomeShelf extends Component {
 		    nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
 		    this.nextTile.toExpanded(nextX)
 
-		    //-- the rest (CHECK the last one, when inited)
-		    const lastTileIndex = (prevTileIndex == -1)? totalTiles : totalTiles - 1	//CHECK!!!!!!
+		    const lastTileIndex = (prevTileIndex === -1)? totalTiles : totalTiles - 1
 		    for (var j = 3; j <= lastTileIndex; j++) {
 		    	nextTileIndex = this.tileIndexQueue[j]
 		    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
@@ -114,12 +113,10 @@ class HomeShelf extends Component {
 		//-- shelf title animation: location & font size change
 		TL.to(this.titleNode, stdDuration, {top: titleUnselectedY + 'px', scale: 1})	//-90
 
-		//update each tiles
-
 		const totalTiles = this.totalTiles
-
+		//-- prev tile
 		const prevTileIndex = this.tileIndexQueue[0]
-	    if (prevTileIndex != -1) {
+	    if (prevTileIndex !== -1) {
 	    	this.prevTile = this.tiles[prevTileIndex]
 	    	const prevX = initX - tileBaseWidth[shelfKindObj.BASE] - tileBaseOffset[shelfKindObj.BASE]
 	    	this.prevTile.backToOrg(prevX)
@@ -128,8 +125,6 @@ class HomeShelf extends Component {
 		//-- current tile
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
-	    // console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
-	    // console.log("INFO HomeShelf :: select, this.currTile is ", this.currTile)
 	    this.currTile.backToOrg(initX)
 
 	    //-- next tile and the rest of tiles
@@ -142,10 +137,9 @@ class HomeShelf extends Component {
 		    this.nextTile.backToOrg(nextX)
 
 		    //-- the rest (CHECK the last one, when inited)
-		    const lastTileIndex = (prevTileIndex == -1)? totalTiles : totalTiles - 1	//CHECK!!!!!!
+		    const lastTileIndex = (prevTileIndex === -1)? totalTiles : totalTiles - 1
 		    for (var j = 3; j <= lastTileIndex; j++) {
 		    	nextTileIndex = this.tileIndexQueue[j]
-		    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 		    	let targetTile = this.tiles[nextTileIndex]
 		    	nextX += tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE]
 		    	targetTile.backToOrg(nextX)
@@ -154,12 +148,10 @@ class HomeShelf extends Component {
 	}
 
 	opacityChange = (val) => {
-		// console.log("INFO HomeShelf :: opacityChange, opacity is ", val)
 		this.topContainerStyle = {
 			top: this.state.topContainerTop + 'px',
 			opacity: val
 		}
-		// console.log("INFO HomeShelf :: opacityChange, this.topContainerStyle.opacity is ", this.topContainerStyle.opacity)
 	}
 
 	eachShelfTile(tileObj, i) {
