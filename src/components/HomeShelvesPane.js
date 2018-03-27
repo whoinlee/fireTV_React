@@ -12,7 +12,7 @@ const initHomeHeroY   = 165;
 const initContainerY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr  = [
   {
-    title:'up next (7) ',
+    title:'up next',
     shows:[
         {showTitle: "Top Chef", episodeTitle: "Now That's a lot of Schnitzel", episode: 'S15 E6', imageURL: '../assets/images/shows/topChef-s15e06-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Something Old, Something New", episode: 'S14 E1', imageURL: '../assets/images/shows/topChef-s14e01-1056x594.jpg'},
@@ -83,10 +83,15 @@ const shelfBaseTitleHeight  = 28;       //title height for Helvetica Light 28px
 const shelfTitleTileOffset  = 10;       //offset between title & tiles
 const shelfBaseTileHeight   = 180;      //baseShelfTile: 320x180
 const shelfBaseOffset       = 106;      //offset between shelves: from the bottom of previous shelf image to the top of next shelf title
+
 //-- distance between unselected shelves: 10(yOffset between shelfTitle & shelfTitles)
 const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight + shelfBaseOffset;
 //-- distance between the selected shelf and the next unselected shelf
-// const focusedShelfOffsetY   = baseShelfOffsetY + 75;
+const focusedShelfShiftY    = 76;       //76 = (332-180)/2 (focusedH - baseH)
+const focusedShelfOffsetY   = baseShelfOffsetY + focusedShelfShiftY;  
+
+console.log("INFO HomeShelvesPane :: baseShelfOffsetY is " + baseShelfOffsetY);
+console.log("INFO HomeShelvesPane :: focusedShelfOffsetY is " + focusedShelfOffsetY);
 
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
@@ -189,12 +194,11 @@ class HomeShelvesPane extends Component {
       case 1:
         //-- from homeHero to homeShelves
         focusLocationIndex = 2
-        //-- CHECK, 12(?)
-        topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 12)
-        this.containerShiftOffsetY = initContainerY - topY
-        //console.log("this.containerShiftOffsetY::", this.containerShiftOffsetY)
+        //-- 10 extra (from title size change?)
+        topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 10)
+        this.containerShiftOffsetY = initContainerY - topY + 61   //61 = (332-180)/2
+        console.log("INFO HomeShelvesPane :: doDown, this.containerShiftOffsetY::", this.containerShiftOffsetY)
         selectedShelfIndex = 0  //the first shelf selected
-        //this.shelves[0].select()
         this.selectTheFirstShelf() 
         TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY-this.containerShiftOffsetY)+'px', ease:Power3.easeOut})
         TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY-this.containerShiftOffsetY)+'px', opacity: .6, ease:Power3.easeOut})
@@ -204,6 +208,9 @@ class HomeShelvesPane extends Component {
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
         let prevShelfIndex = selectedShelfIndex
+        if (prevShelfIndex === 1) {
+          //-- currently, the 1st shelf is selected
+        }
         if (selectedShelfIndex !== maxIndex) selectedShelfIndex++
         if (prevShelfIndex < selectedShelfIndex) {
           this.shelves[prevShelfIndex].unselect()
@@ -295,8 +302,17 @@ class HomeShelvesPane extends Component {
 
     //-- dimm out the rest
     for (var i = 1; i < totalShelves; i++) {
-      this.shelves[i].opacityChange(.6)
+      let target = this.shelves[i]
+      target.opacityChange(.6)
+
+      //-- move y locations of the rest of shelves
+
     }
+
+    console.log("this.shelves[1].top?? " + this.shelves[1].top)
+    //let targetY = initShelfY + baseShelfOffsetY + 75
+    //this.shelves[1].moveDown(focusedShelfShiftY)
+    //this.shelves[2].moveDown(focusedShelfShiftY)
   }
 
   firstShelfOpacityUpdate = (val) => this.shelves[0].opacityChange(val)
@@ -311,7 +327,7 @@ class HomeShelvesPane extends Component {
                   id={"HomeShelf" + i} 
                   title={shelfObj.title}
                   shows={shelfObj.shows}
-                  y={initShelfY + i*baseShelfOffsetY}
+                  y={initShelfY + i*focusedShelfOffsetY}
                   ref={node => this.shelves.push(node)}>
       </HomeShelf>
     )}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
 import PropTypes from 'prop-types';
-import {TweenLite, Power3} from 'gsap';
+import {TweenLite} from 'gsap';	//, Power3
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -15,12 +15,12 @@ const shelfKindObj	= {
 
 const initX         	= 200;
 const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
-const tileBaseHeight	= [180, 210, 440];                	//shelfTile: 320x180, 375x210, 782x440
-const tileBaseOffset	= [0, 24, 58];                   		//offset between tiles adjacent
+// const tileBaseHeight	= [180, 210, 440];                	//shelfTile: 320x180, 375x210, 782x440
+const tileBaseOffset	= [0, 24, 58];                   	//offset between tiles adjacent
 const focusedTileWidth	= 590;
-const focusedTileHeight	= 332;
-const bloomedTileWidth	= 1056;
-const bloomedTileHeight	= 594;
+// const focusedTileHeight	= 332;
+// const bloomedTileWidth	= 1056;
+// const bloomedTileHeight	= 594;
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
 const maxTileIndex		= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
@@ -147,6 +147,18 @@ class HomeShelf extends Component {
 		}
 	}
 
+	moveDown = (offsetY) => {
+		TL.to(this.homeShelfContainer, stdDuration, {top: this.props.y + offsetY + 'px'})
+	}
+
+	moveUp = (offsetY) => {
+
+	}
+
+	moveTo = (targetY) => {
+
+	}
+
 	opacityChange = (val) => {
 		this.topContainerStyle = {
 			top: this.state.topContainerTop + 'px',
@@ -181,7 +193,8 @@ class HomeShelf extends Component {
 		return (
 			<div className="HomeShelf" 
 				 id={"homeShelfContainer" + this.props.index} 
-				 style={this.topContainerStyle}>
+				 style={this.topContainerStyle}
+				 ref={node => {this.homeShelfContainer = node}}>
 				<div className="homeShelfTitleContainer" 
 					 ref={node => {this.titleNode = node}}>
 					{this.props.title}

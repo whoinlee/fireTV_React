@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {TweenLite, Power3} from 'gsap';
+import {TweenLite} from 'gsap';
 
 
 const TL = TweenLite; // eslint-disable-line
 const stdDuration = .5;
+// const shortDuration = .3;
 const tileKindObj = {
   ORIGINAL: 0,
   EXPANDED: 1,
@@ -19,7 +20,7 @@ const tileSizeArr = [
   [782, 440],	//.741 of the largest
   [1056, 594]
 ];
-const waitToLargeBloomDuration	= 4;
+// const waitToLargeBloomDuration	= 4;
 const toExpandedScale = Math.round(tileSizeArr[tileKindObj.EXPANDED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.17
 const toFocusedScale = Math.round(tileSizeArr[tileKindObj.FOCUSED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.84
 const toMedBloomedScale = Math.round(tileSizeArr[tileKindObj.MED_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//2.44
@@ -33,10 +34,7 @@ class ShelfTile extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			tileKind: tileKindObj.ORIGINAL,
-			tileWidth: tileSizeArr[tileKindObj.ORIGINAL][0],
-			tileHeight: tileSizeArr[tileKindObj.ORIGINAL][1],
-			titleVisibility: 'hidden'
+			tileKind: tileKindObj.ORIGINAL
 		}
 		this.showTitle = this.showTitle.bind(this)
 		this.hideTitle = this.hideTitle.bind(this)
@@ -45,7 +43,8 @@ class ShelfTile extends Component {
 		this.toExpanded = this.toExpanded.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
 		this.renderTitle = this.renderTitle.bind(this)
-		this.showFocusedOverlay = this.showFocusedOverlay.bind(this)
+		this.showFocusedContent = this.showFocusedContent.bind(this)
+		this.showBloomedContent = this.showBloomedContent.bind(this)
 	}
 
 	componentWillMount() {
@@ -54,9 +53,13 @@ class ShelfTile extends Component {
 		}
 	}
 
-	showTitle = () => {this.setState({titleVisibility: 'visible'})}
+	showTitle = () => {
+		// this.setState({titleVisibility: 'visible'})
+	}
 
-	hideTitle = () => {this.setState({titleVisibility: 'hidden'})}
+	hideTitle = () => {
+		// this.setState({titleVisibility: 'hidden'})
+	}
 
 	updateTileKind = (tileKind) => {this.setState({tileKind: tileKind})}
 
@@ -80,36 +83,46 @@ class ShelfTile extends Component {
 		//console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
 		this.updateTileKind(tileKindObj.FOCUSED)
 		//-- TODO: render overlay on top of the image
-		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.7)', scale: toFocusedScale}, onComplete: this.showFocusedOverlay()})
+		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.7)', scale: toFocusedScale}, onComplete: this.showFocusedContent()})
+	}
+
+	showFocusedContent = () => {
+		TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
+	}
+
+	showBloomedContent = () => {
+		//TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
 	}
 
 	toMedBloomed = () => {}
 
 	toLargeBloomed = () => {}
 
-	showFocusedOverlay = () => {}
+	
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {
-		console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
+		// console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
 		switch (this.state.tileKind) {
 			case tileKindObj.FOCUSED:
 				return (
-		         	<div className="focusedTileContent">
+		         	<div className="focusedTileContent" ref={node => this.focusedContent = node}>
 		         		<div className="focusedShowTitle">{this.props.showTitle}</div>
 		         		<div className="focusedEpisodeTitle">{this.props.episodeTitle}</div>
 		            	<div className="focusedEpisodeID">{this.props.episodeID}</div>
 		          	</div>
 		      	)
-				break
 			case tileKindObj.EXPANDED:
 				return (
 			    	<div className="tileTitleContainer">
 						{this.props.showTitle} <span className="baseEpisodeID">{this.props.episodeID}</span>
 					</div>
 				)
-				break
+			case tileKindObj.LG_BLOOMED:
+				//-- do something here
+				return null
 			default:
+				return null
 		}
 	}
 
@@ -120,7 +133,7 @@ class ShelfTile extends Component {
 			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
 										ref={node => this.containerDiv = node}>
 				<div className="tileImageContainer" ref={node => this.imageContainer = node}>
-					<img src={this.props.imageURL} width={this.state.tileWidth} height={this.state.tileHeight} alt='tileImage'></img>
+					<img src={this.props.imageURL} width={tileSizeArr[tileKindObj.ORIGINAL][0]} height={tileSizeArr[tileKindObj.ORIGINAL][1]} alt='tileImage'></img>
 				</div>
 				{this.renderTitle()}
 			</div>
@@ -128,27 +141,18 @@ class ShelfTile extends Component {
 	}//render
 }
 
-/*
-<ShelfTile 	key={(i + 1).toString()}
-				  		index={i}
-				  		showTitle={tileObj.showTitle}
-				  		episodeTitle={tileObj.episodeTitle}
-				  		episodeID={tileObj.episode}
-				  		imageURL={tileObj.imageURL}
-				  		leftX={leftX} 
-				  		homeShelfIndex={this.props.index}
-				  		ref={node => this.tiles.push(node)}>
-		    </ShelfTile>
-*/
-
 ShelfTile.propTypes = {
 	index:  PropTypes.number,
 	homeShelfIndex: PropTypes.number,
+	showTitle: PropTypes.string,
+	episodeTitle: PropTypes.string,
+	episodeID: PropTypes.string,
+	imageURL: PropTypes.string,
 	leftX: PropTypes.number
 };
 
 ShelfTile.defaultProps = {
-	leftX: 0
+	leftX: 200
 };
 
 export default ShelfTile
