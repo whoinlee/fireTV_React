@@ -36,13 +36,16 @@ class ShelfTile extends Component {
 		this.state = {
 			tileKind: tileKindObj.ORIGINAL
 		}
-		this.showTitle = this.showTitle.bind(this)
-		this.hideTitle = this.hideTitle.bind(this)
+		// this.showTitle = this.showTitle.bind(this)
+		// this.hideTitle = this.hideTitle.bind(this)
+		this.renderTitle = this.renderTitle.bind(this)
+		this.updateTileKind = this.updateTileKind.bind(this)
+
 		this.backToOrg = this.backToOrg.bind(this)
 		this.toFocused = this.toFocused.bind(this)
 		this.toExpanded = this.toExpanded.bind(this)
-		this.updateTileKind = this.updateTileKind.bind(this)
-		this.renderTitle = this.renderTitle.bind(this)
+		this.toMedBloomed = this.toMedBloomed.bind(this)
+		this.toLargeBloomed = this.toLargeBloomed.bind(this)
 		this.showFocusedContent = this.showFocusedContent.bind(this)
 		this.showBloomedContent = this.showBloomedContent.bind(this)
 	}
@@ -53,13 +56,13 @@ class ShelfTile extends Component {
 		}
 	}
 
-	showTitle = () => {
-		// this.setState({titleVisibility: 'visible'})
-	}
+	// showTitle = () => {
+	// 	// this.setState({titleVisibility: 'visible'})
+	// }
 
-	hideTitle = () => {
-		// this.setState({titleVisibility: 'hidden'})
-	}
+	// hideTitle = () => {
+	// 	// this.setState({titleVisibility: 'hidden'})
+	// }
 
 	updateTileKind = (tileKind) => {this.setState({tileKind: tileKind})}
 
@@ -72,19 +75,27 @@ class ShelfTile extends Component {
 	}
 
 	toExpanded = (targetX) => {
-		//console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
+		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
 		this.updateTileKind(tileKindObj.EXPANDED)
 		//this.showTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
-		TL.to(this.imageContainer, stdDuration, {scale: toExpandedScale})
+		// TL.to(this.imageContainer, stdDuration, {scale: toExpandedScale})
+		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: toExpandedScale}})
 	}
 
-	toFocused = () => {
-		//console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
+	toFocused = (targetX) => {
+		console.log("INFO ShelfTile :: toFocused, targetX: " + targetX)
 		this.updateTileKind(tileKindObj.FOCUSED)
-		//-- TODO: render overlay on top of the image
+		if (targetX) {
+			console.log("INFO ShelfTile :: toFocused, targetX is defined : " + targetX)
+			TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
+		}
 		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.7)', scale: toFocusedScale}, onComplete: this.showFocusedContent()})
 	}
+
+	toMedBloomed = () => {}
+
+	toLargeBloomed = () => {}
 
 	showFocusedContent = () => {
 		TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
@@ -94,9 +105,12 @@ class ShelfTile extends Component {
 		//TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
 	}
 
-	toMedBloomed = () => {}
-
-	toLargeBloomed = () => {}
+	changeXLocTo = (targetX) => {
+		// this.style = {
+		// 	left: targetX + 'px'
+		// }
+		TL.to(this.containerDiv, 0, {left: targetX+'px'})
+	}
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {

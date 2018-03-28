@@ -207,7 +207,7 @@ class HomeShelvesPane extends Component {
       case 1:
         //-- from homeHero to homeShelves
         focusLocationIndex = 2
-        //-- 10 extra (from title size change?)
+        //-- CHECK:: 10 extra (from title size change?)
         topY = (this.props.height/2) - (initShelfY + shelfBaseTitleHeight + shelfTitleTileOffset + shelfBaseTileHeight/2 + 10)
         if (this.upGlobalNavY === this.initGlobalNavY) {
           this.containerShiftOffsetY = initContainerY - topY + 61   //61 = (332-180)/2
@@ -310,8 +310,24 @@ class HomeShelvesPane extends Component {
       shelvesTopY: topY + 'px'})
   }//doUp
 
-  doLeft = () => this.setState({keyPressed: 'padLeft'})
-  doRight = () => this.setState({keyPressed: 'padRight'})
+  doLeft = () => {
+    this.setState({keyPressed: 'padLeft'})
+    if (this.state.focusLocationIndex === 2) {
+      //-- focus is on homeShelves
+      //console.log('INFO HomeShelvesPane :: doLeft, this.state.selectedShelfIndex is ' + this.state.selectedShelfIndex)
+      this.shelves[this.state.selectedShelfIndex].doLeft()
+    }
+  }
+
+  doRight = () => {
+    this.setState({keyPressed: 'padRight'})
+    if (this.state.focusLocationIndex === 2) {
+      //-- focus is on homeShelves
+     // console.log('INFO HomeShelvesPane :: doRight, this.state.selectedShelfIndex is ' + this.state.selectedShelfIndex)
+      this.shelves[this.state.selectedShelfIndex].doRight()
+    }
+  }
+
   doSelect = () => this.setState({keyPressed: 'selectAction'})
   doBack = () => this.setState({keyPressed: 'goBack'})
   doPausePlay = () => this.setState({keyPressed: 'pausePlay'})
