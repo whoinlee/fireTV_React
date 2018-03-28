@@ -23,7 +23,7 @@ const focusedTileWidth	= 590;
 // const bloomedTileHeight	= 594;
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
-const maxTileIndex		= 	Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
+const maxTileIndex		= 	Math.floor(1920/320);			//stageWidth/tileBaseWidth, max number of tiles in a row
 const titleSelectedY	= -90;
 const titleUnselectedY	= 0;
 
@@ -62,10 +62,11 @@ class HomeShelf extends Component {
 	}
 
 	select = () => {
-		console.log("INFO HomeShelf :: select, shelf", this.props.index)
+		//console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
-		//-- shelf title animation: location & font size change
+
+		//-- shelf "title" animation: location & font size change
 		TL.to(this.titleNode, stdDuration, {top: titleSelectedY + 'px', scale: 1.5})	//-90
 
 		const totalTiles = this.totalTiles
@@ -83,10 +84,14 @@ class HomeShelf extends Component {
 	    const currTileIndex = this.tileIndexQueue[1]
 	    this.currTile = this.tiles[currTileIndex]
 	    this.currTile.toFocused()
+	    console.log("INFO HomeShelf :: select, currTileIndex is ", currTileIndex)
 
 	    //-- next tile and the rest of tiles
 	    let nextTileIndex
 	    let nextX 
+	    console.log("INFO HomeShelf :: select, this.tileIndexQueue.length is ", this.tileIndexQueue.length)
+	    console.log("INFO HomeShelf :: select, this.tileIndexQueue is ", this.tileIndexQueue)
+
 	    if (this.tileIndexQueue.length > 2) {
 		    nextTileIndex = this.tileIndexQueue[2]
 		    console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
@@ -103,6 +108,8 @@ class HomeShelf extends Component {
 		    	targetTile.toExpanded(nextX)
 		    }
 		}
+
+		console.log("INFO HomeShelf :: select, nextTileIndex is ", nextTileIndex)
 	}
 
 	unselect = () => {
@@ -173,7 +180,7 @@ class HomeShelf extends Component {
 			//-- if prev tile exists
 			this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
 		} else {
-			this.tileIndexQueue.push(i)
+			this.tileIndexQueue[i+1]= i
 		}
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
