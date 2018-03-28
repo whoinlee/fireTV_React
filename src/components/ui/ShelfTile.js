@@ -48,6 +48,8 @@ class ShelfTile extends Component {
 		this.toLargeBloomed = this.toLargeBloomed.bind(this)
 		this.showFocusedContent = this.showFocusedContent.bind(this)
 		this.showBloomedContent = this.showBloomedContent.bind(this)
+		this.changeXLocTo = this.changeXLocTo.bind(this)
+		this.fadeInAt = this.fadeInAt.bind(this)
 	}
 
 	componentWillMount() {
@@ -110,6 +112,11 @@ class ShelfTile extends Component {
 		// 	left: targetX + 'px'
 		// }
 		TL.to(this.containerDiv, 0, {left: targetX+'px'})
+	}
+
+	fadeInAt = (targetX, pDelay) => {
+		TL.to(this.containerDiv, 0, {opacity: 0, left: targetX+'px', delay:pDelay})
+		TL.to(this.containerDiv, stdDuration, {opacity: 1, delay:pDelay+.1})
 	}
 
 	//style={{visibility: this.state.titleVisibility}}
