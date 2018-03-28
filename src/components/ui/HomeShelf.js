@@ -250,9 +250,13 @@ class HomeShelf extends Component {
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		if (leftX < initX) {
 			//-- if prev tile exists
-			this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
+			if (this.tileIndexQueue[0] === -1) {
+				this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
+			}
 		} else {
-			this.tileIndexQueue[i+1]= i
+			if (this.tileIndexQueue[i+1] === undefined) {
+				this.tileIndexQueue[i+1]= i
+			}
 		}
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
