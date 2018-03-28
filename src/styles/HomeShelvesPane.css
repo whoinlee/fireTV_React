@@ -103,7 +103,7 @@
 .HomeShelf {
   width: 1920px;
   position: absolute;
-  /**/border: 1px red solid;
+  /*border: 1px red solid;*/
 }
 
 .homeShelfTitleContainer {

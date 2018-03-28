@@ -25,8 +25,8 @@ const toExpandedScale = Math.round(tileSizeArr[tileKindObj.EXPANDED][0]*100/tile
 const toFocusedScale = Math.round(tileSizeArr[tileKindObj.FOCUSED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.84
 const toMedBloomedScale = Math.round(tileSizeArr[tileKindObj.MED_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//2.44
 const toLgBloomedScale = Math.round(tileSizeArr[tileKindObj.LG_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//3.30
-console.log("INFO ShelfTile toMedBloomedScale ?? " + toMedBloomedScale);
-console.log("INFO ShelfTile toLgBloomedScale ?? " + toLgBloomedScale);
+//console.log("INFO ShelfTile toMedBloomedScale ?? " + toMedBloomedScale);
+//console.log("INFO ShelfTile toLgBloomedScale ?? " + toLgBloomedScale);
 
 
 
@@ -97,8 +97,6 @@ class ShelfTile extends Component {
 	toMedBloomed = () => {}
 
 	toLargeBloomed = () => {}
-
-	
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {

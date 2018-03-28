@@ -122,7 +122,9 @@ class HomeShelvesPane extends Component {
     this.upOffHomeHeroY = this.initHomeHeroY
     //
     this.initHomeShelvesY = initHomeShelvesY
-    this.upHomeShelvesY =this.initHomeShelvesY  //-
+    this.upHomeShelvesY = this.initHomeShelvesY  //-
+    this.upOffHomeShelvesY = this.initHomeShelvesY 
+    this.currHomeShelvesY = this.initHomeShelvesY
 
     this.doLeft = this.doLeft.bind(this)
     this.doRight = this.doRight.bind(this)
@@ -212,26 +214,37 @@ class HomeShelvesPane extends Component {
           //console.log("INFO HomeShelvesPane :: doDown, this.containerShiftOffsetY::", this.containerShiftOffsetY)
           this.upGlobalNavY = this.initGlobalNavY - this.containerShiftOffsetY
           this.upHomeHeroY = this.initHomeHeroY - this.containerShiftOffsetY
+          this.upHomeShelvesY = topY
         }
-        
-        
         selectedShelfIndex = 0  //the first shelf selected
         this.selectTheFirstShelf() 
-        TL.to(this.elts[0], stdDuration, {top: this.upGlobalNavY+'px', ease:Power3.easeOut})
-        TL.to(this.elts[1], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut})
-        TL.to(this.elts[2], stdDuration, {top: topY+'px', opacity: 1, ease:Power3.easeOut})
-        console.log("INFO HomeShelvesPzne :: doDown case 1")
+        TL.to(this.elts[0], stdDuration, {top: this.upGlobalNavY+'px', ease:Power3.easeOut})              //globalNav
+        TL.to(this.elts[1], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut})  //homeHero
+        TL.to(this.elts[2], stdDuration, {top: this.upHomeShelvesY+'px', opacity: 1, ease:Power3.easeOut})//homeShelves
+        this.currHomeShelvesY = this.upHomeShelvesY
+        // console.log("INFO HomeShelvesPane :: doDown case 1")
         break;
       case 2:
         //-- from homeShelves to homeShelves (selectedShelf changes)
         let prevShelfIndex = selectedShelfIndex
-        if (prevShelfIndex === 1) {
-          //-- currently, the 1st shelf is selected
-        }
         if (selectedShelfIndex !== maxIndex) selectedShelfIndex++
         if (prevShelfIndex < selectedShelfIndex) {
+          if (prevShelfIndex === 0) {
+            //-- currently, the 1st shelf is selected
+            if (this.upOffHomeHeroY === this.initHomeHeroY) {
+              this.upOffHomeHeroY = this.upHomeHeroY - focusedShelfOffsetY
+              this.upOffHomeShelvesY = this.upHomeShelvesY - focusedShelfOffsetY
+            } 
+            this.currHomeShelvesY = this.upOffHomeShelvesY
+            TL.to(this.elts[1], stdDuration, {top: this.upOffHomeHeroY+'px', ease:Power3.easeOut})                //homeHero
+            TL.to(this.elts[2], stdDuration, {top: this.currHomeShelvesY+'px', opacity: 1, ease:Power3.easeOut}) //homeShelves
+          } else {
+            this.currHomeShelvesY -= focusedShelfOffsetY
+            TL.to(this.elts[2], stdDuration, {top: this.currHomeShelvesY+'px', opacity: 1, ease:Power3.easeOut})
+          }
           this.shelves[prevShelfIndex].unselect()
           this.shelves[selectedShelfIndex].select()
+
         }
         break;
       default:
@@ -266,13 +279,22 @@ class HomeShelvesPane extends Component {
           focusLocationIndex--
           this.shelves[0].unselect()
           this.firstShelfOpacityUpdate(.6)
-          TL.to(this.elts[0], stdDuration, {top: (initGlobalNavY)+'px', ease:Power3.easeOut})
-          TL.to(this.elts[1], stdDuration, {top: (initHomeHeroY)+'px', opacity: 1, ease:Power3.easeOut})
-          TL.to(this.elts[2], stdDuration, {top: (initContainerY)+'px', ease:Power3.easeOut})
-
+          TL.to(this.elts[0], stdDuration, {top: this.initGlobalNavY+'px', ease:Power3.easeOut})
+          TL.to(this.elts[1], stdDuration, {top: this.initHomeHeroY+'px', opacity: 1, ease:Power3.easeOut})
+          TL.to(this.elts[2], stdDuration, {top: this.initHomeShelvesY+'px', ease:Power3.easeOut})
+          this.currHomeShelvesY = this.initHomeShelvesY
         } else {
           //-- from homeShelves to homeShelves (selectedShelf changes)
           let prevShelfIndex = selectedShelfIndex
+          if (prevShelfIndex === 1) {
+            //-- currently, the 2nd shelf is selected
+            TL.to(this.elts[1], stdDuration, {top: this.upHomeHeroY+'px', ease:Power3.easeOut})     //homeHero
+            TL.to(this.elts[2], stdDuration, {top: this.upHomeShelvesY+'px', ease:Power3.easeOut})  //homeShelves
+            this.currHomeShelvesY = this.upHomeShelvesY
+          } else {
+            this.currHomeShelvesY += focusedShelfOffsetY
+            TL.to(this.elts[2], stdDuration, {top: this.currHomeShelvesY+'px', ease:Power3.easeOut})  //homeShelves
+          }
           selectedShelfIndex--
           this.shelves[prevShelfIndex].unselect()
           this.shelves[selectedShelfIndex].select()
@@ -313,8 +335,7 @@ class HomeShelvesPane extends Component {
   startDetailTimer = () => console.log('startDetailTimer')
   clearDetailTimer = () => console.log('clearDetailTimer')
 
-  selectTheFirstShelf() 
-  {
+  selectTheFirstShelf = () => {
     this.shelves[0].select()
 
     //-- dimm out the rest
@@ -342,7 +363,7 @@ class HomeShelvesPane extends Component {
     )}
 
   render() {
-    console.log("INFO HomeShelvesPzne :: render")
+    // console.log("INFO HomeShelvesPane :: render")
     return (
         <div id="HomeShelvesPane" style={this.style}>
           <div className={(this.state.focusLocationIndex === 0) ? "globalNavFocused" : "globalNav"} 
@@ -362,7 +383,8 @@ class HomeShelvesPane extends Component {
           <div  className={this.state.isGuideVisible ? "hLineVisible" : "hLineHidden"} 
                 style={{top:this.props.height/2 + 'px'}}/>
         </div>
-    )}
+    )
+  }
 }
 
 HomeShelvesPane.propTypes = {
