@@ -75,9 +75,9 @@ class ShelfTile extends Component {
 	}//backToOrg
 
 	toExpanded = (targetX, noScale=false) => {
-		if (this.props.index <= 3) {
-			console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX + ", noScale? " + noScale)
-		}
+		// if (this.props.index <= 3) {
+		// 	console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX + ", noScale? " + noScale)
+		// }
 
 		this.updateTileKind(tileKindObj.EXPANDED)
 		//this.showTitle()
@@ -91,13 +91,12 @@ class ShelfTile extends Component {
 	}//toExpanded
 
 	toFocused = (targetX = undefined) => {
-		if (this.props.index <= 3) {
-			console.log("INFO ShelfTile :: toFocused, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX)
-		}
+		// if (this.props.index <= 3) {
+		// 	console.log("INFO ShelfTile :: toFocused, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX)
+		// }
 
 		this.updateTileKind(tileKindObj.FOCUSED)
 		if (targetX !== undefined) {
-			//console.log("INFO ShelfTile :: toFocused, targetX is defined : " + targetX)
 			TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 		}
 		//.7 to .5

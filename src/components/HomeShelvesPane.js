@@ -12,20 +12,35 @@ const initHomeHeroY     = 165;
 const initContainerY    = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const initHomeShelvesY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr = [
+
+
   {
-    title:'up next',
+    title:'category 2 (2)',
     shows:[
-        {showTitle: "Top Chef", episodeTitle: "Now That's a lot of Schnitzel", episode: 'S15 E6', imageURL: '../assets/images/shows/topChef-s15e06-1056x594.jpg'},
-        {showTitle: "Top Chef", episodeTitle: "Something Old, Something New", episode: 'S14 E1', imageURL: '../assets/images/shows/topChef-s14e01-1056x594.jpg'},
+        {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
+        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
+      ]
+  },
+
+  {
+    title:'category 3 (3)',
+    shows:[
         {showTitle: "Below Deck", episodeTitle: "Only Doing It for the Money", episode: 'S5 E11', imageURL: '../assets/images/shows/belowDeck-s05e11-1056x594.jpg'},
         {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
-        {showTitle: "Imposters", episodeTitle: "Always Forward, Never Back", episode: 'S1 E10', imageURL: '../assets/images/shows/imposters-s01e10-1056x594.jpg'},
-        {showTitle: "Real Housewives", episodeTitle: "Another Spin Around the Block", episode: 'S9 E4', imageURL: '../assets/images/shows/rhofAT-s09e04-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   },
   {
-    title:'recently added (5)',
+    title:'category 4 (4)',
+    shows:[
+        {showTitle: "Top Chef", episodeTitle: "The Curse of the Bambino", episode: 'S12 E3', imageURL: '../assets/images/shows/topChef-s12e03-1056x594.jpg'},
+        {showTitle: "Imposters", episodeTitle: "Always Forward, Never Back", episode: 'S1 E10', imageURL: '../assets/images/shows/imposters-s01e10-1056x594.jpg'},
+        {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
+        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
+      ]
+  },
+    {
+    title:'category 5 (5)',
     shows:[
         {showTitle: "Top Chef", episodeTitle: "Episode Title", episode: 'S00 E0', imageURL: '../assets/images/shows/topChef-general-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "The Curse of the Bambino", episode: 'S12 E3', imageURL: '../assets/images/shows/topChef-s12e03-1056x594.jpg'},
@@ -35,32 +50,20 @@ const shelvesDataArr = [
       ]
   },
   {
-    title:'category 3 (1)',
+    title:'category 1(1)',
     shows:[
        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   },
-  {
-    title:'category 4 (2)',
+    {
+    title:'category 6 (7)',
     shows:[
-        {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
-        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
-      ]
-  },
-  {
-    title:'category 5 (3)',
-    shows:[
+        {showTitle: "Top Chef", episodeTitle: "Now That's a lot of Schnitzel", episode: 'S15 E6', imageURL: '../assets/images/shows/topChef-s15e06-1056x594.jpg'},
+        {showTitle: "Top Chef", episodeTitle: "Something Old, Something New", episode: 'S14 E1', imageURL: '../assets/images/shows/topChef-s14e01-1056x594.jpg'},
         {showTitle: "Below Deck", episodeTitle: "Only Doing It for the Money", episode: 'S5 E11', imageURL: '../assets/images/shows/belowDeck-s05e11-1056x594.jpg'},
         {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
-        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
-      ]
-  },
-  {
-    title:'category 6 (4)',
-    shows:[
-        {showTitle: "Top Chef", episodeTitle: "The Curse of the Bambino", episode: 'S12 E3', imageURL: '../assets/images/shows/topChef-s12e03-1056x594.jpg'},
         {showTitle: "Imposters", episodeTitle: "Always Forward, Never Back", episode: 'S1 E10', imageURL: '../assets/images/shows/imposters-s01e10-1056x594.jpg'},
-        {showTitle: "Real Housewives", episodeTitle: "When Chairs Fly", episode: 'S8 E9', imageURL: '../assets/images/shows/rhofNJ-s08e09-1056x594.jpg'},
+        {showTitle: "Real Housewives", episodeTitle: "Another Spin Around the Block", episode: 'S9 E4', imageURL: '../assets/images/shows/rhofAT-s09e04-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   }];
@@ -196,6 +199,7 @@ class HomeShelvesPane extends Component {
   toggleGuides = () => this.setState({isGuideVisible: !this.state.isGuideVisible})
 
   doDown = () => {
+    console.log("INFO HomeShelvesPane :: doDown")
     let focusLocationIndex = this.state.focusLocationIndex
     let selectedShelfIndex = this.state.selectedShelfIndex
     let topY = initContainerY
@@ -322,6 +326,7 @@ class HomeShelvesPane extends Component {
   doRight = () => {
     this.setState({keyPressed: 'padRight'})
     if (this.state.focusLocationIndex === homeShelves) {
+      console.log("INFO HomeShelvesPane :: doRight")
       this.shelves[this.state.selectedShelfIndex].doRight()
     }
   }//doRight

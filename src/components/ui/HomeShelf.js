@@ -52,8 +52,11 @@ class HomeShelf extends Component {
 		this.doLeft = this.doLeft.bind(this)
 		this.doRight = this.doRight.bind(this)
 
+		this.buildTileIndexQueue = this.buildTileIndexQueue.bind(this)
 		this.opacityChange = this.opacityChange.bind(this)
 		this.eachShelfTile = this.eachShelfTile.bind(this)
+
+		this.buildTileIndexQueue()
 	}
 
 	componentWillMount() {
@@ -64,12 +67,30 @@ class HomeShelf extends Component {
 		}
 	}//componentWillMount
 
+	buildTileIndexQueue = () => {
+		console.log("INFO HomeShelf :: buildTileIndexQueue, this.props.shows.length ? ", this.props.shows.length)
+		for (var i=0; i<this.totalTiles; i++) {
+			const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
+			if (leftX < initX) {
+				//-- if prev tile exists
+				if (this.tileIndexQueue[0] === -1) {
+					this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
+				}
+			} else {
+				if (this.tileIndexQueue[i+1] === undefined) {
+					this.tileIndexQueue[i+1] = i
+				}
+			}
+		}
+		console.log("INFO HomeShelf :: buildTileIndexQueue, this.tileIndexQueue ? ", this.tileIndexQueue)
+	}
+
 	reset = () => {
 		console.log("INFO HomeShelf :: reset", this.props.index)
 	}//reset
 
 	select = () => {
-		//console.log("INFO HomeShelf :: select, shelf", this.props.index)
+		console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
 
@@ -165,7 +186,7 @@ class HomeShelf extends Component {
 		if (this.totalTiles > 1) {
 			console.log("\n")
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.totalTiles ?? ", this.totalTiles)
-			console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
+			console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 
 			//-- move the rightMostTile to the leftEnd
 			const rightMostTileIndex = this.tileIndexQueue[this.tileIndexQueue.length - 1]
@@ -216,7 +237,7 @@ class HomeShelf extends Component {
 		    	rightQueue.unshift(prevIndex)
 		    	this.tileIndexQueue = leftQueue.concat(rightQueue)
 		    }
-		    console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  2 ? ", this.tileIndexQueue)
+		    console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  after ? ", this.tileIndexQueue)
 		}
 	}//doLeft
 
@@ -225,7 +246,7 @@ class HomeShelf extends Component {
 		const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
-			console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
+			console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
 			const leftOffset = tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			const prevX = initX - leftOffset
@@ -233,20 +254,24 @@ class HomeShelf extends Component {
 			// -- update prevTile, currTile, and nextTile
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
 			let prevPrevTile
-			if (this.prevTile) {
-				console.log("INFO HomeShelf :: doRight/moveToLeft, this.prevTile.props.index? ", this.prevTile.props.index)
-				prevPrevTile = this.prevTile
+			if (this.tileIndexQueue[0] !== -1) {
+				// console.log("INFO HomeShelf :: doRight/moveToLeft, this.prevTile.props.index? ", this.prevTile.props.index)
+				prevPrevTile = this.tiles[this.tileIndexQueue[0]]
 				const prevPrevX = prevX - leftOffset
 				prevPrevTile.toExpanded(prevPrevX, noScale)
 				//TODO: on complete of the above, move the tile to the right most location
+				//prevPrevTile.fadeInAt(nextX, stdDuration)
 			}
 
-			this.prevTile = this.currTile
+			this.prevTile = this.tiles[this.tileIndexQueue[1]]
 			this.prevTile.toExpanded(prevX)	//didn't work on 2nd try
 
 			//this.currTile = this.nextTile
-			this.currTile = this.tiles[this.tileIndexQueue[2]]
-			this.currTile.toFocused(initX)
+			if (this.tileIndexQueue[2]) {
+				console.log("this.tileIndexQueue[2]???? " + this.tileIndexQueue[2])
+				this.currTile = this.tiles[this.tileIndexQueue[2]]
+				this.currTile.toFocused(initX)
+			}
 
 			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
 			//-- then start animating all tiles to the right
@@ -264,7 +289,7 @@ class HomeShelf extends Component {
 			    }
 		    }
 
-		    //TODO: 
+		    // //TODO: 
 		    if (prevPrevTile) {
 		    	//-- give delay, then show as the last element
 		    	prevPrevTile.fadeInAt(nextX, stdDuration)
@@ -283,7 +308,7 @@ class HomeShelf extends Component {
 		    // 	rightQueue.unshift(prevIndex)
 		    // 	this.tileIndexQueue = leftQueue.concat(rightQueue)
 		    // }
-		    console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  2 ? ", this.tileIndexQueue)
+		    console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  after ? ", this.tileIndexQueue)
 		}
 	}//doRight
 
@@ -297,18 +322,8 @@ class HomeShelf extends Component {
 	}//opacityChange4
 
 	eachShelfTile = (tileObj, i) => {
-		//console.log("eachShelfTile!!!!", i)
+		if (i === 0) console.log("eachShelfTile!!!!", i)
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
-		if (leftX < initX) {
-			//-- if prev tile exists
-			if (this.tileIndexQueue[0] === -1) {
-				this.tileIndexQueue[0] = i	//-- replace '-1' with 'i'
-			}
-		} else {
-			if (this.tileIndexQueue[i+1] === undefined) {
-				this.tileIndexQueue[i+1]= i
-			}
-		}
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
 				  		index={i}
@@ -324,6 +339,10 @@ class HomeShelf extends Component {
 	}//eachShelfTile
 
 	render() {
+		if (this.props.index === 0) {
+			console.log("INFO HomeShelf :: render ", this.props.index)
+			console.log("INFO HomeShelf :: render, tileIndexQueue : ", this.tileIndexQueue)
+		}
 		return (
 			<div className="HomeShelf" 
 				 id={"homeShelfContainer" + this.props.index} 
