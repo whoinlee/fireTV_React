@@ -222,6 +222,7 @@ class HomeShelf extends Component {
 
 	doRight = () => {
 		//console.log("INFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
+		const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
 			console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
@@ -233,29 +234,32 @@ class HomeShelf extends Component {
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
 			let prevPrevTile
 			if (this.prevTile) {
+				console.log("INFO HomeShelf :: doRight/moveToLeft, this.prevTile.props.index? ", this.prevTile.props.index)
 				prevPrevTile = this.prevTile
 				const prevPrevX = prevX - leftOffset
-				prevPrevTile.toExpanded(prevPrevX)
+				prevPrevTile.toExpanded(prevPrevX, noScale)
 				//TODO: on complete of the above, move the tile to the right most location
 			}
 
 			this.prevTile = this.currTile
-			this.prevTile.toExpanded(prevX)
+			this.prevTile.toExpanded(prevX)	//didn't work on 2nd try
 
-			this.currTile = this.nextTile
+			//this.currTile = this.nextTile
+			this.currTile = this.tiles[this.tileIndexQueue[2]]
 			this.currTile.toFocused(initX)
 
 			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
 			//-- then start animating all tiles to the right
 			let lastTileIndex = (this.tileIndexQueue[0] === -1)? this.totalTiles : this.totalTiles - 1
-			if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
+			//if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
 			if (lastTileIndex) {
 			    for (var j = 3; j <= lastTileIndex; j++) {
 			    	//console.log("INFO HomeShelf :: doRight//moveToLeft, j ", j)
 			    	let nextTileIndex = this.tileIndexQueue[j]
 			    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 			    	let targetTile = this.tiles[nextTileIndex]
-			    	targetTile.toExpanded(nextX)
+			    	if (j === 3) this.nextTile = targetTile
+			    	targetTile.toExpanded(nextX, noScale)
 			    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			    }
 		    }
