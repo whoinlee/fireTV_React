@@ -7,13 +7,13 @@ import {TweenLite} from 'gsap';	//, Power3
 const TL = TweenLite; // eslint-disable-line
 const stdDuration = .5;
 
-const shelfKindObj	= {
+const shelfKindObj = {
   BASE: 0,
   FOCUSED: 1,
   BLOOMED: 2
 };
 
-const initX         	= 200;
+const initX				= 200;
 const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
 const tileBaseOffset	= [0, 24, 58];                   	//offset between tiles adjacent
 const focusedTileWidth	= 590;
@@ -22,8 +22,8 @@ const focusedTileWidth	= 590;
 // const bloomedTileHeight	= 594;
 // const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
 // const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
-const maxTileIndex		= 	Math.floor(1920/320);			//stageWidth/tileBaseWidth, max number of tiles in a row
-const titleSelectedY	= -90;
+const maxTileIndex		= Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
+const titleSelectedY 	= -90;
 const titleUnselectedY	= 0;
 
 
@@ -52,8 +52,8 @@ class HomeShelf extends Component {
 		this.doLeft = this.doLeft.bind(this)
 		this.doRight = this.doRight.bind(this)
 
-		this.eachShelfTile = this.eachShelfTile.bind(this)
 		this.opacityChange = this.opacityChange.bind(this)
+		this.eachShelfTile = this.eachShelfTile.bind(this)
 	}
 
 	componentWillMount() {
@@ -62,11 +62,11 @@ class HomeShelf extends Component {
 			top: this.props.y + 'px',
 			opacity: 1
 		}
-	}
+	}//componentWillMount
 
 	reset = () => {
 		console.log("INFO HomeShelf :: reset", this.props.index)
-	}
+	}//reset
 
 	select = () => {
 		//console.log("INFO HomeShelf :: select, shelf", this.props.index)
@@ -117,7 +117,7 @@ class HomeShelf extends Component {
 		}
 
 		//console.log("INFO HomeShelf :: select, nextTileIndex is ", nextTileIndex)
-	}
+	}//select
 
 	unselect = () => {
 		//console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
@@ -158,14 +158,15 @@ class HomeShelf extends Component {
 		    	targetTile.backToOrg(nextX)
 		    }
 		}
-	}
+	}//unselect
 
 	doLeft = () => {
 		//console.log("INFO HomeShelf :: doLeft//moveToRight, shelf", this.props.index)
 		if (this.totalTiles > 1) {
-			//console.log("\n")
+			console.log("\n")
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.totalTiles ?? ", this.totalTiles)
-			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
+			console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
+
 			//-- move the rightMostTile to the leftEnd
 			const rightMostTileIndex = this.tileIndexQueue[this.tileIndexQueue.length - 1]
 			const rightMostTile = this.tiles[rightMostTileIndex]
@@ -175,7 +176,6 @@ class HomeShelf extends Component {
 			rightMostTile.changeXLocTo(leftMostX)
 
 			// -- update prevTile, currTile, and nextTile
-			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
 			this.nextTile = this.currTile
 
 			if (this.prevTile) {
@@ -186,7 +186,6 @@ class HomeShelf extends Component {
 				this.currTile = rightMostTile
 				this.prevTile = null
 			}
-			
 			this.currTile.toFocused(initX)
 
 			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
@@ -217,26 +216,18 @@ class HomeShelf extends Component {
 		    	rightQueue.unshift(prevIndex)
 		    	this.tileIndexQueue = leftQueue.concat(rightQueue)
 		    }
-		    //console.log("INFO HomeShelf :: doLeft//moveToRight, this.tileIndexQueue  2 ? ", this.tileIndexQueue)
+		    console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  2 ? ", this.tileIndexQueue)
 		}
-	}
+	}//doLeft
 
 	doRight = () => {
 		//console.log("INFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
 		if (this.totalTiles > 1) {
-			//console.log("\n")
+			console.log("\n")
+			console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  1 ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
-			
 			const leftOffset = tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			const prevX = initX - leftOffset
-			// if (this.tileIndexQueue[0] !== -1) {
-			// 	const leftMostX = prevX - leftOffset
-			// 	const rightMostTileIndex = this.tileIndexQueue[this.tileIndexQueue.length - 1]
-			// 	const rightMostTile = this.tiles[rightMostTileIndex]
-			// 	//-- change rightMostTile location to the prevPrevX
-			// 	// rightMostTile.changeXLocTo(leftMostX)
-			// }
-			
 
 			// -- update prevTile, currTile, and nextTile
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
@@ -290,28 +281,18 @@ class HomeShelf extends Component {
 		    // }
 		    console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  2 ? ", this.tileIndexQueue)
 		}
-	}
+	}//doRight
 
-	// moveDown = (offsetY) => {
-	// 	TL.to(this.homeShelfContainer, stdDuration, {top: this.props.y + offsetY + 'px'})
-	// }
-
-	// moveUp = (offsetY) => {
-
-	// }
-
-	// moveTo = (targetY) => {
-
-	// }
+	// moveTo = (targetY) => {}
 
 	opacityChange = (val) => {
 		this.topContainerStyle = {
 			top: this.state.topContainerTop + 'px',
 			opacity: val
 		}
-	}
+	}//opacityChange4
 
-	eachShelfTile(tileObj, i) {
+	eachShelfTile = (tileObj, i) => {
 		//console.log("eachShelfTile!!!!", i)
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		if (leftX < initX) {
@@ -336,7 +317,7 @@ class HomeShelf extends Component {
 				  		ref={node => this.tiles.push(node)}>
 		    </ShelfTile>
 		)
-	}
+	}//eachShelfTile
 
 	render() {
 		return (
@@ -354,7 +335,7 @@ class HomeShelf extends Component {
 				</div>
 			</div>
 		)
-	}
+	}//render
 }
 
 HomeShelf.propTypes = {

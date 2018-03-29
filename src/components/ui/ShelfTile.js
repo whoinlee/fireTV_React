@@ -5,7 +5,6 @@ import {TweenLite} from 'gsap';
 
 const TL = TweenLite; // eslint-disable-line
 const stdDuration = .5;
-// const shortDuration = .3;
 const tileKindObj = {
   ORIGINAL: 0,
   EXPANDED: 1,
@@ -36,6 +35,7 @@ class ShelfTile extends Component {
 		this.state = {
 			tileKind: tileKindObj.ORIGINAL
 		}
+		
 		// this.showTitle = this.showTitle.bind(this)
 		// this.hideTitle = this.hideTitle.bind(this)
 		this.renderTitle = this.renderTitle.bind(this)
@@ -58,15 +58,10 @@ class ShelfTile extends Component {
 		}
 	}
 
-	// showTitle = () => {
-	// 	// this.setState({titleVisibility: 'visible'})
-	// }
+	// showTitle = () => this.setState({titleVisibility: 'visible'})
+	// hideTitle = () => this.setState({titleVisibility: 'hidden'})
 
-	// hideTitle = () => {
-	// 	// this.setState({titleVisibility: 'hidden'})
-	// }
-
-	updateTileKind = (tileKind) => {this.setState({tileKind: tileKind})}
+	updateTileKind = (tileKind) => this.setState({tileKind: tileKind})
 
 	backToOrg = (targetX) => {
 		//console.log("INFO ShelfTile :: backToOrg, index: " + this.props.index)
@@ -74,50 +69,43 @@ class ShelfTile extends Component {
 		//this.hideTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: 1 }})
-	}
+	}//backToOrg
 
 	toExpanded = (targetX) => {
-		console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
+		// console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", targetX", targetX)
 		this.updateTileKind(tileKindObj.EXPANDED)
 		//this.showTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
-		// TL.to(this.imageContainer, stdDuration, {scale: toExpandedScale})
 		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: toExpandedScale}})
-	}
+	}//toExpanded
 
 	toFocused = (targetX) => {
-		console.log("INFO ShelfTile :: toFocused, targetX: " + targetX)
+		// console.log("INFO ShelfTile :: toFocused, targetX: " + targetX)
 		this.updateTileKind(tileKindObj.FOCUSED)
 		if (targetX) {
-			console.log("INFO ShelfTile :: toFocused, targetX is defined : " + targetX)
+			//console.log("INFO ShelfTile :: toFocused, targetX is defined : " + targetX)
 			TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 		}
 		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.7)', scale: toFocusedScale}, onComplete: this.showFocusedContent()})
-	}
+	}//toFocused
 
 	toMedBloomed = () => {}
 
 	toLargeBloomed = () => {}
 
-	showFocusedContent = () => {
-		TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
-	}
+	showFocusedContent = () => TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
 
 	showBloomedContent = () => {
+		//
 		//TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
-	}
+	}//showBloomedContent
 
-	changeXLocTo = (targetX) => {
-		// this.style = {
-		// 	left: targetX + 'px'
-		// }
-		TL.to(this.containerDiv, 0, {left: targetX+'px'})
-	}
+	changeXLocTo = (targetX) => TL.to(this.containerDiv, 0, {left: targetX+'px'})
 
 	fadeInAt = (targetX, pDelay) => {
 		TL.to(this.containerDiv, 0, {opacity: 0, left: targetX+'px', delay:pDelay})
 		TL.to(this.containerDiv, stdDuration, {opacity: 1, delay:pDelay+.1})
-	}
+	}//fadeInAt
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {
@@ -143,7 +131,7 @@ class ShelfTile extends Component {
 			default:
 				return null
 		}
-	}
+	}//renderTitle
 
 	render() {
 		//if (this.props.homeShelfIndex == 0)
