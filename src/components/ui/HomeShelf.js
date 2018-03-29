@@ -189,33 +189,56 @@ class HomeShelf extends Component {
 			console.log("INFO HomeShelf :: doLeft/moveToRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 
 			//-- move the rightMostTile to the leftEnd
-			const rightMostTileIndex = this.tileIndexQueue[this.tileIndexQueue.length - 1]
-			const rightMostTile = this.tiles[rightMostTileIndex]
 			const leftOffset = tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			const prevX = initX - leftOffset
-			const leftMostX = (this.prevTile === null)? prevX : prevX - leftOffset
-			rightMostTile.changeXLocTo(leftMostX)
+			let rightMostTile
+			// (this.tileIndexQueue[2] !== undefined) {if
+				//-- exclude the case with 2 tiles, prevTile and currTile(focused)
+				const rightMostTileIndex = this.tileIndexQueue[this.tileIndexQueue.length - 1]
+				rightMostTile = this.tiles[rightMostTileIndex]
+				const leftMostX = (this.tileIndexQueue[0] !== -1)? prevX : prevX - leftOffset
+				if (this.tileIndexQueue[2] !== undefined) {
+					rightMostTile.changeXLocTo(leftMostX)
+				} else {
+					rightMostTile.toExpanded(leftMostX, false, 0)
+				}
+			//}
 
 			// -- update prevTile, currTile, and nextTile
-			this.nextTile = this.currTile
+			//this.nextTile = this.currTile
+			this.nextTile = this.tiles[this.tileIndexQueue[1]]
+			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
+			this.nextTile.toExpanded(nextX)
 
-			if (this.prevTile) {
-				this.currTile = this.prevTile
-				this.prevTile = rightMostTile
-				this.prevTile.toExpanded(prevX)
+			// if (this.prevTile !== null) {
+			if (this.tileIndexQueue[0] !== -1) {
+				// this.currTile = this.prevTile
+				this.currTile = this.tiles[this.tileIndexQueue[0]]
+				//this.currTile.toFocused(initX)
+				if (rightMostTile !== undefined) {
+					this.prevTile = rightMostTile
+					this.prevTile.toExpanded(prevX)
+				} else {
+					this.prevTile = null
+				}
 			} else {
 				this.currTile = rightMostTile
 				this.prevTile = null
 			}
-			this.currTile.toFocused(initX)
 
-			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
-			this.nextTile.toExpanded(nextX)
+			console.log("this.currTile? " + this.currTile)
+			if (this.currTile !== undefined || this.currTile != null) {
+				this.currTile.toFocused(initX)
+			} else {
+				console.log(this.currTile)
+			}
+
+			
 
 			//-- then start animating all tiles to the right
 			let lastTileIndex = (this.prevTile === null)? this.totalTiles : this.totalTiles - 1
 			if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
-			if (lastTileIndex) {
+			//if (lastTileIndex !== undefined) {
 			    for (var j = 2; j < lastTileIndex; j++) {
 			    	console.log("INFO HomeShelf :: doLeft/moveToRight, j ", j)
 			    	let nextTileIndex = this.tileIndexQueue[j]
@@ -224,10 +247,10 @@ class HomeShelf extends Component {
 			    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			    	targetTile.toExpanded(nextX)
 			    }
-		    }
+		   // }
 
 		    //-- updateQueue
-		    if (this.prevTile) {
+		    if (this.prevTile !== null) {
 		    	const prevIndex = this.tileIndexQueue.pop()
 		    	this.tileIndexQueue.unshift(prevIndex)
 		    } else {
@@ -246,7 +269,7 @@ class HomeShelf extends Component {
 		const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
-			console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  before ? ", this.tileIndexQueue)
+			console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
 			const leftOffset = tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			const prevX = initX - leftOffset
@@ -255,45 +278,50 @@ class HomeShelf extends Component {
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
 			let prevPrevTile
 			if (this.tileIndexQueue[0] !== -1) {
-				// console.log("INFO HomeShelf :: doRight/moveToLeft, this.prevTile.props.index? ", this.prevTile.props.index)
 				prevPrevTile = this.tiles[this.tileIndexQueue[0]]
 				const prevPrevX = prevX - leftOffset
 				prevPrevTile.toExpanded(prevPrevX, noScale)
-				//TODO: on complete of the above, move the tile to the right most location
-				//prevPrevTile.fadeInAt(nextX, stdDuration)
 			}
 
 			this.prevTile = this.tiles[this.tileIndexQueue[1]]
 			this.prevTile.toExpanded(prevX)	//didn't work on 2nd try
 
 			//this.currTile = this.nextTile
-			if (this.tileIndexQueue[2]) {
+			if (this.tileIndexQueue[2] !== undefined) {
 				console.log("this.tileIndexQueue[2]???? " + this.tileIndexQueue[2])
 				this.currTile = this.tiles[this.tileIndexQueue[2]]
 				this.currTile.toFocused(initX)
+				let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
+				//-- then start animating all tiles to the right
+				let lastTileIndex = (this.tileIndexQueue[0] === -1)? this.totalTiles : this.totalTiles - 1
+				//if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
+				//if (lastTileIndex) {
+				    for (var j = 3; j <= lastTileIndex; j++) {
+				    	console.log("INFO HomeShelf :: doRight, j ", j)
+				    	let nextTileIndex = this.tileIndexQueue[j]
+				    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
+				    	let targetTile = this.tiles[nextTileIndex]
+				    	if (j === 3) this.nextTile = targetTile
+				    	targetTile.toExpanded(nextX, noScale)
+				    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
+				    }
+			   // }
+			    // //TODO: 
+			    console.log("prevPrevTile???? " + prevPrevTile)
+			    if (prevPrevTile !== undefined) {
+			    	//-- give delay, then show as the last element
+			    	prevPrevTile.fadeInAt(nextX, stdDuration - .1)	//stdDuration after
+			    }
+			} else {
+				if (prevPrevTile !== undefined) {
+			    	prevPrevTile.changeXLocTo(initX + initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED])
+			    	prevPrevTile.toFocused(initX)
+			    }
 			}
 
-			let nextX = initX + focusedTileWidth + tileBaseOffset[shelfKindObj.FOCUSED]
-			//-- then start animating all tiles to the right
-			let lastTileIndex = (this.tileIndexQueue[0] === -1)? this.totalTiles : this.totalTiles - 1
-			//if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
-			if (lastTileIndex) {
-			    for (var j = 3; j <= lastTileIndex; j++) {
-			    	//console.log("INFO HomeShelf :: doRight//moveToLeft, j ", j)
-			    	let nextTileIndex = this.tileIndexQueue[j]
-			    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
-			    	let targetTile = this.tiles[nextTileIndex]
-			    	if (j === 3) this.nextTile = targetTile
-			    	targetTile.toExpanded(nextX, noScale)
-			    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
-			    }
-		    }
+			
 
-		    // //TODO: 
-		    if (prevPrevTile) {
-		    	//-- give delay, then show as the last element
-		    	prevPrevTile.fadeInAt(nextX, stdDuration)
-		    }
+		    
 
 		    //-- updateQueue
 		    let prevTileIndex = this.tileIndexQueue.shift()
@@ -308,7 +336,7 @@ class HomeShelf extends Component {
 		    // 	rightQueue.unshift(prevIndex)
 		    // 	this.tileIndexQueue = leftQueue.concat(rightQueue)
 		    // }
-		    console.log("INFO HomeShelf :: doRight/moveToLeft, this.tileIndexQueue  after ? ", this.tileIndexQueue)
+		    console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  after ? ", this.tileIndexQueue)
 		}
 	}//doRight
 

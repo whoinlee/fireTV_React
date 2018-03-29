@@ -74,19 +74,19 @@ class ShelfTile extends Component {
 		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: 1 }})
 	}//backToOrg
 
-	toExpanded = (targetX, noScale=false) => {
+	toExpanded = (targetX, noScale=false, pDuration=stdDuration) => {
 		// if (this.props.index <= 3) {
 		// 	console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX + ", noScale? " + noScale)
 		// }
 
 		this.updateTileKind(tileKindObj.EXPANDED)
 		//this.showTitle()
-		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
+		TL.to(this.containerDiv, pDuration, {left: targetX+'px'})
 		
 		if (noScale) {
-			TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)'}})
+			TL.to(this.imageContainer, pDuration, {css: { '-webkit-filter': 'brightness(1)'}})
 		} else {
-			TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: toExpandedScale}})
+			TL.to(this.imageContainer, pDuration, {css: { '-webkit-filter': 'brightness(1)', scale: toExpandedScale}})
 		}
 	}//toExpanded
 

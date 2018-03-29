@@ -12,8 +12,6 @@ const initHomeHeroY     = 165;
 const initContainerY    = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const initHomeShelvesY  = 836;   //(100(globalNav)+65(offset)+606(homeHero)+65) = 836                        
 const shelvesDataArr = [
-
-
   {
     title:'category 2 (2)',
     shows:[
@@ -21,7 +19,6 @@ const shelvesDataArr = [
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   },
-
   {
     title:'category 3 (3)',
     shows:[
@@ -55,7 +52,7 @@ const shelvesDataArr = [
        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   },
-    {
+  {
     title:'category 6 (7)',
     shows:[
         {showTitle: "Top Chef", episodeTitle: "Now That's a lot of Schnitzel", episode: 'S15 E6', imageURL: '../assets/images/shows/topChef-s15e06-1056x594.jpg'},
