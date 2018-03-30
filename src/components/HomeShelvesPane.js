@@ -58,13 +58,14 @@ const shelvesDataArr = [
         {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   },
+  
    {
     title:'category 1(1)',
     shows:[
        {showTitle: "Top Chef", episodeTitle: "Shrimp Boats and Hat Ladies", episode: 'S14 E10', imageURL: '../assets/images/shows/topChef-s14e10-1056x594.jpg'}
       ]
   }
-  ];
+];
 /*const shelvesDataArr  = [
   {
     title:'up next (7)',

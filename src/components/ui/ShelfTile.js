@@ -136,7 +136,7 @@ class ShelfTile extends Component {
 			case tileKindObj.EXPANDED:
 				return (
 			    	<div className="tileTitleContainer">
-						{this.props.showTitle} <span className="baseEpisodeID">{this.props.episodeID}</span>
+					{this.props.episodeID}  <span className="baseEpisodeID">{this.props.showTitle}</span>
 					</div>
 				)
 			case tileKindObj.LG_BLOOMED:
