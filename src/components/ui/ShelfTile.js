@@ -116,9 +116,9 @@ class ShelfTile extends Component {
 
 	changeXLocTo = (targetX) => { TL.to(this.containerDiv, 0, {left: targetX+'px'}) }
 
-	fadeInAt = (targetX, pDelay) => {
-		TL.to(this.containerDiv, 0, {opacity: 0, left: targetX+'px', delay:pDelay})
-		TL.to(this.containerDiv, stdDuration, {opacity: 1, delay:pDelay+.1})
+	fadeInAt = (targetX, pDelay=0, pDuration=stdDuration) => {
+		TL.to(this.containerDiv, 0, {opacity: 0, left: targetX+'px', delay:pDelay})	//CHECK
+		TL.to(this.containerDiv, pDuration, {opacity: 1, delay:pDelay+.1})
 	}//fadeInAt
 
 	//style={{visibility: this.state.titleVisibility}}

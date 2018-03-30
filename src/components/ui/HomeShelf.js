@@ -310,7 +310,8 @@ class HomeShelf extends Component {
 			    console.log("prevPrevTile???? " + prevPrevTile)
 			    if (prevPrevTile !== undefined) {
 			    	//-- give delay, then show as the last element
-			    	prevPrevTile.fadeInAt(nextX, stdDuration - .1)	//stdDuration after
+			    	prevPrevTile.fadeInAt(nextX, .3, .2)	//stdDuration after
+			    	//prevPrevTile.changeXLocTo(nextX)	//stdDuration after
 			    }
 			} else {
 				if (prevPrevTile !== undefined) {
