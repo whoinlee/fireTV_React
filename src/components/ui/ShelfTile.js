@@ -19,11 +19,11 @@ const tileSizeArr = [
   [782, 440],	//.741 of the largest
   [1056, 594]
 ];
-// const waitToLargeBloomDuration	= 4;
+const waitToLargeBloomDuration	= 4;
 const toExpandedScale = Math.round(tileSizeArr[tileKindObj.EXPANDED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.17
 const toFocusedScale = Math.round(tileSizeArr[tileKindObj.FOCUSED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.84
 //const toMedBloomedScale = Math.round(tileSizeArr[tileKindObj.MED_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//2.44
-//const toLgBloomedScale = Math.round(tileSizeArr[tileKindObj.LG_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//3.30
+const toLgBloomedScale = Math.round(tileSizeArr[tileKindObj.LG_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//3.30
 //console.log("INFO ShelfTile toMedBloomedScale ?? " + toMedBloomedScale);
 //console.log("INFO ShelfTile toLgBloomedScale ?? " + toLgBloomedScale);
 
@@ -38,6 +38,7 @@ class ShelfTile extends Component {
 
 		// this.showTitle = this.showTitle.bind(this)
 		// this.hideTitle = this.hideTitle.bind(this)
+		this.bloomToLargeTimerID = null
 		this.renderTitle = this.renderTitle.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
 
@@ -47,7 +48,10 @@ class ShelfTile extends Component {
 		this.toMedBloomed = this.toMedBloomed.bind(this)
 		this.toLargeBloomed = this.toLargeBloomed.bind(this)
 		this.showFocusedContent = this.showFocusedContent.bind(this)
+		this.hideFocusedContent = this.hideFocusedContent.bind(this)
 		this.showBloomedContent = this.showBloomedContent.bind(this)
+		this.waitToLargeBloom = this.waitToLargeBloom.bind(this)
+		this.killToLargeBloom = this.waitToLargeBloom.bind(this)
 		this.changeXLocTo = this.changeXLocTo.bind(this)
 		this.fadeInAt = this.fadeInAt.bind(this)
 	}
@@ -105,14 +109,29 @@ class ShelfTile extends Component {
 
 	toMedBloomed = () => {}
 
-	toLargeBloomed = () => {}
+	toLargeBloomed = () => {
 
-	showFocusedContent = () => { TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1}) }
+		console.log("INFO ShelfTile :: LARGEBLOOMED!!!!!!")
+		this.updateTileKind(tileKindObj.LG_BLOOMED)
+
+		this.props.callBackOnLargeBloomStart()
+		//this.hideFocusedContent()
+		//TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.5)', scale: toLgBloomedScale}, onComplete: this.showBloomedContent()})
+		TL.to(this.imageContainer, stdDuration, {css: {scale: toLgBloomedScale}, onComplete: this.showBloomedContent()})
+	}
+
+	showFocusedContent = () => { TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1, onComplete: this.waitToLargeBloom()}) }
+	hideFocusedContent = () => { TL.to(this.focusedContent, 0, {opacity:0}) }
 
 	showBloomedContent = () => {
-		//
-		//TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1})
+		console.log("INFO ShelfTile :: showBloomedContent")
 	}//showBloomedContent
+
+	waitToLargeBloom = () => {
+		this.bloomToLargeTimerID = setTimeout(() => this.toLargeBloomed(), waitToLargeBloomDuration*1000)
+	}
+
+	killToLargeBloom = () => { clearTimeout(this.bloomToLargeTimerID) }
 
 	changeXLocTo = (targetX) => { TL.to(this.containerDiv, 0, {left: targetX+'px'}) }
 
@@ -123,7 +142,7 @@ class ShelfTile extends Component {
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {
-		// console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
+		console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
 		switch (this.state.tileKind) {
 			case tileKindObj.FOCUSED:
 				return (
@@ -141,7 +160,13 @@ class ShelfTile extends Component {
 				)
 			case tileKindObj.LG_BLOOMED:
 				//-- do something here
-				return null
+				return (
+		         	<div className="bloomedTileContent" ref={node => this.bloomedContent = node}>
+		         		<div className="bloomedShowTitle">{this.props.showTitle}</div>
+		         		<div className="bloomedEpisodeTitle">{this.props.episodeTitle}</div>
+		            	<div className="bloomedEpisodeID">{this.props.episodeID}</div>
+		          	</div>
+		      	)
 			default:
 				return null
 		}
@@ -149,7 +174,7 @@ class ShelfTile extends Component {
 
 	render() {
 		//if (this.props.homeShelfIndex == 0)
-		//console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
+		console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
 		return (
 			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
 										ref={node => this.containerDiv = node}>

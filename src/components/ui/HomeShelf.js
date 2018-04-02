@@ -54,6 +54,7 @@ class HomeShelf extends Component {
 
 		this.buildTileIndexQueue = this.buildTileIndexQueue.bind(this)
 		this.opacityChange = this.opacityChange.bind(this)
+		this.onLargeBloomStart = this.onLargeBloomStart.bind(this)
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 
 		this.buildTileIndexQueue()
@@ -366,6 +367,10 @@ class HomeShelf extends Component {
 		}
 	}//opacityChange4
 
+	onLargeBloomStart = () => {
+		console.log("INFO HomeShelf :: onLargeBloomStart")
+	}
+
 	eachShelfTile = (tileObj, i) => {
 		if (i === 0) console.log("eachShelfTile!!!!", i)
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
@@ -378,7 +383,8 @@ class HomeShelf extends Component {
 				  		imageURL={tileObj.imageURL}
 				  		leftX={leftX} 
 				  		homeShelfIndex={this.props.index}
-				  		ref={node => this.tiles.push(node)}>
+				  		ref={node => this.tiles.push(node)}
+				  		callBackOnLargeBloomStart={this.onLargeBloomStart}>
 		    </ShelfTile>
 		)
 	}//eachShelfTile

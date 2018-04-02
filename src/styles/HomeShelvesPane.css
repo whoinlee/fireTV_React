@@ -107,7 +107,7 @@
 }
 
 .homeShelfTitleContainer {
-  font-family: Helvetica;
+  font-family: 'Helvetica';
   font-weight: 100; /*HelveticaLight*/
   font-size: 28px;  /*CHECK- variable?*/
   color: #fff;
@@ -153,7 +153,7 @@
 
   .tileTitleContainer {
     text-align: left;
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     font-weight: 600;  /*HelveticaBold*/
     font-size: 24px;
     color: #fff;
@@ -165,7 +165,7 @@
 
   span.baseEpisodeID {
     text-align: left;
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     font-weight: 400;  /*HelveticaRegular 400?*/
     font-size: 24px;
     margin-left: 10px;
@@ -183,7 +183,7 @@
 
   .focusedShowTitle {
     text-align: left;
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     font-weight: 400;  /*HelveticaRegular*/
     font-size: 24px;
     color: #fff;
@@ -192,7 +192,7 @@
 
   .focusedEpisodeTitle {
     text-align: left;
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     font-weight: 600;  /*HelveticaBold*/
     font-size: 24px;
     color: #fff;
@@ -202,11 +202,57 @@
 
   .focusedEpisodeID {
     text-align: left;
-    font-family: Helvetica;
+    font-family: 'Helvetica';
     font-weight: 400;  /*HelveticaRegular*/
     font-size: 24px;
     color: #fff;
     position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .bloomedTileContent {
+    width: 1000px;
+    position: absolute;
+    left: 26px;
+    top: -197px;
+    opacity: 0;
+    height: 570px;
+    /**/border: 2px green solid;
+  }
+
+  .bloomedShowTitle {
+    text-align: left;
+    font-family:'Poppins';
+    font-weight: 300;  /*PoppinsSemiBold*/
+    font-size: 24px;
+    color: #fff;
+    position: relative;
+    /*border: 1px black solid;*/
+  }
+
+  .bloomedEpisodeTitle {
+    text-align: left;
+    font-family: 'Poppins';
+    font-weight: 400;  /*PoppinsMedium*/
+    font-size: 64px;
+    line-height: 70px;
+    color: #fff;
+    position: relative;
+    /*position: relative;*/
+    -webkit-font-smoothing: antialiased;
+     /*border: 1px red dotted;*/
+  }
+
+  .bloomedEpisodeID {
+    text-align: left;
+    font-family: 'Poppins';
+    font-weight: 400;  /*HelveticaRegular*/
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    bottom: 0px;
+    /*height: 100px;*/
+    /*border: 1px red solid;*/
     -webkit-font-smoothing: antialiased;
   }
 
