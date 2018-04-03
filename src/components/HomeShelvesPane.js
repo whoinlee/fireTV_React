@@ -16,7 +16,7 @@ const shelvesDataArr = [
     title:'up next',
     shows:[
         {showTitle: "Top Chef", episodeTitle: "Now That's a lot of Schnitzel", episode: 'S15 E6', 
-        episodeDesc: "For the Quickfire, Padma and Richard Blais inspire the chefs using Tasty online videos and challenge them to transform the most laborious dishes from their own menus into accessible thirty minute dishes for home cooks.",
+        episodeDesc: "For the Quickfire, Padma and Richard Blais inspire the chefs using Tasty online videos and challenge them to transform the most laborious dishes from their own menus into accessible thirty minute dishes for home cooks. For the Quickfire, Padma and Richard Blais inspire the chefs using Tasty online videos and challenge them to transform the most laborious dishes from their own menus into accessible thirty minute dishes for home cooks.",
         imageURL: '../assets/images/shows/topChef-s15e06-1056x594.jpg'},
         {showTitle: "Top Chef", episodeTitle: "Something Old, Something New", episode: 'S14 E1', 
         episodeDesc: "Episode Description for S14 E1 goes here",
@@ -432,6 +432,16 @@ class HomeShelvesPane extends Component {
   // update = () => console.log('update')
   // updateSelectedShelf = () => {}
 
+  onLargeBloomStart = () => {
+    console.log("INFO HomeShelvesPane :: onLargeBloomStart")
+    console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
+
+    if (this.state.selectedShelfIndex == 0) {
+      //-- when the first shelf is selected, move up the homeHeroCarousel
+      
+    }
+  }
+
   eachHomeShelf = (shelfObj, i) => {
     return (
       <HomeShelf  key={(i + 1).toString()}
@@ -440,7 +450,8 @@ class HomeShelvesPane extends Component {
                   title={shelfObj.title}
                   shows={shelfObj.shows}
                   y={initShelfY + i*focusedShelfOffsetY}
-                  ref={node => this.shelves.push(node)}>
+                  ref={node => this.shelves.push(node)}
+                  callBackOnLargeBloomStart={this.onLargeBloomStart}>
       </HomeShelf>
     )
   }//eachHomeShelf

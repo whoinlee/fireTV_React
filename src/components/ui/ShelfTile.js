@@ -111,7 +111,7 @@ class ShelfTile extends Component {
 
 	toLargeBloomed = () => {
 
-		console.log("INFO ShelfTile :: LARGEBLOOMED!!!!!!")
+		console.log("INFO ShelfTile :: toLargeBloomed, LARGEBLOOMED!!!!!!")
 		this.updateTileKind(tileKindObj.LG_BLOOMED)
 
 		this.props.callBackOnLargeBloomStart()
@@ -125,6 +125,7 @@ class ShelfTile extends Component {
 
 	showBloomedContent = () => {
 		console.log("INFO ShelfTile :: showBloomedContent")
+		TL.to(this.bloomedContent, stdDuration, {delay:stdDuration, css: {visibility: 'visible', opacity: 1}})
 	}//showBloomedContent
 
 	waitToLargeBloom = () => {
@@ -142,7 +143,7 @@ class ShelfTile extends Component {
 
 	//style={{visibility: this.state.titleVisibility}}
 	renderTitle = () => {
-		console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
+		// console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
 		switch (this.state.tileKind) {
 			case tileKindObj.FOCUSED:
 				return (
@@ -164,7 +165,7 @@ class ShelfTile extends Component {
 		         	<div className="bloomedTileContent" ref={node => this.bloomedContent = node}>
 		         		<div className="bloomedShowTitle">{this.props.showTitle}</div>
 		         		<div className="bloomedEpisodeTitle">{this.props.episodeTitle}</div>
-		            	<div className="bloomedEpisodeID">{this.props.episodeID}</div>
+		            	<div className="bloomedEpisodeID">{this.props.episodeID}&nbsp;<span className="bloomedEpisodeDesc">{this.props.episodeDesc}</span></div>
 		          	</div>
 		      	)
 			default:
@@ -174,7 +175,7 @@ class ShelfTile extends Component {
 
 	render() {
 		//if (this.props.homeShelfIndex == 0)
-		console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
+		// console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
 		return (
 			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
 										ref={node => this.containerDiv = node}>
@@ -193,6 +194,7 @@ ShelfTile.propTypes = {
 	showTitle: PropTypes.string,
 	episodeTitle: PropTypes.string,
 	episodeID: PropTypes.string,
+	episodeDesc: PropTypes.string,
 	imageURL: PropTypes.string,
 	leftX: PropTypes.number
 };

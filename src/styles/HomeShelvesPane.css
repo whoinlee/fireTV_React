@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
 /* --------------------- */
 /* -- HomeShelvesPane -- */
 /* --------------------- */
@@ -217,7 +219,9 @@
     top: -197px;
     opacity: 0;
     height: 570px;
-    /**/border: 2px green solid;
+    visibility: hidden;
+    /*border: 2px green solid;*/
+    overflow: hidden;
   }
 
   .bloomedShowTitle {
@@ -238,21 +242,29 @@
     line-height: 70px;
     color: #fff;
     position: relative;
-    /*position: relative;*/
     -webkit-font-smoothing: antialiased;
      /*border: 1px red dotted;*/
   }
 
   .bloomedEpisodeID {
     text-align: left;
-    font-family: 'Poppins';
-    font-weight: 400;  /*HelveticaRegular*/
+    font-family: 'Lato';
+    font-weight: 700;  /*LatoBold*/
     font-size: 24px;
     color: #fff;
     position: absolute;
-    bottom: 0px;
-    /*height: 100px;*/
+    bottom: 0px;*/
     /*border: 1px red solid;*/
+    -webkit-font-smoothing: antialiased;
+  }
+
+  span.bloomedEpisodeDesc {
+    text-align: left;
+    font-family: 'Lato';
+    font-weight: 400;  /*LatoRegular*/
+    font-size: 24px;
+    color: #fff;
+    /*border: 1px yellow solid;*/
     -webkit-font-smoothing: antialiased;
   }
 
