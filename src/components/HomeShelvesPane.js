@@ -158,6 +158,7 @@ const baseShelfOffsetY      = shelfBaseTitleHeight + shelfTitleTileOffset + shel
 //-- distance between the focused(selected) shelf and the next unselected shelf
 const focusedShelfShiftY    = 76;       //76 = (332-180)/2 (focusedH - baseH)
 const focusedShelfOffsetY   = baseShelfOffsetY + focusedShelfShiftY;  
+const bloomedShelfShiftY    = 131;
 
 const totalShelves = shelvesDataArr.length;
 const maxIndex = totalShelves - 1;
@@ -187,7 +188,8 @@ class HomeShelvesPane extends Component {
     this.upGlobalNavY = this.initGlobalNavY     
     //
     this.initHomeHeroY = initHomeHeroY
-    this.upHomeHeroY = this.initHomeHeroY       
+    this.upHomeHeroY = this.initHomeHeroY   
+    this.upMidHomeHeroY = this.initHomeHeroY      
     this.upOffHomeHeroY = this.initHomeHeroY
     //
     this.initHomeShelvesY = initHomeShelvesY
@@ -436,9 +438,15 @@ class HomeShelvesPane extends Component {
     console.log("INFO HomeShelvesPane :: onLargeBloomStart")
     console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
 
-    if (this.state.selectedShelfIndex == 0) {
+    if (this.state.selectedShelfIndex === 0) {
       //-- when the first shelf is selected, move up the homeHeroCarousel
-      
+      if (this.upMidHomeHeroY === this.initHomeHeroY) {
+        console.log("INFO HomeShelvesPane :: onLargeBloomStart, ever????")
+        this.upMidHomeHeroY = this.upHomeHeroY - bloomedShelfShiftY
+        //this.upOffHomeShelvesY = this.upHomeShelvesY - focusedShelfOffsetY
+      } 
+      TL.to(this.elts[homeHero], stdDuration, {top: this.upMidHomeHeroY+'px', ease:Power3.easeOut})
+
     }
   }
 
