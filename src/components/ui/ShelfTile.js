@@ -51,7 +51,7 @@ class ShelfTile extends Component {
 		this.hideFocusedContent = this.hideFocusedContent.bind(this)
 		this.showBloomedContent = this.showBloomedContent.bind(this)
 		this.waitToLargeBloom = this.waitToLargeBloom.bind(this)
-		this.killToLargeBloom = this.waitToLargeBloom.bind(this)
+		this.killToLargeBloom = this.killToLargeBloom.bind(this)
 		this.changeXLocTo = this.changeXLocTo.bind(this)
 		this.fadeInAt = this.fadeInAt.bind(this)
 	}
@@ -99,6 +99,7 @@ class ShelfTile extends Component {
 		// 	console.log("INFO ShelfTile :: toFocused, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX)
 		// }
 
+		this.killToLargeBloom()
 		this.updateTileKind(tileKindObj.FOCUSED)
 		if (targetX !== undefined) {
 			TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
@@ -110,10 +111,10 @@ class ShelfTile extends Component {
 	toMedBloomed = () => {}
 
 	toLargeBloomed = () => {
-
 		console.log("INFO ShelfTile :: toLargeBloomed, LARGEBLOOMED!!!!!!")
-		this.updateTileKind(tileKindObj.LG_BLOOMED)
 
+		this.killToLargeBloom()
+		this.updateTileKind(tileKindObj.LG_BLOOMED)
 		this.props.callBackOnLargeBloomStart()
 		//this.hideFocusedContent()
 		//TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.5)', scale: toLgBloomedScale}, onComplete: this.showBloomedContent()})
@@ -121,6 +122,7 @@ class ShelfTile extends Component {
 	}
 
 	showFocusedContent = () => { TL.to(this.focusedContent, stdDuration, {delay:.2, opacity:1, onComplete: this.waitToLargeBloom()}) }
+	
 	hideFocusedContent = () => { TL.to(this.focusedContent, 0, {opacity:0}) }
 
 	showBloomedContent = () => {
@@ -129,10 +131,11 @@ class ShelfTile extends Component {
 	}//showBloomedContent
 
 	waitToLargeBloom = () => {
+		this.killToLargeBloom()
 		this.bloomToLargeTimerID = setTimeout(() => this.toLargeBloomed(), waitToLargeBloomDuration*1000)
 	}
 
-	killToLargeBloom = () => { clearTimeout(this.bloomToLargeTimerID) }
+	killToLargeBloom = () => { if (this.bloomToLargeTimerID !== null) clearTimeout(this.bloomToLargeTimerID) }
 
 	changeXLocTo = (targetX) => { TL.to(this.containerDiv, 0, {left: targetX+'px'}) }
 

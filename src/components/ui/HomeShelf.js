@@ -56,6 +56,7 @@ class HomeShelf extends Component {
 		this.opacityChange = this.opacityChange.bind(this)
 		this.onLargeBloomStart = this.onLargeBloomStart.bind(this)
 		this.eachShelfTile = this.eachShelfTile.bind(this)
+		this.clearBloomTimer = this.clearBloomTimer.bind(this)
 
 		this.buildTileIndexQueue()
 	}
@@ -88,10 +89,13 @@ class HomeShelf extends Component {
 
 	reset = () => {
 		console.log("INFO HomeShelf :: reset", this.props.index)
+		this.clearBloomTimer()
 	}//reset
 
 	select = () => {
 		//console.log("INFO HomeShelf :: select, shelf", this.props.index)
+		this.clearBloomTimer()
+
 		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
 
@@ -142,6 +146,8 @@ class HomeShelf extends Component {
 
 	unselect = () => {
 		//console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
+		this.clearBloomTimer()
+
 		this.setState({shelfKind: shelfKindObj.BASE, isSelected:false})	//TO CHECK:: topContainerTop
 		this.opacityChange(.6)
 
@@ -183,6 +189,8 @@ class HomeShelf extends Component {
 
 	doLeft = () => {
 		//console.log("INFO HomeShelf :: doLeft//moveToRight, shelf", this.props.index)
+		this.clearBloomTimer()
+
 		const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
@@ -274,6 +282,8 @@ class HomeShelf extends Component {
 
 	doRight = () => {
 		//console.log("INFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
+		this.clearBloomTimer()
+
 		const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
@@ -351,6 +361,11 @@ class HomeShelf extends Component {
 		console.log("INFO HomeShelf :: onLargeBloomStart, this.nextTile.props.index ?? " + this.nextTile.props.index)
 
 		this.props.callBackOnLargeBloomStart()
+	}
+
+	clearBloomTimer = () => {
+		console.log("INFO HomeShelf :: clearBloomTimer")
+		if (this.currTile !== null) this.currTile.killToLargeBloom()
 	}
 
 	eachShelfTile = (tileObj, i) => {
