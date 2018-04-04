@@ -17,6 +17,7 @@ const initX				= 200;
 const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
 const tileBaseOffset	= [0, 24, 58];                   	//offset between tiles adjacent
 const focusedTileWidth	= 590;
+const bloomedTileWidth	= 1056;
 // const focusedTileHeight	= 332;
 // const bloomedTileWidth	= 1056;
 // const bloomedTileHeight	= 594;
@@ -32,12 +33,13 @@ class HomeShelf extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			shelfKind: shelfKindObj.BASE
+			shelfKind: shelfKindObj.BASE           //-- CHECK: need???
 			// isSelected: false
 			// topContainerTop: this.props.y       //-- CHECK: need???
 		}
 
 		this.tiles = []							//original tiles
+
 		//-- prevTileIndex: tileIndexQueue[0], currentTileIndex: tileIndexQueue[1], nextTileIndex: tileIndexQueue[2], and so on
 		this.tileIndexQueue = [-1]				//tile index array based on current location, from prev, current, to next etc (staring from entering no index for the prev tile)
 		
@@ -365,9 +367,27 @@ class HomeShelf extends Component {
 	onLargeBloomStart = () => {
 		console.log("INFO HomeShelf :: onLargeBloomStart")
 		console.log("INFO HomeShelf :: onLargeBloomStart, this.currTile.props.index ?? " + this.currTile.props.index)
-		if (this.prevTile !== null) console.log("INFO HomeShelf :: onLargeBloomStart, this.prevTile.props.index ?? " + this.prevTile.props.index)
-		if (this.nextTile !== null) console.log("INFO HomeShelf :: onLargeBloomStart, this.nextTile.props.index ?? " + this.nextTile.props.index)
+		let prevX
+		let nextX
+		if (this.prevTile !== null) {
+			console.log("INFO HomeShelf :: onLargeBloomStart, this.prevTile.props.index ?? " + this.prevTile.props.index)
+			// toExpanded = (targetX, noScale=false, pDuration=stdDuration) 
+			/*
+			const initX				= 200;
+			const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 375x210, 782x440
+			const tileBaseOffset	= [0, 24, 58];                   	//offset between tiles adjacent
+			*/
+			prevX = initX - (tileBaseWidth[shelfKindObj.BLOOMED] + tileBaseOffset[shelfKindObj.BLOOMED])
+			console.log("INFO HomeShelf :: onLargeBloomStart, prevX ?? " + prevX)
+			this.prevTile.toMedBloomed(prevX)
+		}
+		if (this.nextTile !== null) {
+			console.log("INFO HomeShelf :: onLargeBloomStart, this.nextTile.props.index ?? " + this.nextTile.props.index)
+			nextX = initX + (bloomedTileWidth + tileBaseOffset[shelfKindObj.BLOOMED])
+			this.nextTile.toMedBloomed(nextX)
+		}
 
+		//-- the rest of tiles in the current shelf
 		this.props.callBackOnLargeBloomStart()
 	}
 
