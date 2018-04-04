@@ -446,15 +446,23 @@ class HomeShelvesPane extends Component {
     console.log("INFO HomeShelvesPane :: onLargeBloomStart")
     console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
 
+    let prevY
+    let nextY
     if (this.state.selectedShelfIndex === 0) {
       //-- when the first shelf is selected, move up the homeHeroCarousel
-      if (this.upMidHomeHeroY === this.initHomeHeroY) {
-        console.log("INFO HomeShelvesPane :: onLargeBloomStart, ever????")
-        this.upMidHomeHeroY = this.upHomeHeroY - bloomedShelfShiftY
-        //this.upOffHomeShelvesY = this.upHomeShelvesY - focusedShelfOffsetY
-      } 
+      if (this.upMidHomeHeroY === this.initHomeHeroY) this.upMidHomeHeroY = this.upHomeHeroY - bloomedShelfShiftY
       TL.to(this.elts[homeHero], stdDuration, {top: this.upMidHomeHeroY+'px', ease:Power3.easeOut})
-
+    } else {
+      if (this.prevShelf !== null) {
+        //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.prevShelf !== null")
+        prevY = this.nextShelf.props.y - bloomedShelfShiftY
+        this.prevShelf.moveTo(prevY, stdDuration)
+      }
+    }
+    if (this.nextShelf !== null) {
+      //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.nextShelf !== null")
+      nextY = this.nextShelf.props.y + bloomedShelfShiftY
+      this.nextShelf.moveTo(nextY, stdDuration)
     }
   }
   // clearBloomTimer = () => {

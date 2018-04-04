@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ShelfTile from './ShelfTile';
 import PropTypes from 'prop-types';
-import {TweenLite} from 'gsap';	//, Power3
+import {TweenLite, Power3} from 'gsap';	//, Power3
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -32,9 +32,9 @@ class HomeShelf extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			shelfKind: shelfKindObj.BASE,
-			isSelected: false,
-			topContainerTop: this.props.y       //-- CHECK: need???
+			shelfKind: shelfKindObj.BASE
+			// isSelected: false
+			// topContainerTop: this.props.y       //-- CHECK: need???
 		}
 
 		this.tiles = []							//original tiles
@@ -53,6 +53,8 @@ class HomeShelf extends Component {
 		this.doRight = this.doRight.bind(this)
 
 		this.buildTileIndexQueue = this.buildTileIndexQueue.bind(this)
+		this.moveTo = this.moveTo.bind(this)
+
 		this.opacityChange = this.opacityChange.bind(this)
 		this.onLargeBloomStart = this.onLargeBloomStart.bind(this)
 		this.eachShelfTile = this.eachShelfTile.bind(this)
@@ -63,10 +65,10 @@ class HomeShelf extends Component {
 
 	componentWillMount() {
 		//-- CHECK: need???
-		this.topContainerStyle = {
-			top: this.props.y + 'px',
-			opacity: 1
-		}
+		// this.topContainerStyle = {
+		// 	top: this.props.y + 'px',
+		// 	opacity: 1
+		// }
 	}//componentWillMount
 
 	buildTileIndexQueue = () => {
@@ -96,7 +98,8 @@ class HomeShelf extends Component {
 		//console.log("INFO HomeShelf :: select, shelf", this.props.index)
 		this.clearBloomTimer()
 
-		this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
+		// this.setState({shelfKind: shelfKindObj.FOCUSED, isSelected:true})	//TO CHECK:: topContainerTop
+		this.setState({shelfKind: shelfKindObj.FOCUSED})	//TO CHECK:: topContainerTop
 		this.opacityChange(1)
 
 		//-- shelf "title" animation: location & font size change
@@ -148,7 +151,8 @@ class HomeShelf extends Component {
 		//console.log("INFO HomeShelf :: unselect, shelf", this.props.index)
 		this.clearBloomTimer()
 
-		this.setState({shelfKind: shelfKindObj.BASE, isSelected:false})	//TO CHECK:: topContainerTop
+		// this.setState({shelfKind: shelfKindObj.BASE, isSelected:false})	//TO CHEC
+		this.setState({shelfKind: shelfKindObj.BASE})	//TO CHECK:: topContainerTop
 		this.opacityChange(.6)
 
 		//-- shelf title animation: location & font size change
@@ -345,20 +349,24 @@ class HomeShelf extends Component {
 		}
 	}//doRight
 
-	// moveTo = (targetY) => {}
+	moveTo = (targetY, pDuration) => {
+		console.log("INFO HomeShelf :: moveTo")
+		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
+	}
 
 	opacityChange = (val) => {
-		this.topContainerStyle = {
-			top: this.state.topContainerTop + 'px',
-			opacity: val
-		}
+		// this.topContainerStyle = {
+		// 	top: this.state.topContainerTop + 'px',
+		// 	opacity: val
+		// }
+		TL.to(this.homeShelfContainer, 0, {opacity: val})
 	}//opacityChange4
 
 	onLargeBloomStart = () => {
 		console.log("INFO HomeShelf :: onLargeBloomStart")
 		console.log("INFO HomeShelf :: onLargeBloomStart, this.currTile.props.index ?? " + this.currTile.props.index)
-		console.log("INFO HomeShelf :: onLargeBloomStart, this.prevTile.props.index ?? " + this.prevTile.props.index)
-		console.log("INFO HomeShelf :: onLargeBloomStart, this.nextTile.props.index ?? " + this.nextTile.props.index)
+		if (this.prevTile !== null) console.log("INFO HomeShelf :: onLargeBloomStart, this.prevTile.props.index ?? " + this.prevTile.props.index)
+		if (this.nextTile !== null) console.log("INFO HomeShelf :: onLargeBloomStart, this.nextTile.props.index ?? " + this.nextTile.props.index)
 
 		this.props.callBackOnLargeBloomStart()
 	}
@@ -388,14 +396,15 @@ class HomeShelf extends Component {
 	}//eachShelfTile
 
 	render() {
-		// if (this.props.index === 0) {
-		// 	console.log("INFO HomeShelf :: render ", this.props.index)
-		// 	console.log("INFO HomeShelf :: render, tileIndexQueue : ", this.tileIndexQueue)
-		// }
+		if (this.props.index === 0) {
+			console.log("INFO HomeShelf :: render ", this.props.index)
+			console.log("INFO HomeShelf :: render, tileIndexQueue : ", this.tileIndexQueue)
+		}
 		return (
 			<div className="HomeShelf" 
 				 id={"homeShelfContainer" + this.props.index} 
-				 style={this.topContainerStyle}
+				 //style={this.topContainerStyle}
+				 style={{top: this.props.y + 'px', opacity:1}}
 				 ref={node => {this.homeShelfContainer = node}}>
 				<div className="homeShelfTitleContainer" 
 					 ref={node => {this.titleNode = node}}>
