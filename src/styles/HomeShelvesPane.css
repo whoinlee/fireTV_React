@@ -228,7 +228,7 @@
   .bloomedShowTitle {
     text-align: left;
     font-family:'Poppins';
-    font-weight: 300;  /*PoppinsSemiBold*/
+    font-weight: 500;  /*PoppinsSemiBold*/
     font-size: 24px;
     color: #fff;
     position: relative;
@@ -238,7 +238,7 @@
   .bloomedEpisodeTitle {
     text-align: left;
     font-family: 'Poppins';
-    font-weight: 400;  /*PoppinsMedium*/
+    font-weight: 450;  /*PoppinsMedium*/
     font-size: 64px;
     line-height: 70px;
     color: #fff;
