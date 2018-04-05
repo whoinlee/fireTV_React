@@ -98,7 +98,6 @@ class ShelfTile extends Component {
 		// if (this.props.index <= 3) {
 		// 	console.log("INFO ShelfTile :: toFocused, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX)
 		// }
-
 		this.killToLargeBloom()
 		this.updateTileKind(tileKindObj.FOCUSED)
 		if (targetX !== undefined) {
@@ -108,10 +107,16 @@ class ShelfTile extends Component {
 		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.5)', scale: toFocusedScale}, onComplete: this.showFocusedContent()})
 	}//toFocused
 
-	toMedBloomed = (targetX) => {
+	toMedBloomed = (targetX, noScale=false, pDuration=stdDuration) => {
 		console.log("INFO ShelfTile :: toMedBloomed")
+
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
-		TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(1)', scale: toMedBloomedScale}})
+		
+		if (noScale) {
+			TL.to(this.imageContainer, pDuration, {css: { '-webkit-filter': 'brightness(1)'}})
+		} else {
+			TL.to(this.imageContainer, pDuration, {css: {'-webkit-filter': 'brightness(1)', scale: toMedBloomedScale}})
+		}
 	}
 
 	toLargeBloomed = () => {
