@@ -184,8 +184,7 @@ class HomeShelf extends Component {
 	doLeft = () => {
 		//console.log("INFO HomeShelf :: doLeft//moveToRight, shelf", this.props.index)
 		this.clearBloomTimer()
-
-		const noScale = true
+		//const noScale = true
 		if (this.totalTiles > 1) {
 			console.log("\n")
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.totalTiles ?? ", this.totalTiles)
@@ -213,8 +212,6 @@ class HomeShelf extends Component {
 					prevPrevTile = rightMostTile
 				}
 				rightMostTile.changeXLocTo(leftMostX)
-			} else {
-				//rightMostTile = 
 			}
 
 			//-- update currTile (prev to curr)
@@ -279,7 +276,7 @@ class HomeShelf extends Component {
 		//console.log("\nINFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
 
 		this.clearBloomTimer()
-		const noScale = true
+		// const noScale = true
 		if (this.totalTiles > 1) {
 			//console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
@@ -298,7 +295,6 @@ class HomeShelf extends Component {
 			this.prevTile = this.tiles[this.tileIndexQueue[1]]
 			this.prevTile.toExpanded(prevX)	//didn't work on 2nd try
 
-			//this.currTile = this.nextTile
 			if (this.tileIndexQueue[2] !== undefined) {
 				console.log("this.tileIndexQueue[2]???? " + this.tileIndexQueue[2])
 				this.currTile = this.tiles[this.tileIndexQueue[2]]
@@ -319,12 +315,11 @@ class HomeShelf extends Component {
 				    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 				    }
 			   // }
-			    // //TODO: 
-			    console.log("prevPrevTile???? " + prevPrevTile)
+			   
+			    // console.log("prevPrevTile???? " + prevPrevTile)
 			    if (prevPrevTile !== undefined) {
 			    	//-- give delay, then show as the last element
 			    	prevPrevTile.fadeInAt(nextX, .3, .2)	//stdDuration after
-			    	//prevPrevTile.changeXLocTo(nextX)	//stdDuration after
 			    }
 			} else {
 				if (prevPrevTile !== undefined) {

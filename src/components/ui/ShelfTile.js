@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import {TweenLite} from 'gsap';
+import ImageButton from './ImageButton';
 
 
 const TL = TweenLite; // eslint-disable-line
@@ -24,8 +25,9 @@ const toExpandedScale = Math.round(tileSizeArr[tileKindObj.EXPANDED][0]*100/tile
 const toFocusedScale = Math.round(tileSizeArr[tileKindObj.FOCUSED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;		//1.84
 const toMedBloomedScale = Math.round(tileSizeArr[tileKindObj.MED_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//2.44
 const toLgBloomedScale = Math.round(tileSizeArr[tileKindObj.LG_BLOOMED][0]*100/tileSizeArr[tileKindObj.ORIGINAL][0])/100;	//3.30
-//console.log("INFO ShelfTile toMedBloomedScale ?? " + toMedBloomedScale);
-//console.log("INFO ShelfTile toLgBloomedScale ?? " + toLgBloomedScale);
+const infoIconPath = '../assets/images/icons/infoIcon.png';
+const playIconPath = '../assets/images/icons/playIcon.png';
+const addToIconPath = '../assets/images/icons/addToIcon.png';
 
 
 
@@ -36,8 +38,6 @@ class ShelfTile extends Component {
 			tileKind: tileKindObj.ORIGINAL
 		}
 
-		// this.showTitle = this.showTitle.bind(this)
-		// this.hideTitle = this.hideTitle.bind(this)
 		this.bloomToLargeTimerID = null
 		this.renderContent = this.renderContent.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
@@ -62,28 +62,21 @@ class ShelfTile extends Component {
 		}
 	}
 
-	// showTitle = () => this.setState({titleVisibility: 'visible'})
-	// hideTitle = () => this.setState({titleVisibility: 'hidden'})
-
 	updateTileKind = (tileKind) => {
-		//console.log("INFO ShelfTile :: updateTileKind, episodeID: " + this.props.episodeID)
+		//console.log("INFO ShelfTile :: updateTileKind, index: " + this.props.index)
 		if (tileKind !== this.state.tileKind) this.setState({tileKind: tileKind})
 	}
 
 	backToOrg = (targetX) => {
 		//console.log("INFO ShelfTile :: backToOrg, index: " + this.props.index)
 		this.updateTileKind(tileKindObj.ORIGINAL)
-		//this.hideTitle()
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 		TL.to(this.imageContainer, stdDuration, {css: { '-webkit-filter': 'brightness(1)', scale: 1 }})
 	}//backToOrg
 
 	toExpanded = (targetX, noScale=false, pDuration=stdDuration) => {
-		// if (this.props.index <= 3) {
-		// 	console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX + ", noScale? " + noScale)
-		// }
+		//console.log("INFO ShelfTile :: toExpanded, index: " + this.props.index)
 		this.updateTileKind(tileKindObj.EXPANDED)
-		//this.showTitle()
 		TL.to(this.containerDiv, pDuration, {left: targetX+'px'})
 		
 		if (noScale) {
@@ -94,9 +87,7 @@ class ShelfTile extends Component {
 	}//toExpanded
 
 	toFocused = (targetX = undefined) => {
-		// if (this.props.index <= 3) {
-		// 	console.log("INFO ShelfTile :: toFocused, index: " + this.props.index + ", " + this.props.episodeID + ", x: " + targetX)
-		// }
+		//console.log("INFO ShelfTile :: toFocused, index: " + this.props.index)
 		this.killToLargeBloom()
 		this.updateTileKind(tileKindObj.FOCUSED)
 		if (targetX !== undefined) {
@@ -107,8 +98,7 @@ class ShelfTile extends Component {
 	}//toFocused
 
 	toMedBloomed = (targetX, noScale=false, pDuration=stdDuration) => {
-		console.log("INFO ShelfTile :: toMedBloomed")
-
+		// console.log("INFO ShelfTile :: toMedBloomed")
 		this.updateTileKind(tileKindObj.MED_BLOOMED)
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 
@@ -120,8 +110,7 @@ class ShelfTile extends Component {
 	}//toMedBloomed
 
 	toLargeBloomed = () => {
-		console.log("INFO ShelfTile :: toLargeBloomed, LARGEBLOOMED!!!!!!")
-
+		// console.log("INFO ShelfTile :: toLargeBloomed")
 		this.killToLargeBloom()
 		this.updateTileKind(tileKindObj.LG_BLOOMED)
 		this.props.callBackOnLargeBloomStart()
@@ -133,7 +122,7 @@ class ShelfTile extends Component {
 	hideFocusedContent = () => { TL.to(this.focusedContent, 0, {opacity:0}) }
 
 	showBloomedContent = () => {
-		console.log("INFO ShelfTile :: showBloomedContent")
+		// console.log("INFO ShelfTile :: showBloomedContent")
 		TL.to(this.bloomedContent, stdDuration, {delay:stdDuration, css: {visibility: 'visible', opacity: 1}})
 	}//showBloomedContent
 
@@ -151,8 +140,20 @@ class ShelfTile extends Component {
 		TL.to(this.containerDiv, pDuration, {opacity: 1, delay:pDelay+.1})
 	}//fadeInAt
 
+	onInfoButtonClicked = (e) => {
+		console.log("INFO ShelfTile :: onInfoButtonClicked")
+	}
+
+	onPlayButtonClicked = (e) => {
+		console.log("INFO ShelfTile :: onPlayButtonClicked")
+	}
+
+	onAddToButtonClicked = (e) => {
+		console.log("INFO ShelfTile :: onAddToButtonClicked")
+	}
+
 	renderContent = () => {
-		console.log("INFO ShelfTile :: renderContent, this.state.tileKind is " + this.state.tileKind)
+		// console.log("INFO ShelfTile :: renderContent, this.state.tileKind is " + this.state.tileKind)
 		switch (this.state.tileKind) {
 			case tileKindObj.EXPANDED:
 				return (
@@ -174,6 +175,11 @@ class ShelfTile extends Component {
 		         	<div className="bloomedTileContent" ref={node => this.bloomedContent = node}>
 		         		<div className="bloomedShowTitle">{this.props.showTitle}</div>
 		         		<div className="bloomedEpisodeTitle">{this.props.episodeTitle}</div>
+		         		<div className="bloomedButtons">
+		         			<ImageButton imageURL={infoIconPath} onClick={this.onInfoButtonClicked} />
+		         			<ImageButton imageURL={playIconPath} onClick={this.onPlayButtonClicked} />
+		         			<ImageButton imageURL={addToIconPath} onClick={this.onAddToButtonClicked} />
+		         		</div>
 		            	<div className="bloomedEpisodeID">{this.props.episodeID}&nbsp;<span className="bloomedEpisodeDesc">{this.props.episodeDesc}</span></div>
 		          	</div>
 		      	)
@@ -182,7 +188,7 @@ class ShelfTile extends Component {
 		    	break; default:
 				return null
 		}
-	}//renderTitle
+	}//renderContent
 
 	render() {
 		return (

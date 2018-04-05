@@ -247,6 +247,11 @@
      /*border: 1px red dotted;*/
   }
 
+  .bloomedButtons {
+    position: relative;
+    top: 220px;
+  }
+
   .bloomedEpisodeID {
     text-align: left;
     font-family: 'Lato';
