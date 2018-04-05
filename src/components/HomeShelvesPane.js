@@ -443,8 +443,8 @@ class HomeShelvesPane extends Component {
   onFocusComplete = () => console.log('onFocusComplete')
   onBloomComplete = () => console.log('onBloomComplete')
   onLargeBloomStart = () => {
-    console.log("INFO HomeShelvesPane :: onLargeBloomStart")
-    console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
+    //console.log("INFO HomeShelvesPane :: onLargeBloomStart")
+    //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
 
     let prevY
     let nextY
@@ -464,12 +464,7 @@ class HomeShelvesPane extends Component {
       nextY = this.nextShelf.props.y + bloomedShelfShiftY
       this.nextShelf.moveTo(nextY, stdDuration)
     }
-  }
-  // clearBloomTimer = () => {
-  //   console.log('clearBloomTimer')
-  //   this.currShelf.clearBloomTimer()
-  //   //clearInterval(this.startBloomTimerID)
-  // }
+  }//onLargeBloomStart
 
   //startDetailTimer = () => console.log('startDetailTimer')
   //clearDetailTimer = () => console.log('clearDetailTimer')
@@ -484,16 +479,6 @@ class HomeShelvesPane extends Component {
   }//selectTheFirstShelf
 
   firstShelfOpacityUpdate = (val) => this.shelves[0].opacityChange(val)
-
-  // update = () => console.log('update')
-  // updateSelectedShelf = () => {}
-
-  
-
-  // clearTimers = () => {
-  //   //this.clearBloomTimer()
-  //   //this.clearDetailTimer()
-  // }
 
   eachHomeShelf = (shelfObj, i) => {
     return (

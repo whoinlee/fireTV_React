@@ -18,11 +18,7 @@ const tileBaseWidth		= [320, 375, 782];                	//shelfTile: 320x180, 37
 const tileBaseOffset	= [0, 24, 58];                   	//offset between tiles adjacent
 const focusedTileWidth	= 590;
 const bloomedTileWidth	= 1056;
-// const focusedTileHeight	= 332;
-// const bloomedTileWidth	= 1056;
-// const bloomedTileHeight	= 594;
-// const tileShiftX 	= [0, (375-320), (782-375)]			//as the selected tile (1st in the queue) blooms, the next tiles in the queue shift by tileShiftX
-// const tileOffsetX   = tileBaseWidth[shelfKindObj.BASE] + tileBaseOffset[shelfKindObj.BASE];  //distance between the beginning of previous tile to the beginning of next tile
+//
 const maxTileIndex		= Math.floor(1920/320);				//stageWidth/tileBaseWidth, max number of tiles in a row
 const titleSelectedY 	= -90;
 const titleUnselectedY	= 0;
@@ -33,9 +29,7 @@ class HomeShelf extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			shelfKind: shelfKindObj.BASE           //-- CHECK: need???
-			// isSelected: false
-			// topContainerTop: this.props.y       //-- CHECK: need???
+			shelfKind: shelfKindObj.BASE        //-- CHECK: need???
 		}
 
 		this.tiles = []							//original tiles
@@ -66,11 +60,7 @@ class HomeShelf extends Component {
 	}
 
 	componentWillMount() {
-		//-- CHECK: need???
-		// this.topContainerStyle = {
-		// 	top: this.props.y + 'px',
-		// 	opacity: 1
-		// }
+
 	}//componentWillMount
 
 	buildTileIndexQueue = () => {
@@ -354,7 +344,7 @@ class HomeShelf extends Component {
 	moveTo = (targetY, pDuration) => {
 		console.log("INFO HomeShelf :: moveTo")
 		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
-	}
+	}//moveTo
 
 	opacityChange = (val) => {
 		// this.topContainerStyle = {
@@ -362,12 +352,10 @@ class HomeShelf extends Component {
 		// 	opacity: val
 		// }
 		TL.to(this.homeShelfContainer, 0, {opacity: val})
-	}//opacityChange4
+	}//opacityChange
 
 	onLargeBloomStart = () => {
 		console.log("INFO HomeShelf :: onLargeBloomStart")
-		//console.log("INFO HomeShelf :: onLargeBloomStart, this.currTile.props.index ?? " + this.currTile.props.index)
-
 		this.props.callBackOnLargeBloomStart()
 
 		let prevX
@@ -398,7 +386,6 @@ class HomeShelf extends Component {
 	}
 
 	eachShelfTile = (tileObj, i) => {
-		// if (i === 0) console.log("eachShelfTile!!!!", i)
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		return (
 			<ShelfTile 	key={(i + 1).toString()}
