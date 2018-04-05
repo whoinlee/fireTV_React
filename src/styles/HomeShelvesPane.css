@@ -154,7 +154,7 @@
     height: 180px;
   }
 
-  .tileTitleContainer {
+  .expandedTileContent {
     text-align: left;
     font-family: 'Helvetica';
     font-weight: 600;  /*HelveticaBold*/

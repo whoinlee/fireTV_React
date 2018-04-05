@@ -39,7 +39,7 @@ class ShelfTile extends Component {
 		// this.showTitle = this.showTitle.bind(this)
 		// this.hideTitle = this.hideTitle.bind(this)
 		this.bloomToLargeTimerID = null
-		this.renderTitle = this.renderTitle.bind(this)
+		this.renderContent = this.renderContent.bind(this)
 		this.updateTileKind = this.updateTileKind.bind(this)
 
 		this.backToOrg = this.backToOrg.bind(this)
@@ -109,6 +109,7 @@ class ShelfTile extends Component {
 	toMedBloomed = (targetX, noScale=false, pDuration=stdDuration) => {
 		console.log("INFO ShelfTile :: toMedBloomed")
 
+		this.updateTileKind(tileKindObj.MED_BLOOMED)
 		TL.to(this.containerDiv, stdDuration, {left: targetX+'px'})
 
 		if (noScale) {
@@ -150,9 +151,15 @@ class ShelfTile extends Component {
 		TL.to(this.containerDiv, pDuration, {opacity: 1, delay:pDelay+.1})
 	}//fadeInAt
 
-	renderTitle = () => {
-		console.log("INFO ShelfTile :: renderTitle, this.state.tileKind is " + this.state.tileKind)
+	renderContent = () => {
+		console.log("INFO ShelfTile :: renderContent, this.state.tileKind is " + this.state.tileKind)
 		switch (this.state.tileKind) {
+			case tileKindObj.EXPANDED:
+				return (
+			    	<div className="expandedTileContent">
+					{this.props.episodeID}  <span className="baseEpisodeID">{this.props.showTitle}</span>
+					</div>
+				)
 			case tileKindObj.FOCUSED:
 				return (
 		         	<div className="focusedTileContent" ref={node => this.focusedContent = node}>
@@ -170,8 +177,9 @@ class ShelfTile extends Component {
 		            	<div className="bloomedEpisodeID">{this.props.episodeID}&nbsp;<span className="bloomedEpisodeDesc">{this.props.episodeDesc}</span></div>
 		          	</div>
 		      	)
-		    case tileKindObj.EXPANDED:
-			default:
+		    case tileKindObj.MED_BLOOMED:
+		    	console.log("ever????????????")
+		    	break; default:
 				return null
 		}
 	}//renderTitle
@@ -183,7 +191,7 @@ class ShelfTile extends Component {
 				<div className="tileImageContainer" ref={node => this.imageContainer = node}>
 					<img src={this.props.imageURL} width={tileSizeArr[tileKindObj.ORIGINAL][0]} height={tileSizeArr[tileKindObj.ORIGINAL][1]} alt='tileImage'></img>
 				</div>
-				{this.renderTitle()}
+				{this.renderContent()}
 			</div>
 		)
 	}//render

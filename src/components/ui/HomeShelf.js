@@ -227,7 +227,8 @@ class HomeShelf extends Component {
 			//-- update prevTile (prevPrev to prev, or no prev)
 			console.log("prevPrevTile ?? " + prevPrevTile)
 			if (prevPrevTile !== undefined) {
-				prevPrevTile.toExpanded(prevX, noScale)
+				//prevPrevTile.toExpanded(prevX, noScale)
+				prevPrevTile.toExpanded(prevX)
 				this.prevTile = prevPrevTile
 			} else {
 				this.prevTile = null
@@ -249,7 +250,7 @@ class HomeShelf extends Component {
 			    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 			    	let targetTile = this.tiles[nextTileIndex]
 			    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
-			    	targetTile.toExpanded(nextX, noScale)
+			    	targetTile.toExpanded(nextX)
 			    }
 		   // }
 
@@ -290,7 +291,8 @@ class HomeShelf extends Component {
 			if (this.tileIndexQueue[0] !== -1) {
 				prevPrevTile = this.tiles[this.tileIndexQueue[0]]
 				const prevPrevX = prevX - leftOffset
-				prevPrevTile.toExpanded(prevPrevX, noScale)
+				//prevPrevTile.toExpanded(prevPrevX, noScale)
+				prevPrevTile.toExpanded(prevPrevX)
 			}
 
 			this.prevTile = this.tiles[this.tileIndexQueue[1]]
