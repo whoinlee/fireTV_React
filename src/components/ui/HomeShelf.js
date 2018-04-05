@@ -275,19 +275,17 @@ class HomeShelf extends Component {
 	}//doLeft
 
 	doRight = () => {
-		//console.log("INFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
-		this.clearBloomTimer()
+		//console.log("\nINFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
 
+		this.clearBloomTimer()
 		const noScale = true
 		if (this.totalTiles > 1) {
-			console.log("\n")
-			console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
+			//console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
 			const leftOffset = tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 			const prevX = initX - leftOffset
 
 			// -- update prevTile, currTile, and nextTile
-			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.prevTile ?? ", this.prevTile)
 			let prevPrevTile
 			if (this.tileIndexQueue[0] !== -1) {
 				prevPrevTile = this.tiles[this.tileIndexQueue[0]]
@@ -314,7 +312,8 @@ class HomeShelf extends Component {
 				    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 				    	let targetTile = this.tiles[nextTileIndex]
 				    	if (j === 3) this.nextTile = targetTile
-				    	targetTile.toExpanded(nextX, noScale)
+				    	targetTile.toExpanded(nextX)
+				    	//targetTile.toExpanded(nextX, noScale)
 				    	nextX += tileBaseWidth[shelfKindObj.FOCUSED] + tileBaseOffset[shelfKindObj.FOCUSED]
 				    }
 			   // }
@@ -345,9 +344,9 @@ class HomeShelf extends Component {
 		// this.setState({topY: targetY, isMoved: true})
 	}//moveTo
 
-	backTo = (pDuration = stdDuration) => {
+	backTo = (targetY = this.props.y, pDuration = stdDuration) => {
 		console.log("INFO HomeShelf :: backTo")
-		TL.to(this.homeShelfContainer, pDuration, {top: this.props.y+'px', ease:Power3.easeOut})
+		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
 	}//backTo
 
 	opacityChange = (val) => {

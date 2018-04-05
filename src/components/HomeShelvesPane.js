@@ -440,6 +440,16 @@ class HomeShelvesPane extends Component {
   doLeft = () => {
     this.setState({keyPressed: 'padLeft'})
     if (this.state.focusLocationIndex === homeShelves) {
+      if (this.isPrevMoved) {
+        //-- it's on bloomed state
+        this.prevShelf.backTo()
+        this.isPrevMoved = false
+      }
+      if (this.isNextMoved) {
+        //-- it's on bloomed state
+        this.nextShelf.backTo()
+        this.isNextMoved = false
+      }
       this.shelves[this.state.selectedShelfIndex].doLeft()
     }
   }//doLeft
@@ -447,7 +457,16 @@ class HomeShelvesPane extends Component {
   doRight = () => {
     this.setState({keyPressed: 'padRight'})
     if (this.state.focusLocationIndex === homeShelves) {
-      console.log("INFO HomeShelvesPane :: doRight")
+      if (this.isPrevMoved) {
+        //-- it's on bloomed state
+        this.prevShelf.backTo()
+        this.isPrevMoved = false
+      }
+      if (this.isNextMoved) {
+        //-- it's on bloomed state
+        this.nextShelf.backTo()
+        this.isNextMoved = false
+      }
       this.shelves[this.state.selectedShelfIndex].doRight()
     }
   }//doRight
