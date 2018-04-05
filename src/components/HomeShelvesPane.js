@@ -186,6 +186,8 @@ class HomeShelvesPane extends Component {
     this.prevShelf = null
     this.currShelf = null
     this.nextShelf = null
+    this.isPrevMoved = false
+    this.isNextMoved = false
 
     this.initGlobalNavY = initGlobalNavY
     this.upGlobalNavY = this.initGlobalNavY     
@@ -272,7 +274,7 @@ class HomeShelvesPane extends Component {
   toggleGuides = () => this.setState({isGuideVisible: !this.state.isGuideVisible})
 
   doDown = () => {
-    console.log("INFO HomeShelvesPane :: doDown")
+    // console.log("INFO HomeShelvesPane :: doDown")
     let focusLocationIndex = this.state.focusLocationIndex
     let selectedShelfIndex = this.state.selectedShelfIndex
     let prevShelfIndex
@@ -312,6 +314,17 @@ class HomeShelvesPane extends Component {
         break;
       case homeShelves:
         //-- from homeShelves to homeShelves (selectedShelf changes)
+        if (this.isPrevMoved) {
+          //-- it's on bloomed state
+          this.prevShelf.backTo()
+          this.isPrevMoved = false
+        }
+        if (this.isNextMoved) {
+          //-- it's on bloomed state
+          this.nextShelf.backTo()
+          this.isNextMoved = false
+        }
+
         prevShelfIndex = selectedShelfIndex
         if (selectedShelfIndex !== maxIndex) selectedShelfIndex++
         if (prevShelfIndex < selectedShelfIndex) {
@@ -333,8 +346,6 @@ class HomeShelvesPane extends Component {
           this.prevShelf = this.shelves[prevShelfIndex]
           this.currShelf = this.shelves[selectedShelfIndex]
           this.nextShelf = (nextShelfIndex < totalShelves) ? this.shelves[nextShelfIndex] : null
-          // this.shelves[prevShelfIndex].unselect()
-          // this.shelves[selectedShelfIndex].select()
           this.prevShelf.unselect()
           this.currShelf.select()
         }
@@ -368,6 +379,16 @@ class HomeShelvesPane extends Component {
         this.prevShelf = null
         break;
       case homeShelves:
+        if (this.isPrevMoved) {
+          //-- it's on bloomed state
+          this.prevShelf.backTo()
+          this.isPrevMoved = false
+        }
+        if (this.isNextMoved) {
+          //-- it's on bloomed state
+          this.nextShelf.backTo()
+          this.isNextMoved = false
+        }
         if (selectedShelfIndex === 0) {
           //-- from homeShelves to homeHero
           prevShelfIndex = 0
@@ -404,8 +425,6 @@ class HomeShelvesPane extends Component {
           this.nextShelf = (nextShelfIndex < totalShelves) ? this.shelves[nextShelfIndex] : null
           this.prevShelf.unselect()
           this.currShelf.select()
-          // this.shelves[prevShelfIndex].unselect()
-          // this.shelves[selectedShelfIndex].select()
         }
         break;
       default:
@@ -455,14 +474,16 @@ class HomeShelvesPane extends Component {
     } else {
       if (this.prevShelf !== null) {
         //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.prevShelf !== null")
-        prevY = this.nextShelf.props.y - bloomedShelfShiftY
+        prevY = this.prevShelf.props.y - bloomedShelfShiftY
         this.prevShelf.moveTo(prevY, stdDuration)
+        this.isPrevMoved = true
       }
     }
     if (this.nextShelf !== null) {
       //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.nextShelf !== null")
       nextY = this.nextShelf.props.y + bloomedShelfShiftY
       this.nextShelf.moveTo(nextY, stdDuration)
+      this.isNextMoved = true
     }
   }//onLargeBloomStart
 

@@ -124,8 +124,6 @@ class ShelfTile extends Component {
 		this.killToLargeBloom()
 		this.updateTileKind(tileKindObj.LG_BLOOMED)
 		this.props.callBackOnLargeBloomStart()
-		//this.hideFocusedContent()
-		//TL.to(this.imageContainer, stdDuration, {css: {'-webkit-filter': 'brightness(.5)', scale: toLgBloomedScale}, onComplete: this.showBloomedContent()})
 		TL.to(this.imageContainer, stdDuration, {css: {scale: toLgBloomedScale}, onComplete: this.showBloomedContent()})
 	}//toLargeBloomed
 
@@ -163,12 +161,6 @@ class ShelfTile extends Component {
 		            	<div className="focusedEpisodeID">{this.props.episodeID}</div>
 		          	</div>
 		      	)
-			
-				// return (
-			 //    	<div className="tileTitleContainer">
-				// 	{this.props.episodeID}  <span className="baseEpisodeID">{this.props.showTitle}</span>
-				// 	</div>
-				// )
 			case tileKindObj.LG_BLOOMED:
 				//-- do something here
 				return (
@@ -185,8 +177,6 @@ class ShelfTile extends Component {
 	}//renderTitle
 
 	render() {
-		//if (this.props.homeShelfIndex == 0)
-		// console.log("INFO ShelfTile,render, ShelfTile ", this.props.index+ ", shlefIndex is " + this.props.homeShelfIndex)
 		return (
 			<div className="ShelfTile"	style={{left: this.props.leftX + 'px'}} 
 										ref={node => this.containerDiv = node}>

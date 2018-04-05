@@ -59,9 +59,7 @@ class HomeShelf extends Component {
 		this.buildTileIndexQueue()
 	}
 
-	componentWillMount() {
-
-	}//componentWillMount
+	componentWillMount() {}//componentWillMount
 
 	buildTileIndexQueue = () => {
 		// console.log("INFO HomeShelf :: buildTileIndexQueue, this.props.shows.length ? ", this.props.shows.length)
@@ -341,10 +339,16 @@ class HomeShelf extends Component {
 		}
 	}//doRight
 
-	moveTo = (targetY, pDuration) => {
+	moveTo = (targetY, pDuration = stdDuration) => {
 		console.log("INFO HomeShelf :: moveTo")
 		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
+		// this.setState({topY: targetY, isMoved: true})
 	}//moveTo
+
+	backTo = (pDuration = stdDuration) => {
+		console.log("INFO HomeShelf :: backTo")
+		TL.to(this.homeShelfContainer, pDuration, {top: this.props.y+'px', ease:Power3.easeOut})
+	}//backTo
 
 	opacityChange = (val) => {
 		// this.topContainerStyle = {
