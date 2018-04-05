@@ -441,14 +441,19 @@ class HomeShelvesPane extends Component {
     this.setState({keyPressed: 'padLeft'})
     if (this.state.focusLocationIndex === homeShelves) {
       if (this.isPrevMoved) {
-        //-- it's on bloomed state
+        //-- it's on a bloomed state
         this.prevShelf.backTo()
         this.isPrevMoved = false
       }
       if (this.isNextMoved) {
-        //-- it's on bloomed state
+        //-- it's on a bloomed state
         this.nextShelf.backTo()
         this.isNextMoved = false
+        if (this.state.selectedShelfIndex === 0) {
+          //-- the 1st shelf is on a largeBloom state
+          //-- bring down homeHero
+          TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
+        }
       }
       this.shelves[this.state.selectedShelfIndex].doLeft()
     }
@@ -458,14 +463,19 @@ class HomeShelvesPane extends Component {
     this.setState({keyPressed: 'padRight'})
     if (this.state.focusLocationIndex === homeShelves) {
       if (this.isPrevMoved) {
-        //-- it's on bloomed state
+        //-- it's on a bloomed state
         this.prevShelf.backTo()
         this.isPrevMoved = false
       }
       if (this.isNextMoved) {
-        //-- it's on bloomed state
+        //-- it's on a bloomed state
         this.nextShelf.backTo()
         this.isNextMoved = false
+        if (this.state.selectedShelfIndex === 0) {
+          //-- the 1st shelf is on a largeBloom state
+          //-- bring down homeHero
+          TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
+        }
       }
       this.shelves[this.state.selectedShelfIndex].doRight()
     }

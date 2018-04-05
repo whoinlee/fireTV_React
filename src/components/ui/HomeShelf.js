@@ -309,9 +309,9 @@ class HomeShelf extends Component {
 				//if (lastTileIndex > maxTileIndex) lastTileIndex = maxTileIndex	//-- don't need to animate the tiles beyond stage width
 				//if (lastTileIndex) {
 				    for (var j = 3; j <= lastTileIndex; j++) {
-				    	console.log("INFO HomeShelf :: doRight, j ", j)
+				    	//console.log("INFO HomeShelf :: doRight, j ", j)
 				    	let nextTileIndex = this.tileIndexQueue[j]
-				    	console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
+				    	//console.log("INFO HomeShelf :: select, nextTileIndex is ??? ", nextTileIndex)
 				    	let targetTile = this.tiles[nextTileIndex]
 				    	if (j === 3) this.nextTile = targetTile
 				    	targetTile.toExpanded(nextX)
