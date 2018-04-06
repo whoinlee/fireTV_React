@@ -165,8 +165,14 @@ class HomeShelvesPane extends Component {
       isGuideVisible: false,
       focusLocationIndex: 0,
       selectedShelfIndex: -1,
-      shelvesTopY: initContainerY + 'px'
+      shelvesTopY: initContainerY + 'px',
+      zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
     }
+
+    // this.style = {
+    //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
+    // }
+
     this.elts = []
     this.shelves = []
     this.containerShiftOffsetY = 0
@@ -200,6 +206,7 @@ class HomeShelvesPane extends Component {
     this.goToDetail = this.goToDetail.bind(this)
     
     this.onKeyPressed = this.onKeyPressed.bind(this)
+    this.onResizeHandler = this.onResizeHandler.bind(this)
     this.toggleGuides = this.toggleGuides.bind(this)
     this.eachHomeShelf = this.eachHomeShelf.bind(this)
     this.selectTheFirstShelf = this.selectTheFirstShelf.bind(this)
@@ -209,15 +216,20 @@ class HomeShelvesPane extends Component {
 
   componentWillMount() {
       document.addEventListener("keydown", this.onKeyPressed)
+      window.addEventListener("resize", this.onResizeHandler)
 
       this.shelvesStyle = {
         top: initContainerY + 'px'
       }
 
       const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
-      this.style = {
-        zoom: rate
-      }
+      // const style = {
+      //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
+      // }
+      // this.style = {
+      //   zoom: rate
+      // }
+      this.setState({zoom: rate})
   }//componentWillMount
 
   componentWillUnmount() {document.removeEventListener("keydown", this.onKeyPressed)}      
@@ -253,6 +265,22 @@ class HomeShelvesPane extends Component {
         this.setState({keyPressed: String.fromCharCode(e.keyCodep)})
     }//switch
   }//onKeyPressed
+
+  onResizeHandler = (e) => {
+    console.log("onResizeHandler")
+    const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
+    console.log("onResizeHandler, rate?? " + rate)
+    // this.style = {
+    //   zoom: rate
+    // }
+    // const style = {
+    //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
+    // }
+    // this.style = {
+    //   zoom: rate
+    // }
+    this.setState({zoom: rate})
+  }
 
   toggleGuides = () => this.setState({isGuideVisible: !this.state.isGuideVisible})
 
@@ -529,7 +557,7 @@ class HomeShelvesPane extends Component {
   render() {
     // console.log("INFO HomeShelvesPane :: render")
     return (
-        <div id="HomeShelvesPane" style={this.style}>
+        <div id="HomeShelvesPane" style={{zoom: this.state.zoom}}>
           <div className={(this.state.focusLocationIndex === 0) ? "globalNavFocused" : "globalNav"} 
                ref={node => this.elts.push(node)}
                style={{top:initGlobalNavY + 'px'}}/>

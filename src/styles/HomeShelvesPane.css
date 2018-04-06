@@ -7,12 +7,16 @@
 #HomeShelvesPane {
   background-color: #676767;
   margin: 0px auto;
-  width: 1920px;
-  height: 1080px;
+/*  width: 1920px;
+  height: 1080px; */
+  width: 100%;
+  height: 100%;
+/**/  overflow-y: scroll;
+  padding-right: 17px;
   overflow: hidden;
   position: relative;
   /*clip: rect(0px,1920px,1080px,0px);*/
-  /**/border: 2px #000 solid;
+  /*border: 2px red solid;*/
 }
 
   #keyPressed {
@@ -50,8 +54,10 @@
     /*top: 0px;*/
     left: 0px;
     z-index: 800;
-    background-color: rgba(0, 0, 0, .1);
-    /**/ border: 1px #000 dotted;
+    /*background-color: rgba(0, 0, 0, .1);*/
+    background-color: #555555;
+    opacity: .6;
+    /**/ border: 2px #000 dotted;
   }
 
   .globalNavFocused {
@@ -61,7 +67,9 @@
     /*top: 0px;*/
     left: 0px;
     z-index: 800;
-    background-color: rgba(0, 0, 0, 0);
+    /*background-color: rgba(0, 0, 0, 0);*/
+    background-color: #333333;
+    opacity: 1;
     border: 4px #f00 solid;
   }
 
@@ -71,8 +79,10 @@
     position: absolute;
     /*top: 165px;*/
     z-index: 900;
-    /**/background-color: rgba(0, 0, 0, .1);
-    /**/border: 1px #000 dotted;
+    /*background-color: rgba(0, 0, 0, .1);*/
+    background-color: #555555;
+    opacity: .6;
+    /**/border: 2px #000 dotted;
     /*clip: rect(0px,1920px,1080px,0px);*/
   }
 
@@ -83,7 +93,9 @@
     top: 165px;
     z-index: 900;
     border: 4px #f00 solid;
-    background-color: rgba(0, 0, 0, 0);
+    /*background-color: rgba(0, 0, 0, 0);*/
+    background-color: #333333;
+    opacity: 1;
   }
 
   .homeShelves {
@@ -91,6 +103,9 @@
     height: 100%;
     position: absolute;
     z-index: 950;
+    background-color: #676767;
+    overflow-y: hidden;
+    overflow-y: scroll;
     /*border: 1px #000 solid;*/
   }
 

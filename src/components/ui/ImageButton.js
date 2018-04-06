@@ -25,7 +25,7 @@ class ImageButton extends Component {
 	render() {
 		return (
 			<button>
-				<img src={this.props.imageURL} onClick={this.onClick} />
+				<img src={this.props.imageURL} alt={this.props.id} onClick={this.onClick} />
 			</button>
 		)
 	}//render
@@ -33,6 +33,7 @@ class ImageButton extends Component {
 
 ImageButton.propTypes = {
 	imageURL: PropTypes.string,
+	id: PropTypes.string,
 	onClick: PropTypes.func
 };
 

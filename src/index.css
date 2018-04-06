@@ -4,3 +4,8 @@ body {
   font-family: sans-serif;
   background-color: #676767;
 }
+
+#root {
+  overflow: hidden;
+  background-color: #676767;
+}
