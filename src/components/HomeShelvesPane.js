@@ -503,7 +503,7 @@ class HomeShelvesPane extends Component {
   onBloomComplete = () => console.log('onBloomComplete')
   onLargeBloomStart = () => {
     //console.log("INFO HomeShelvesPane :: onLargeBloomStart")
-    //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
+    console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.state.selectedShelfIndex? " + this.state.selectedShelfIndex)
     let prevY
     let nextY
     if (this.state.selectedShelfIndex === 0) {
@@ -511,15 +511,19 @@ class HomeShelvesPane extends Component {
       if (this.upMidHomeHeroY === this.initHomeHeroY) this.upMidHomeHeroY = this.upHomeHeroY - bloomedShelfShiftY
       TL.to(this.elts[homeHero], stdDuration, {top: this.upMidHomeHeroY+'px', ease:Power3.easeOut})
     } else {
+      const prevShelfIndex = this.state.selectedShelfIndex - 1;
+      this.prevShelf = this.shelves[prevShelfIndex]
       if (this.prevShelf !== null) {
-        //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.prevShelf !== null")
+        console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.prevShelf !== null")
         prevY = this.prevShelf.props.y - bloomedShelfShiftY
         this.prevShelf.moveTo(prevY, stdDuration)
         this.isPrevMoved = true
       }
     }
+    const nextShelfIndex = this.state.selectedShelfIndex + 1;
+    this.nextShelf = this.shelves[nextShelfIndex]
     if (this.nextShelf !== null) {
-      //console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.nextShelf !== null")
+      console.log("INFO HomeShelvesPane :: onLargeBloomStart, this.nextShelf !== null")
       nextY = this.nextShelf.props.y + bloomedShelfShiftY
       this.nextShelf.moveTo(nextY, stdDuration)
       this.isNextMoved = true
