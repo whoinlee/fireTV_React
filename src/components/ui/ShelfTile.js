@@ -28,6 +28,9 @@ const toLgBloomedScale = Math.round(tileSizeArr[tileKindObj.LG_BLOOMED][0]*100/t
 const infoIconPath = '../assets/images/icons/infoIcon.png';
 const playIconPath = '../assets/images/icons/playIcon.png';
 const addToIconPath = '../assets/images/icons/addToIcon.png';
+const selectedInfoIconPath = '../assets/images/icons/infoIconSelected.png';
+const selectedPlayIconPath = '../assets/images/icons/playIconSelected.png';
+const selectedAddToIconPath = '../assets/images/icons/addToIconSelected.png';
 
 
 
@@ -176,9 +179,21 @@ class ShelfTile extends Component {
 		         		<div className="bloomedShowTitle">{this.props.showTitle}</div>
 		         		<div className="bloomedEpisodeTitle">{this.props.episodeTitle}</div>
 		         		<div className="bloomedButtons">
-		         			<ImageButton imageURL={infoIconPath} onClick={this.onInfoButtonClicked} />
-		         			<ImageButton imageURL={playIconPath} onClick={this.onPlayButtonClicked} />
-		         			<ImageButton imageURL={addToIconPath} onClick={this.onAddToButtonClicked} />
+		         			<ImageButton id="infoButton" top={0} left={0} 
+		         				isSelected={false} 
+		         				imageURL={infoIconPath}
+		         				selectedImageURL={selectedInfoIconPath}
+		         				onClick={this.onInfoButtonClicked} />
+		         			<ImageButton id="playButton" top={0} left={94} 
+		         				isSelected={true} 
+		         				imageURL={playIconPath}
+		         				selectedImageURL={selectedPlayIconPath}
+		         				onClick={this.onPlayButtonClicked} />
+		         			<ImageButton id="addToButton" top={0} left={188} 
+		         				isSelected={false} 
+		         				imageURL={addToIconPath}
+		         				selectedImageURL={selectedAddToIconPath}
+		         				onClick={this.onAddToButtonClicked} />
 		         		</div>
 		            	<div className="bloomedEpisodeID">{this.props.episodeID}&nbsp;<span className="bloomedEpisodeDesc">{this.props.episodeDesc}</span></div>
 		          	</div>

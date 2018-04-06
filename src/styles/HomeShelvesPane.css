@@ -265,6 +265,8 @@
   .bloomedButtons {
     position: relative;
     top: 220px;
+    background-color: transparent;
+    /*background-color: #000;*/
   }
 
   .bloomedEpisodeID {
