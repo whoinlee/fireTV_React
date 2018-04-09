@@ -53,6 +53,7 @@ class HomeShelf extends Component {
 
 		this.opacityChange = this.opacityChange.bind(this)
 		this.onLargeBloomStart = this.onLargeBloomStart.bind(this)
+		this.backToFocused = this.backToFocused.bind(this)
 		this.eachShelfTile = this.eachShelfTile.bind(this)
 		this.clearBloomTimer = this.clearBloomTimer.bind(this)
 
@@ -185,7 +186,16 @@ class HomeShelf extends Component {
 		console.log("INFO HomeShelf :: doLeft/moveToRight, shelf", this.props.index)
 		console.log("INFO HomeShelf :: doLeft/moveToRight, this.state.shelfKind ? ", this.state.shelfKind)
 		this.clearBloomTimer()
-		//const noScale = true
+
+		if (this.state.shelfKind === shelfKindObj.BLOOMED) {
+			console.log("INFO HomeShelf :: doLeft, menu change!! ") 
+			// console.log("INFO HomeShelf :: doLeft, this.currTile.props.index? " + this.currTile.props.index) 
+			console.log("INFO HomeShelf :: doLeft, this.currTile.props.episodeTitle? " + this.currTile.props.episodeTitle) 
+			this.currTile.doLeft()
+			//
+			return
+		}
+
 		if (this.totalTiles > 1) {
 			console.log("\n")
 			//console.log("INFO HomeShelf :: doLeft//moveToRight, this.totalTiles ?? ", this.totalTiles)
@@ -274,11 +284,20 @@ class HomeShelf extends Component {
 	}//doLeft
 
 	doRight = () => {
-		console.log("\nINFO HomeShelf :: doRight/moveToLeft, shelf", this.props.index)
-		console.log("INFO HomeShelf :: doRight/moveToLeft, this.state.shelfKind ? ", this.state.shelfKind)
+		console.log("\nINFO HomeShelf :: doRight, shelf", this.props.index)
+		console.log("INFO HomeShelf :: doRight, this.state.shelfKind ? ", this.state.shelfKind)
 
 		this.clearBloomTimer()
-		// const noScale = true
+
+		if (this.state.shelfKind === shelfKindObj.BLOOMED) {
+			console.log("INFO HomeShelf :: doRight, menu change!! ")
+			// console.log("INFO HomeShelf :: doRight, this.currTile.props.index? " + this.currTile.props.index) 
+			console.log("INFO HomeShelf :: doRight, this.currTile.props.episodeTitle? " + this.currTile.props.episodeTitle) 
+			this.currTile.doRight()
+			//
+			return
+		}
+
 		if (this.totalTiles > 1) {
 			//console.log("INFO HomeShelf :: doRight, this.tileIndexQueue  before ? ", this.tileIndexQueue)
 			//-- move the rightMostTile to the leftEnd
@@ -337,16 +356,17 @@ class HomeShelf extends Component {
 		}
 	}//doRight
 
-	moveTo = (targetY, pDuration = stdDuration) => {
+	moveTo = (targetY = this.props.y, pDuration = stdDuration) => {
 		console.log("INFO HomeShelf :: moveTo")
 		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
 		// this.setState({topY: targetY, isMoved: true})
 	}//moveTo
 
-	backTo = (targetY = this.props.y, pDuration = stdDuration) => {
-		console.log("INFO HomeShelf :: backTo")
-		TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
-	}//backTo
+	// backTo = (targetY = this.props.y, pDuration = stdDuration) => {
+	// 	console.log("INFO HomeShelf :: backTo")
+	// 	this.moveTo(targetY, pDuration)
+	// 	//TL.to(this.homeShelfContainer, pDuration, {top: targetY+'px', ease:Power3.easeOut})
+	// }//backTo
 
 	opacityChange = (val) => {
 		// this.topContainerStyle = {
@@ -358,7 +378,6 @@ class HomeShelf extends Component {
 
 	onLargeBloomStart = () => {
 		console.log("INFO HomeShelf :: onLargeBloomStart")
-
 		this.setState({shelfKind: shelfKindObj.BLOOMED})
 		this.props.callBackOnLargeBloomStart()
 
@@ -389,6 +408,17 @@ class HomeShelf extends Component {
 		if (this.currTile !== null) this.currTile.killToLargeBloom()
 	}
 
+	backToFocused = (pDir = "left") => {
+		console.log("INFO HomeShelf :: backToFocused, callBackOnNoMenuLeft")
+		this.setState({shelfKind: shelfKindObj.FOCUSED})
+		if (pDir === "left") {
+			this.doLeft()
+		} else {
+			this.doRight()
+		}
+		this.props.callBackOnBackToFocused()
+	}
+
 	eachShelfTile = (tileObj, i) => {
 		const leftX = ( (i < maxTileIndex) || (i < (this.totalTiles - 1)) )? initX + tileBaseWidth[shelfKindObj.BASE]*i : initX - tileBaseWidth[shelfKindObj.BASE];
 		return (
@@ -402,7 +432,8 @@ class HomeShelf extends Component {
 				  		leftX={leftX} 
 				  		homeShelfIndex={this.props.index}
 				  		ref={node => this.tiles.push(node)}
-				  		callBackOnLargeBloomStart={this.onLargeBloomStart}>
+				  		callBackOnLargeBloomStart={this.onLargeBloomStart}
+				  		callBackOnNoMenuLeft={this.backToFocused}>
 		    </ShelfTile>
 		)
 	}//eachShelfTile

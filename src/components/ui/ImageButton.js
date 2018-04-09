@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 class ImageButton extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			isSelected: this.props.isSelected
-		}
-		// this.function = this.function.bind(this)
+		// this.state = {
+		// 	isSelected: this.props.isSelected
+		// }
+		this.onClick = this.onClick.bind(this)
 	}
 
 	componentWillMount() {
@@ -20,16 +20,17 @@ class ImageButton extends Component {
 
 	onClick = (e) => {
 		console.log("INFO ImageButton :: onClick")
-		this.setState({isSelected: !this.state.isSelected})
-		this.props.onClick(e)
+		//this.setState({isSelected: !this.state.isSelected})
+		if (this.props.isSelected)
+		this.props.onSelect(e)
 	}
 
 	render() {
 		return (
 			<span style={{position:'absolute', top:this.props.top + 'px', left:this.props.left + 'px'}}>
-				<img 	src={(this.state.isSelected === true) ? this.props.selectedImageURL : this.props.imageURL}
+				<img 	src={(this.props.isSelected === true) ? this.props.selectedImageURL : this.props.imageURL}
 						alt={this.props.id} 
-						onClick={this.onClick} />
+						onSelect={this.onSelect} />
 			</span>
 		)
 	}//render
@@ -39,7 +40,7 @@ ImageButton.propTypes = {
 	imageURL: PropTypes.string,
 	selectedImageURL: PropTypes.string,
 	id: PropTypes.string,
-	onClick: PropTypes.func,
+	onSelect: PropTypes.func,
 	top: PropTypes.number,
 	left: PropTypes.number,
 	isSelected: PropTypes.bool

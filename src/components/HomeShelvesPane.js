@@ -177,6 +177,7 @@ class HomeShelvesPane extends Component {
     this.nextShelf = null
     this.isPrevMoved = false
     this.isNextMoved = false
+    this.totalMenu = 3
 
     this.initGlobalNavY = initGlobalNavY
     this.upGlobalNavY = this.initGlobalNavY     
@@ -311,12 +312,14 @@ class HomeShelvesPane extends Component {
         //-- from homeShelves to homeShelves (selectedShelf changes)
         if (this.isPrevMoved) {
           //-- it's on bloomed state
-          this.prevShelf.backTo()
+          // this.prevShelf.backTo()
+          this.prevShelf.moveTo()
           this.isPrevMoved = false
         }
         if (this.isNextMoved) {
           //-- it's on bloomed state
-          this.nextShelf.backTo()
+          // this.nextShelf.backTo()
+          this.nextShelf.moveTo()
           this.isNextMoved = false
         }
 
@@ -376,12 +379,14 @@ class HomeShelvesPane extends Component {
       case homeShelves:
         if (this.isPrevMoved) {
           //-- it's on bloomed state
-          this.prevShelf.backTo()
+          // this.prevShelf.backTo()
+          this.prevShelf.moveTo()
           this.isPrevMoved = false
         }
         if (this.isNextMoved) {
           //-- it's on bloomed state
-          this.nextShelf.backTo()
+          // this.nextShelf.backTo()
+          this.nextShelf.moveTo()
           this.isNextMoved = false
         }
         if (selectedShelfIndex === 0) {
@@ -450,8 +455,8 @@ class HomeShelvesPane extends Component {
       //     TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
       //   }
       // }
-      this.moveBackPrevShelf()
-      this.moveBackNextShelf()
+      // this.moveBackPrevShelf()
+      // this.moveBackNextShelf()
       this.shelves[this.state.selectedShelfIndex].doLeft()
     }
   }//doLeft
@@ -475,8 +480,8 @@ class HomeShelvesPane extends Component {
       //     TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
       //   }
       // }
-      this.moveBackPrevShelf()
-      this.moveBackNextShelf()
+      // this.moveBackPrevShelf()
+      // this.moveBackNextShelf()
       this.shelves[this.state.selectedShelfIndex].doRight()
     }
   }//doRight
@@ -485,7 +490,8 @@ class HomeShelvesPane extends Component {
     console.log("INFO HomeShelvesPane :: moveBackPrevShelf")
     if (this.isPrevMoved) {
         //-- it's on a bloomed state
-        this.prevShelf.backTo()
+        // this.prevShelf.backTo()
+        this.prevShelf.moveTo()
         this.isPrevMoved = false
     }
   }
@@ -494,7 +500,8 @@ class HomeShelvesPane extends Component {
     console.log("INFO HomeShelvesPane :: moveBackNextShelf")
     if (this.isNextMoved) {
       //-- it's on a bloomed state
-      this.nextShelf.backTo()
+      // this.nextShelf.backTo()
+      this.nextShelf.moveTo()
       this.isNextMoved = false
       if (this.state.selectedShelfIndex === 0) {
         //-- the 1st shelf is on a largeBloom state
@@ -505,6 +512,7 @@ class HomeShelvesPane extends Component {
   }
 
   moveBackAdjacentShelves = () => {
+    console.log("INFO HomeShelvesPane :: moveBackAdjacentShelves, callBackOnBackToFocused")
     this.moveBackPrevShelf()
     this.moveBackNextShelf()
   }
