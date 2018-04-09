@@ -169,10 +169,6 @@ class HomeShelvesPane extends Component {
       zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
     }
 
-    // this.style = {
-    //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
-    // }
-
     this.elts = []
     this.shelves = []
     this.containerShiftOffsetY = 0
@@ -212,6 +208,9 @@ class HomeShelvesPane extends Component {
     this.selectTheFirstShelf = this.selectTheFirstShelf.bind(this)
     this.firstShelfOpacityUpdate = this.firstShelfOpacityUpdate.bind(this)
     this.onLargeBloomStart = this.onLargeBloomStart.bind(this)
+    this.moveBackPrevShelf = this.moveBackPrevShelf.bind(this)
+    this.moveBackNextShelf = this.moveBackNextShelf.bind(this)
+    this.moveBackAdjacentShelves = this.moveBackAdjacentShelves.bind(this)
   }
 
   componentWillMount() {
@@ -223,12 +222,6 @@ class HomeShelvesPane extends Component {
       }
 
       const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
-      // const style = {
-      //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
-      // }
-      // this.style = {
-      //   zoom: rate
-      // }
       this.setState({zoom: rate})
   }//componentWillMount
 
@@ -267,18 +260,9 @@ class HomeShelvesPane extends Component {
   }//onKeyPressed
 
   onResizeHandler = (e) => {
-    console.log("onResizeHandler")
+    console.log("INFO HomeShelvesPane :: onResizeHandler")
     const rate = (Math.floor((window.innerWidth/this.props.width)*100))/100
-    console.log("onResizeHandler, rate?? " + rate)
-    // this.style = {
-    //   zoom: rate
-    // }
-    // const style = {
-    //   zoom: (Math.floor((window.innerWidth/this.props.width)*100))/100
-    // }
-    // this.style = {
-    //   zoom: rate
-    // }
+    //console.log("onResizeHandler, rate?? " + rate)
     this.setState({zoom: rate})
   }
 
@@ -451,21 +435,23 @@ class HomeShelvesPane extends Component {
   doLeft = () => {
     this.setState({keyPressed: 'padLeft'})
     if (this.state.focusLocationIndex === homeShelves) {
-      if (this.isPrevMoved) {
-        //-- it's on a bloomed state
-        this.prevShelf.backTo()
-        this.isPrevMoved = false
-      }
-      if (this.isNextMoved) {
-        //-- it's on a bloomed state
-        this.nextShelf.backTo()
-        this.isNextMoved = false
-        if (this.state.selectedShelfIndex === 0) {
-          //-- the 1st shelf is on a largeBloom state
-          //-- bring down homeHero
-          TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
-        }
-      }
+      // if (this.isPrevMoved) {
+      //   //-- it's on a bloomed state
+      //   this.prevShelf.backTo()
+      //   this.isPrevMoved = false
+      // }
+      // if (this.isNextMoved) {
+      //   //-- it's on a bloomed state
+      //   this.nextShelf.backTo()
+      //   this.isNextMoved = false
+      //   if (this.state.selectedShelfIndex === 0) {
+      //     //-- the 1st shelf is on a largeBloom state
+      //     //-- bring down homeHero
+      //     TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
+      //   }
+      // }
+      this.moveBackPrevShelf()
+      this.moveBackNextShelf()
       this.shelves[this.state.selectedShelfIndex].doLeft()
     }
   }//doLeft
@@ -473,24 +459,55 @@ class HomeShelvesPane extends Component {
   doRight = () => {
     this.setState({keyPressed: 'padRight'})
     if (this.state.focusLocationIndex === homeShelves) {
-      if (this.isPrevMoved) {
-        //-- it's on a bloomed state
-        this.prevShelf.backTo()
-        this.isPrevMoved = false
-      }
-      if (this.isNextMoved) {
-        //-- it's on a bloomed state
-        this.nextShelf.backTo()
-        this.isNextMoved = false
-        if (this.state.selectedShelfIndex === 0) {
-          //-- the 1st shelf is on a largeBloom state
-          //-- bring down homeHero
-          TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
-        }
-      }
+      // if (this.isPrevMoved) {
+      //   //-- it's on a bloomed state
+      //   this.prevShelf.backTo()
+      //   this.isPrevMoved = false
+      // }
+
+      // if (this.isNextMoved) {
+      //   //-- it's on a bloomed state
+      //   this.nextShelf.backTo()
+      //   this.isNextMoved = false
+      //   if (this.state.selectedShelfIndex === 0) {
+      //     //-- the 1st shelf is on a largeBloom state
+      //     //-- bring down homeHero
+      //     TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
+      //   }
+      // }
+      this.moveBackPrevShelf()
+      this.moveBackNextShelf()
       this.shelves[this.state.selectedShelfIndex].doRight()
     }
   }//doRight
+
+  moveBackPrevShelf = () => {
+    console.log("INFO HomeShelvesPane :: moveBackPrevShelf")
+    if (this.isPrevMoved) {
+        //-- it's on a bloomed state
+        this.prevShelf.backTo()
+        this.isPrevMoved = false
+    }
+  }
+
+  moveBackNextShelf = () => {
+    console.log("INFO HomeShelvesPane :: moveBackNextShelf")
+    if (this.isNextMoved) {
+      //-- it's on a bloomed state
+      this.nextShelf.backTo()
+      this.isNextMoved = false
+      if (this.state.selectedShelfIndex === 0) {
+        //-- the 1st shelf is on a largeBloom state
+        //-- bring down homeHero
+        TL.to(this.elts[homeHero], stdDuration, {top: this.upHomeHeroY+'px', opacity: .6, ease:Power3.easeOut}) 
+      }
+    }
+  }
+
+  moveBackAdjacentShelves = () => {
+    this.moveBackPrevShelf()
+    this.moveBackNextShelf()
+  }
 
   doSelect = () => this.setState({keyPressed: 'selectAction'})
   doBack = () => this.setState({keyPressed: 'goBack'})
@@ -530,9 +547,6 @@ class HomeShelvesPane extends Component {
     }
   }//onLargeBloomStart
 
-  //startDetailTimer = () => console.log('startDetailTimer')
-  //clearDetailTimer = () => console.log('clearDetailTimer')
-
   selectTheFirstShelf = () => {
     this.shelves[0].select()
     //-- dimm out the rest
@@ -553,7 +567,8 @@ class HomeShelvesPane extends Component {
                   shows={shelfObj.shows}
                   y={initShelfY + i*focusedShelfOffsetY}
                   ref={node => this.shelves.push(node)}
-                  callBackOnLargeBloomStart={this.onLargeBloomStart}>
+                  callBackOnLargeBloomStart={this.onLargeBloomStart}
+                  callBackOnBackToFocused={this.moveBackAdjacentShelves}>
       </HomeShelf>
     )
   }//eachHomeShelf

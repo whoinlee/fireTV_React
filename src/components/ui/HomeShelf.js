@@ -182,7 +182,8 @@ class HomeShelf extends Component {
 	}//unselect
 
 	doLeft = () => {
-		//console.log("INFO HomeShelf :: doLeft//moveToRight, shelf", this.props.index)
+		console.log("INFO HomeShelf :: doLeft/moveToRight, shelf", this.props.index)
+		console.log("INFO HomeShelf :: doLeft/moveToRight, this.state.shelfKind ? ", this.state.shelfKind)
 		this.clearBloomTimer()
 		//const noScale = true
 		if (this.totalTiles > 1) {
@@ -273,7 +274,8 @@ class HomeShelf extends Component {
 	}//doLeft
 
 	doRight = () => {
-		//console.log("\nINFO HomeShelf :: doRight//moveToLeft, shelf", this.props.index)
+		console.log("\nINFO HomeShelf :: doRight/moveToLeft, shelf", this.props.index)
+		console.log("INFO HomeShelf :: doRight/moveToLeft, this.state.shelfKind ? ", this.state.shelfKind)
 
 		this.clearBloomTimer()
 		// const noScale = true
@@ -356,6 +358,8 @@ class HomeShelf extends Component {
 
 	onLargeBloomStart = () => {
 		console.log("INFO HomeShelf :: onLargeBloomStart")
+
+		this.setState({shelfKind: shelfKindObj.BLOOMED})
 		this.props.callBackOnLargeBloomStart()
 
 		let prevX
@@ -428,17 +432,19 @@ class HomeShelf extends Component {
 }
 
 HomeShelf.propTypes = {
-	title: PropTypes.string,
 	index: PropTypes.number,
 	id: PropTypes.string,
+	title: PropTypes.string,
 	shows: PropTypes.array,
-	y: PropTypes.number
+	y: PropTypes.number,
+	callBackOnLargeBloomStart: PropTypes.func,
+	callBackOnBackToFocused: PropTypes.func
 };
 
 HomeShelf.defaultProps = {
-  	title: "",
 	index: 0,
 	id: "HomeShelf0",
+	title: "",
 	shows: [],
 	y: 62
 };
