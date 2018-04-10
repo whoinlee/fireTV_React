@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Lato')
-@import url('https://fonts.googleapis.com/css?family=Poppins')
+@import 'https://fonts.googleapis.com/css?family=Lato'
+@import 'https://fonts.googleapis.com/css?family=Poppins'
 
 /* --------------------- */
 /* -- HomeShelvesPane -- */
@@ -265,7 +265,6 @@
     position: relative;
     top: 220px;
     background-color: transparent;
-    /*background-color: #000;*/
   }
 
   .bloomedEpisodeID {
@@ -282,12 +281,13 @@
 
   span.bloomedEpisodeDesc {
     text-align: left;
+    /*font-family: 'LatoRegular';*/
     font-family: 'Lato';
     font-weight: 400;  /*LatoRegular*/
     font-size: 24px;
     color: #fff;
     /*border: 1px yellow solid;*/
-    -webkit-font-smoothing: antialiased;
+    /*-webkit-font-smoothing: antialiased;*/
   }
 
 /* --------------------- */
