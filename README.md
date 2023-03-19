@@ -1,4 +1,4 @@
 # FireTV POC in React
 
-![Alt text](/screenShots/fireTVReact.jpg?raw=true 'NBC Fire TV')
+![Alt text](/screenShots/fireTVReact2.jpg?raw=true 'NBC Fire TV')
 <br/>
