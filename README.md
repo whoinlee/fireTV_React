@@ -2,3 +2,6 @@
 
 ![Alt text](/screenShots/fireTVReact2.jpg?raw=true 'NBC Fire TV')
 <br/>
+
+![Alt text](/screenShots/bravo.jpg?raw=true 'Bravo Home&Details')
+<br/>
